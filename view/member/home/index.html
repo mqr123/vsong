@@ -1,0 +1,87 @@
+<include file="common/header" />
+<!--{if empty($data['list'])}-->
+<form id='joinBox' action="{:U('home/index/post')}" method="post">
+		<label>
+			<span>机构/学校名称*</span>
+			<input type="text" name="name" placeholder="请填写所要加盟的学校或机构名称" />
+		</label>
+		<label class="col col_l">
+			<span>负责人姓名*</span>
+			<input type="text" name="ceo" placeholder="请输入负责人姓名" />
+		</label>
+		<label class="col">
+			<span>联系电话*</span>
+			<input type="tel" maxlength="11" name="tel" placeholder="请填写负责人联系电话" />
+		</label>
+		<!--<label class="address_l">-->
+			<span style="display:block;">所在地址*</span>
+			<div class="selectBox">
+				<span class="vs-district" ></span>
+			</div>
+			<input type="text" name="address" placeholder="请输入街道及门牌号" />
+		<!--</label>-->
+		<label class="personinfo">
+			<span>机构简介*</span>
+			<textarea form="joinBox" maxlength="100" name="summery" placeholder="请输入机构简介（100字以内）"></textarea>
+			<span class="words">0/100字</span>
+		</label>
+		<p>上传营业执照*</p>
+		<label class='filelabel'>
+			<span class="up"></span>
+			<input type="file" name="license" accept="image/png, image/jpg"/>
+		</label>
+		<p class="wran">请上传2M以内的jpg或png格式的照片</p>
+		<div><span id="joinSubmit" class="mbtn">提交</span></div>
+</form>
+<!--{else}-->
+<!-- 已加盟正在审核中的机构信息显示 -->
+<!-- {loop $data['list'] as $key} -->
+<form id='orgBox' >
+	<label class="col">
+		<span>机构/学校名称*</span>
+		<input disabled  value="{$key['name']}" />
+	</label>
+	<label class="col">
+		<span>申请状态</span>
+		<!-- {if $key['stats']==0} -->
+		<input type="text" disabled  value="审核中"/>
+		<!-- {else if $key['stats']==1} -->
+		<input type="text" disabled  value="审核未通过"/>
+		<!-- {else if $key['stats']==2} -->
+		<input type="text" disabled  value="审核通过"/>
+		<!-- {/if} -->
+	</label>
+	<label class="col col_l">
+		<span>负责人姓名</span>
+		<input disabled value="{$key['ceo']}" />
+	</label>
+	<label class="col">
+		<span>联系电话</span>
+		<input disabled value="{$key['tel']}"/>
+	</label>
+	<label class="col">
+		<span>申请时间</span>
+		<input  disabled value="{date('Y-m-d',$key['dateline'])}"/>
+	</label>
+	<label class="col">
+		<span>过期时间*</span>
+		<input  disabled value="{date('Y-m-d',$key['dateout'])}"/>
+	</label>
+	
+	
+	<div class="selectBox">
+		<span style="display:block;">所在地址*</span>
+		<label class="address_l">
+			<input disabled value="{$key['district'].$key['address']}"/>
+		</label>
+	</div>
+	<label>
+		<span>机构简介*</span>
+		<textarea disabled>{$key['summery']}</textarea>
+	</label>
+	<p>营业执照*</p>
+	<img src="/{$key['license']}" style="width: 100px;height: auto;">
+</form>
+<!-- {/loop} -->
+<!--{/if}-->
+<include file="common/footer" />

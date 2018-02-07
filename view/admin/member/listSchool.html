@@ -1,0 +1,99 @@
+<include file="common/common" />
+<body class="childrenBody">
+<blockquote class="layui-elem-quote news_search">
+	<div class="layui-inline">
+		<form action="{:U('member/listSchool/ye-post')}" method="post">
+	   	 	<div class="layui-input-inline">
+	    		<input type="text" name="ceo" placeholder="机构名称/法人" class="layui-input search_input">
+	   		</div>
+	    <button class="layui-btn search_btn">查询</button>
+	   </form>
+	</div>
+	<div class="layui-inline">
+	<form action="{:U('member/listSchool/ye-stats')}" method="post">
+		 <div class="layui-input-inline">
+		 	<select name="num" style="padding: 6px; color: darkgray;border:1px solid #e6e6e6" >
+				<option value="">--请选择--</option>
+				<option value="_stats0">审核中</option>
+				<option value="_stats1">审核未通过</option>
+		        <option value="_stats2">审核通过</option>  
+			</select>
+			<button class="layui-btn layui-btn-normal" lay-filter="addUser">统计</button>
+	    	<a class="layui-btn layui-btn-danger ">数量 : {$data['length']}</a>
+	    </div>
+	</form>
+	</div>
+	<div class="layui-inline" align="right">
+	&nbsp;
+	<a class="layui-btn layui-btn-normal " href="{:U('member/index')}">返回</a>
+	</div>
+</blockquote>
+<div class="layui-form news_list">
+<table class="layui-table">
+<thead>
+	<tr>
+		<th>UID</th>
+		<th>SID</th>
+		<th>机构名称</th>
+		<th>法人</th>
+		<th>机构电话</th>
+		<th>申请时间</th>
+		<th>审核状态</th>
+		<th>资料详情</th>
+		<!--{if $_SESSION['roleid']!=5}-->
+		<th>是否通过</th>
+		<th>操作</th>
+		<!--{/if}-->
+	</tr> 
+</thead>
+<tbody class="users_content">
+	  <!--{loop $data['list'] as $key}-->
+	<tr>
+		<td>{$key['uid']}</td>
+		<td>{$key['sid']}</td>
+		<td>{$key['name']}</td>
+		<td>{$key['ceo']}</td>
+		<td>{$key['tel']}</td>
+		<td>{date('Y-m-d',$key['dateline'])}</td>
+		{if $key['stats'] ==1}
+        <td>未通过禁用</td>
+        {else if $key['stats'] ==2}
+        <td>通过</td>
+        {else if $key['stats'] ==0}
+        <td>审核中</td>
+        {/if}
+		<td>
+			<a class="layui-btn  layui-btn-mini" href="{:U('member/show/'.$key['uid'])}">详情</a>
+		</td>
+		<!--{if $_SESSION['roleid']!=5}-->
+		<td>
+
+		<a class="layui-btn  layui-btn-normal layui-btn-mini" href="{:U('member/school/'.$key['sid'].'-yes')}">通过</a>
+		<a class="layui-btn  layui-btn-danger layui-btn-mini" href="{:U('member/school/'.$key['sid'].'-no')}">不通过</a>
+		</td>
+		
+		<td>
+			<a class="layui-btn layui-btn-mini " href="{:U('member/school/'.$key['sid'].'-no')}">禁用</a>
+		</td>
+		<!--{/if}-->
+	</tr> 
+	<!--{/loop}-->	
+</tbody>
+</table>
+</div>
+<div id="page" >
+	<!--{for $i=1;$i <= $data['total'];$i+=1}-->
+	{if $data['page'] == $i}
+	<a class="btn checked">第{$i}页</a>
+	{else}
+	<a class="btn pjax" href="{:U('member/listSchool/'.$school.'-'.$i)}">第{$i}页</a>
+	{/if}
+	<!--{/for}-->
+</div>
+<resource type="js" name="show" time="30">
+  <file src="admin/show" />
+  <file src="admin/add" />
+</resource>
+	
+</body>
+</html>

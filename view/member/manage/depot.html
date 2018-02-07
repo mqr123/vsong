@@ -1,0 +1,16 @@
+<include file="common/header" />
+<?php
+$arr = array('全部','教材','练习','曲目','模型','道具','场景');
+$tab = !empty($_G['param'][0]) && is_numeric($_G['param'][0])?$_G['param'][0]:0;
+?>
+	<div class="backpack">
+		<div class="record_nav">
+			{for $i=0;$i<count($arr);$i+=1}
+				<a class="btn pjax{if $tab == $i} open{/if}" href="{:U('manage/depot/'.$i)}">{$arr[$i]}</a>
+			{/for}
+		</div>
+		<div class="tab-all">
+			{_ $this->displays('manage/depot_'.$tab)}
+		</div>
+	</div>
+	<include file="common/footer" />

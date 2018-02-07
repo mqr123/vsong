@@ -1,0 +1,1 @@
+<?php exit;?>{"list":[{"username":"user_124334","phone":"13571517203","ip":"127.0.0.1","realname":"微熊","idcard":"610430198712113426","openid":"11","qq":"1444414","parents":"","parents_phone":"","email":"1013682222@qq.com","address":"","summery":"","sid":"0","type":"0","district":"北京市东城区东四街道","province":"1","city":"37","county":"568","town":"0"}],"length":1,"page":1,"total":1}

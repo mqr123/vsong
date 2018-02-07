@@ -1,0 +1,73 @@
+<include file="common/common" />
+<body class="childrenBody">
+<blockquote class="layui-elem-quote news_search">
+	<!--{if $_SESSION['roleid']!=5}-->
+	<div class="layui-inline">
+		<a class="layui-btn search_btn ">充值</a>
+	</div>
+	<!--{/if}-->
+	<div class="layui-inline">
+		 &nbsp;&nbsp;您的充值总金额为：
+		 <a class="layui-btn layui-btn-danger ">{$sum}</a>
+	</div>
+	<div class="layui-inline" align="right"> 
+	
+	<a class="layui-btn layui-btn-normal " href="{:U('member/index')}">返回列表</a>
+	</div>
+	
+	<div class="layui-inline">
+		 <a class="layui-btn layui-btn-warm" href="{:U('member/deleted_recharge/'.$uid)}">回收站</a>
+	</div>
+</blockquote>
+<div class="layui-form news_list">
+<table class="layui-table">
+<thead>
+	<tr>
+		<th>ID</th>
+		<th>UID</th>
+		<th>充值方式</th>
+		<th>充值金额</th>
+		<th>充值时间</th>
+		<!--{if $_SESSION['roleid']!=5}-->
+		<th>操作</th>
+		<!--{/if}-->
+	</tr> 
+</thead>
+<tbody class="users_content">
+ <!--{loop $data['list'] as $key}-->
+	<tr>
+		<td>{$key['id']}</td>
+		<td>{$key['uid']}</td>
+		{if $key['way']==0}
+		<td>微信</td>
+		{else if $key['way']==1}
+		<td>支付宝</td>
+		{/if}
+		<td>{$key['amount']}</td>
+		<td>{date('Y-m-d H:m:s',$key['time'])}</td>
+		<!--{if $_SESSION['roleid']!=5}-->
+		<td>
+			<a class="layui-btn layui-btn-mini" href="{:U('recharge/delete/'.$key['id'].'-member')}">删除</a>
+		</td>
+		<!--{/if}-->
+	</tr>
+	<!-- {/loop} -->
+</tbody>
+</table>
+</div>
+<div id="page">
+	<!--{for $i=1;$i <= $data['total'];$i+=1}-->
+	{if $data['page'] == $i}
+	<a class="btn checked">第{$i}页</a>
+	{else}
+	<a class="btn pjax" href="{:U('member/recharge/'.$uid.'-'.$i)}">第{$i}页</a>
+	{/if}
+	
+	<!--{/for}-->
+</div>
+<resource type="js" name="show" time="30">
+  <file src="admin/show" />
+</resource>
+	
+</body>
+</html>

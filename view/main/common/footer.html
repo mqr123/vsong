@@ -1,0 +1,47 @@
+{if !$pjax}
+	</main>
+    <!--/* Container End */-->
+    <footer>
+
+    </footer>
+<!--/* Interface End */-->
+</div>
+<script>
+var VSong = {
+	//程序版本号
+	version: __VERSION__,
+	//引擎版本号
+	engineVersion:'{lang vs_version}',
+	// 解包进度
+	executeProgress:function(f,p){
+		console.log('Loaded:', f, p);
+	},
+	// 解包完成
+	executeComplete:function(){
+		console.log('Unpack completed.', this);
+	},
+	workerMod:'common',//锁定worker模块
+	useWorker:true,//是否使用worker
+	lang:{$this->json($this->language)},
+	subjects:{$this->json($subjects_list)},
+	enabled:{$this->json($subjects_enabled)}
+};
+</script>
+<resource type="pack" name="main" time="3">
+	<file src="global" />
+	<file src="dom" />
+	<file src="box" />
+	<file src="pjax" />
+	<file src="midi" />
+	<file src="cookie" />
+	<file src="websql" />
+	<file src="district" />
+	<file src="main/login" />
+	<file src="main/modules" />
+	<file src="main/init" />
+	<file src="engine.controls" />
+	<file src="engine" />
+</resource>
+</body>
+</html>
+{/if}

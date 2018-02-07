@@ -1,0 +1,66 @@
+<include file="common/common" />
+<body class="childrenBody">
+	<blockquote class="layui-elem-quote news_search">
+		当前&nbsp;&nbsp;&nbsp;&nbsp;<a href="index" class="layui-btn layui-btn-mini">分类</a>
+		
+	</blockquote>
+	<div class="layui-form news_list">
+		<table class="layui-table">
+			<thead>
+				<tr>
+					<th>顺序</th>
+					<th>名称</th>
+					<th>标题</th>
+					<th>操作</th>
+				</tr>
+			</thead>
+				<tbody class="users_content">
+				 <!--{loop $data['list'] as $key}-->
+				<form action="{:U('type/index/'.$key['id']).'-post'}" class="layui-form" method="post">
+					<tr>
+						<td>
+							<input type="number" min="0" class="layui-input" value="{$key['order']}" name="order">
+						</td>
+						<td>
+							<input type="text" class="layui-input" value="{$key['name']}" name="name">
+						</td>
+						<td>
+							<input type="text" class="layui-input" value="{$key['title']}" name="title">
+						</td>
+							<input type="hidden" name="formhash" value="{$this->formhash()}">
+						<td>
+							<a href="{:U('type/index2/'.$key['id'])}" class="layui-btn layui-btn-mini">进入</a>
+							<button class="layui-btn layui-btn-mini">保存</button>
+							<a href="{:U('type/delete/'.$key['id'])}" class="layui-btn layui-btn-danger layui-btn-mini">删除</a>
+						</td>
+					</tr>
+					</form>
+					<!--{/loop}--> 
+					<form action="{:U('type/add/post')}" method="post">
+					<tr>
+						<td>
+							<input type="number" min="0" class="layui-input" name="order">
+						</td>
+						<td>
+							<input type="text" class="layui-input" name="name">
+						</td>
+						<td>
+							<input type="text" class="layui-input" name="title">
+						</td>
+							<input type="hidden" name="formhash" value="{$this->formhash()}">
+						<td>
+							<button class="layui-btn layui-btn-mini">添加</button>
+						</td>
+					</tr>
+					</form>
+					</tbody>
+		</table>
+	</div>
+	
+	<resource type="js" name="show" time="3">
+		<file src="admin/show" />
+		<file src="admin/add" />
+	</resource>
+
+</body>
+</html>

@@ -1,0 +1,74 @@
+html,body{ height:100%;}
+body{ margin:0; padding:0; overflow:hidden;}
+#game-edit{ background-color:rgba(0,0,0,.5);color:#fff; text-shadow:0 0 2px #000; padding:0 15px; bottom:30px; left:300px; border-radius:3px; line-height:40px; z-index:999999999;}
+#loading{ width:100%; height:100%;}
+body.ready>#loading{ display:none;}
+body.ready>vsong-ui{ opacity:1;}
+body[stats="paused"] vsong-ui>canvas{ opacity:0;}
+vsong-ui,vsong-ui .fxd{ position:fixed;}
+.debug{ z-index:99999999; border-radius:3px; right:10px; top:130px; padding:10px; background-color:rgba(0,0,0,.2);color:#af0; min-width:240px; min-height:360px;}
+vsong-ui{top:0; left:0; right:0; bottom:0;z-index:999999;-webkit-font-smoothing: antialiased; opacity:0; -webkit-user-select:none;color:#fff; font-family:"Lucida Console", "微软雅黑";}
+progress,vsong-ui progress{
+	-webkit-appearance:none;-moz-appearance:none; appearance:none;vertical-align:middle;
+}
+vsong-ui,vsong-ui>canvas{ -vs-transition-duration:.5s;}
+/*Fonts*/
+ui-progress,ui-score,ui-level,ui-user,ui-information>[key="title"]{font-family:"Comic Sans MS", cursive;color:#fff600;}
+ui-progress,ui-level{ text-shadow:0 0 2px rgba(0,0,0,.75);}
+ui-user,ui-information{ text-shadow:0 0 3px #000,0 1px 2px #000;}
+/*BG*/
+ui-tools>.btn,
+ui-avatar:before{ background:url(game/ui.png) no-repeat;}
+/*Level*/
+ui-level{ top:82px; right:14px; font-size:11px; border:3px solid #fff; height:24px; line-height:24px; width:24px; box-shadow:0 0 15px #000 inset,0 0 1px rgba(0,0,0,.5); background-color:#f30; border-radius:50%;text-align:center; z-index:999;}
+ui-user{ right:115px; top:50px; text-transform:capitalize;text-align:right; white-space:nowrap;}
+/*avatar*/
+ui-avatar,ui-avatar:before{width:83px; height:83px;}
+ui-avatar{ border:4px solid #fff; border-radius:50%; z-index:10; box-shadow:0 0 5px rgba(0,0,0,.5); background-size:cover;right:10px; top:10px;}
+ui-avatar:before{ content:''; position:absolute; background-position:0 -230px; top:0; left:0;}
+/*Information*/
+ui-information{ bottom:10px; left:10px; font-size:14px; width:240px;color:rgba(255,255,255,.9); font-weight:100; border-radius:3px; padding:20px; background-color:rgba(0,0,0,.4);}
+ui-information>[key]{ display:block; line-height:22px; white-space:nowrap;}
+ui-information>[key="title"]{ font-size:20px; margin-bottom:10px;}
+ui-information>[key="tempo"]:before,
+ui-information>[key="author"]:before,
+ui-information>[key="singer"]:before{ content:attr(title)': '; font-weight:100; opacity:0.7}
+/*Life and Exp*/
+vsong-ui>.prg{right:130px; width:30%; max-width:360px; border-radius:30px 0 0 30px; min-width:100px; padding:6px 20px 6px 6px;}
+vsong-ui>.prg>progress{ width:100%; float:left;}
+vsong-ui>.prg>progress::-webkit-progress-bar,vsong-ui>.prg>progress::-webkit-progress-value{border-radius:10px; }
+vsong-ui>.prg>progress::-webkit-progress-bar{height:6px; background-color:rgba(0,0,0,.2); box-shadow:0 0 5px rgba(0,0,0,.75) inset; margin-top:4px;}
+vsong-ui>.prg>progress::-webkit-progress-value{ float:right; height:14px; margin-top:-4px;
+background-image:-webkit-linear-gradient(top,transparent 0%,transparent 45%,rgba(0,0,0,.3) 55%,rgba(0,0,0,.3) 100%);
+background-image:linear-gradient(top,transparent 0%,transparent 45%,rgba(0,0,0,.3) 55%,rgba(0,0,0,.3) 100%);
+}
+vsong-ui>ui-exp.prg{ display:none;}
+vsong-ui>ui-life.prg{ top:18px; right:68px; padding:5px 30px 5px 10px;background-color:rgba(255,255,255,.1); box-shadow:0 0 2px rgba(0,0,0,.2);}
+vsong-ui>ui-life.prg,vsong-ui>ui-life.prg>progress{ height:14px;}
+vsong-ui>ui-life.prg>progress::-webkit-progress-value{ background-color:#FF5700;}
+/*Progress*/
+ui-progress{ bottom:10px; left:300px; right:10px; }
+#loading progress,ui-progress>progress{ display:block;}
+ui-progress>progress{ width:100%; height:7px;}
+#loading progress::-webkit-progress-bar,
+ui-progress>progress::-webkit-progress-bar{ background-color:rgba(0,0,0,.5);}
+ui-progress>progress::-webkit-progress-bar{ padding:2px;}
+ui-progress>progress::-webkit-progress-value{ background-color:#0afffc; height:3px;}
+
+/*Score*/
+ui-score{ background:none; height:75px;top:30px; left:20px; line-height:44px; text-align:center;font-size:82px;text-shadow:0 3px 0 #ff8a00,0 6px 4px #000;}
+/*Tools*/
+ui-tools{ bottom:30px; right:10px;}
+ui-tools>.btn{ display:inline-block; width:40px; height:40px; margin:0 10px; border-radius:50%; box-shadow:0 0 2px #000; background-color:rgba(0,0,0,.2);}
+ui-tools>.btn:hover{ background-color:transparent; -vs-transition-duration:.3s; box-shadow:none; background-position-x:-40px}
+ui-tools>ui-play.btn{ background-position-y:-120px}
+body[stats="playing"] ui-tools>ui-play.btn{background-position-y:-160px}
+ui-tools>ui-fullscreen.btn{ background-position-y: -80px;}
+body[screen="full"] ui-tools>ui-fullscreen.btn{background-position-y: -40px;}
+
+#loading>.dl-cont{width:50%; height:30%; min-height:200px; left:25%; top:35%; text-align:center}
+#loading>.dl-cont>.tips{ position:absolute; bottom:50px; right:0; left:0; font-size:13px;color:#0afffc;}
+#loading progress{ position:absolute; height:12px; width:100%; right:0; left:0; bottom:20px;}
+#loading progress:before{ display:none;}
+#loading progress::-webkit-progress-bar{ border-radius:10px; padding:3px; box-shadow:0 0 5px #00a09d,0 0 10px #000 inset;}
+#loading progress::-webkit-progress-value{ -vs-transition-duration:.5s; background:#00a09d; height:6px; border-radius:3px;}

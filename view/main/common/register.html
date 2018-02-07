@@ -1,0 +1,70 @@
+<include file="common/header" />
+
+<div class="fxd logo frame-head"></div>
+<div class="fxd fy r frame-cont">
+	<div class="list-box fx">
+    	<div class="list-box-head">
+        	<i></i>
+            <div></div>
+        </div>
+    	<div class="list-box-cont form">
+        <form id="form-regsiter" action="{:U('common/register/post-'.$_G['ecode'])}">
+        	<div class="items clr">
+            	<h3>用户注册</h3>
+            </div>
+        	<div class="items focus">
+            	<label>
+                	<span><i class="icon icon-user"></i> 用户名</span>
+                	<div><input class="i1 i2" maxlength="15" name="username" data-lang="用户名" autocomplete="off" autofocus type="text" placeholder="请输入用户名"></div>
+                </label>
+            </div>
+            
+			<div align="right" style="margin:0 20px 20px;">
+				<a class="btn login">已有帐号？点击登录 &raquo;</a>
+			</div>
+        	<div class="items">
+            	<div class="label">
+                	<span><i class="icon icon-gender" id="iconsGender" gender="2" size="16"></i> 性　别</span>
+                	
+                      <label class="btn"><input name="gender" type="radio" onChange="if(this.checked)iconsGender.setAttribute('gender',1)" value="1">男</label>
+                      <label class="btn"><input name="gender" type="radio" onChange="if(this.checked)iconsGender.setAttribute('gender',2)" value="2" checked>女</label>
+                      <label class="btn"><input name="gender" type="radio" onChange="if(this.checked)iconsGender.setAttribute('gender',0)" value="0">保密</label>
+                    
+                </div>
+            </div>
+        	<div class="items pwd">
+            	<a class="btn tls openyoureye"><i class="icon eye" size="22"></i></a>
+            	<label>
+                	<span><i class="icon icon-gender" gender="0" size="16"></i> 密　码</span>
+                	<div>
+                    	<input class="i1 i2" maxlength="32" data-lang="密码" name="password" type="password" placeholder="请输入密码" oninput="$('#look-password').val(this.value)">
+                        <input id="look-password" style="margin-top:11px;" class="i1 i2" type="text" placeholder="请输入密码">
+                    </div>
+                </label>
+            </div>
+        	<div class="items">
+            	<a class="btn tls" onClick="$(this).sms('{$this->formhash()},{$_G['ecode']},{$_G['ip']}',$('input[name=phone]',this.parentNode).DOM[0],'{:U('common/sms/'.$_G['ecode'])}')">验证</a>
+            	<label>
+                	<span><i class="icon icon-phone"></i> 手机号</span>
+                	<div><input class="i1 i2" name="phone" maxlength="11" autocomplete="off" data-lang="手机号" value="" placeholder="请输入手机号"></div>
+                </label>
+            </div>
+        	<div class="items">
+            	<label>
+                	<span><i class="icon icon-code"></i> 验证码</span>
+                	<div><input class="i1 i2" name="smscode" data-lang="手机验证码" placeholder="手机验证码" maxlength="4"></div>
+                </label>
+            </div>
+            	<label>
+                	<span></span>
+                	<div><a class="btn submit vBox-confirm bb" style="margin-top:31px;"><span>立即注册</span></a></div>
+                </label>
+
+            <div class="items clr">
+            	<input type="hidden" name="formhash" value="{$this->formhash()}" />
+            </div>
+        </form>
+        </div>
+    </div>
+</div>
+<include file="common/footer" />

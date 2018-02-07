@@ -1,0 +1,109 @@
+{if !$this->pjax}<!doctype html>
+<!--[if !IE]><!--><html class="w3c" {if in_array($_G['page'],array('index'))}_manifest="{:U('home/cache/'.$_G['page'])}"{/if}><!--<![endif]-->
+<head>
+<meta charset="utf-8">
+<title>{isset($_G['title'])?$_G['title']:$this->lang('vs_title')} - {lang vs_name} {lang vs_version}</title>
+
+<meta name="renderer" content="webkit" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+<meta name="viewport" content="width=device-width,initial-scale=1, user-scalable=no" />
+<meta name="MSSmartTagsPreventParsing" content="True" />
+<meta http-equiv="MSThemeCompatible" content="Yes" />
+
+<!--针对移动端-->
+<meta itemprop="name" content="VSong.view - Demo">
+<meta itemprop="description" content="VSong.view - Demo">
+<meta itemprop="image" content="">
+
+<meta property="og:url" content="">
+<meta property="og:type" content="article">
+<meta property="og:title" content="VSong Execute - Demo">
+
+<meta property="og:image" content="">
+<meta property="og:description" content="VSong.view - Demo">
+<meta property="og:site_name" content="VSong.view - Demo">
+
+<meta name="theme-color" content="#00a09d">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#00a09d">
+
+<resource type="css" name="school" time="3">
+	<file src="reset" />
+	<file src="global" />
+    <file src="main/style" />
+    <file src="school/style" />
+</resource> 
+<link rel="shortcut icon" href="{$_G['dir']}favicon.ico">
+</head>
+<!--<?php
+	
+$nav = array(
+	//机构自己的首页地址
+	'index'		=> array('首页',$this->url('../subsite'),0),
+	'manage'	=> array('管理中心',$this->url('/'),1),
+	'recharge'	=> array('个人中心',$this->url('../member/manage/index'),0),
+	//'setting'	=> array('设置',$this->url('../member/home/setting'),0),
+	//'help'		=> array('帮助',$this->url('../main/home/help'),0)
+);
+$nav2 = array(
+	'wallet'    => '我的钱包',
+	'index'		=> '机构信息',
+	'student'	=> '我的学员',
+	//'teacher'	=> '教师管理',
+	//'material'	=> '我的教材',
+	'release'	=> '发布中心'
+); 
+
+?>-->
+<body loading="500" mod="{$_G['mod']}" page="{$_G['page']}" app="{APP}">
+<div class="fxd full" id="loading"></div>
+<header>
+	<div class="warp justify">
+		<nav>
+			<a class="logo flt-l" href="{:U('../')}" ></a>
+		
+			{loop $nav as $key => $arr}
+			<a class="btn{if $arr[2]} pjax open{/if}" href="{$arr[1]}">{$arr[0]}</a>
+			{/loop}
+		</nav>
+		<nav>
+			<a class="btn ts logout">退出</a>
+		</nav>
+	</div>
+</header>
+<main>
+	<div class="warp">
+	<aside>
+		<div class="information-box">
+			<a href="{:U('home/message/unread')}" class="btn pjax message">
+				<span class="icon_s icon-infor icon_infor"></span>
+				<i class="icon_s icon-readSmall" type="0"></i>
+			</a>
+		</div>
+		<div class="userinfo">
+			<!--{loop $data['list'] as $key}-->
+			<!--<p>{$key['name']}</p>-->
+			<!--{/loop}-->
+			<a class="avatar" href="{:U('home/index')}">
+				<img width="100%" src="{:U('../avatar/big/'.$_G['user']['uid'])}">
+				<span class="gender">
+					<i class="icon_s icon-gender" gender="{$_G['user']['gender']}"></i>
+				</span>
+			</a>
+			<p>{$_G['user']['uid']?'UID: '.$_G['user']['uid']:'游客'}</p>
+			
+		</div>
+		{loop $nav2 as $key => $value}
+		
+		{if $key=='release'}
+		<a class="btn pjax" href=" {:U('home/release/news')}"><i class="icons icon-{$key}"></i><span class="h_span"> {$value}</span></a>
+		{else}
+		<a class="btn pjax" href="{:U('home/'.$key)}"><i class="icons icon-{$key}"></i><span class="h_span"> {$value}</span></a>
+		{/if}
+		
+		
+		<!--<a class="btn pjax" href="{:U('home/'.$key)}"><i class="icons icon-{$key}"></i><span class="h_span">{$value}</span></a>-->
+		{/loop}
+	</aside>	
+	<div id="container">
+{/if}

@@ -1,0 +1,57 @@
+<include file="common/header" />
+<?php 
+$arr = array(
+	'summary' => '公司简介',
+	'history' => '发展历程',
+	'contact' => '联系我们',
+	);
+$tab = !empty($_G['param'][0])?$_G['param'][0]:'summary';
+?>
+	<div class='home-about'>
+		<div class="banner"><span>维颂，赢在音乐的起跑线</span></div>
+		<div class="about_inner">
+			<div class="warp">
+				<nav class="flt-l">
+					{loop $arr as $key => $value}
+					<a class="btn pjax {if $tab==$key}open{/if}" href="{:U('home/about/'.$key.'-'.$_G['uid'])}">{$value}</a>
+					{/loop}
+				</nav>
+				
+				
+				<!--公司简介-->
+				{if $tab == 'summary'}
+				<div class='inner flt-r summary'>
+					<img src="{$_G['dir']}public/images/subsite/scroll_1.png"/>
+					<p>{$summery}</p>
+				</div>
+				{else if $tab == 'history'}
+				<div class='inner flt-r history'>
+					<p>音乐教育学，以培养人塑造人作为目的，并贯穿于教育全过程，它是一种人文社会学科。音乐教育学又是一种交叉学科，它是音乐学与教育学互渗交融的产物。把音乐教育学看作是教育学的一个领域，随着学科教育学的兴起，体现了教育学发展专门化的趋向。而把音乐教育学看作是音乐学的一个领域，可以追溯更早。</p>
+									
+				</div>
+				{else if $tab == 'contact'}
+				<div class='inner flt-r contact'>
+					<p>机构名称：{$data[0]['name']}</p>
+					<!--<p>地址：{$data[0]['district']}{$data[0]['address']}</p>-->
+					<!-- <p>邮编：715100</p> -->
+					<p>电话：{$data[0]['tel']}</p>
+					<!-- <p>传真：029-123456</p> -->
+					<p class="mapStr">地址：{$data[0]['district']}</p>
+					<div id="map"></div>
+				</div>
+				{else}
+					<div class='inner flt-r'><p>非法操作！</p></div>
+				{/if}
+				
+				
+				
+				
+				
+			</div>
+		</div>
+		
+		
+	</div>
+
+<include file="common/footer" />
+

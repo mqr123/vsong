@@ -1,0 +1,54 @@
+{if !$pjax}
+	</div>
+</main>
+{if  !$this->pjax}
+    <footer>
+		<div class="warp">
+			<ul>
+				<li><a class="btn">关于维颂</a></li>
+				<li><a class="btn">服务条款</a></li>
+				<li><a class="btn">广告服务</a></li>
+				<li><a class="btn">维颂招聘</a></li>
+				<li><a class="btn">隐私政策</a></li>
+				<li><a class="btn">用户服务协议</a></li>
+			</ul>
+			<p>Copyright &copy; 2017 <a target="_blank" href="https:vsong.tv">VSong.TV</a> 浙ICP备17002031号</p>
+			<p>维颂电子科技版权所有 维颂电子科技有限公司文化经营许可</p>
+		</div>
+    </footer>
+{/if}
+<script>
+var VSong = {
+	//引擎版本号
+	engineVersion:'{lang vs_version}',
+	// 解包进度
+	executeProgress:function(f,p){
+		console.log('Loaded:', f, p);
+	},
+	// 解包完成
+	executeComplete:function(){
+		console.log('Unpack completed.', this);
+	},
+	workerMod:'common',//锁定worker模块
+	useWorker:false,//是否使用worker
+	lang:{$this->json($this->language)}
+};
+</script>
+<resource type="pack" name="organize" time="3">
+	<file src="global" />
+	<file src="dom" />
+	<file src="box" />
+	<file src="pjax" />
+	<file src="midi" />
+	<file src="cookie" />
+	<file src="websql" />
+	<file src="district" />
+	<file src="subsite/init" />
+	<file src="subsite/modules" />
+	<file src="chart" />
+	<file src="engine.controls" />
+	<file src="engine" />
+</resource>
+</body>
+</html>
+{/if}

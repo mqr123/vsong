@@ -1,0 +1,129 @@
+<include file="common/common" />
+
+<body class="childrenBody">
+	<form class="layui-form" style="width:70%;" id="test-form" action="{:U('member/member/post')}">
+		<div class="layui-form-item">
+		    <label class="layui-form-label" >用户名</label>
+		    <div class="layui-input-block">
+		    	<input  type="text" name="username" class="layui-input username" lay-verify="required">
+		    </div>
+		</div>
+		<div class="layui-form-item">
+			<label class="layui-form-label">密码</label>
+			<div class="layui-input-block">
+			<input type="password" name="password" class="layui-input username" lay-verify="required">
+			</div>
+		</div>
+		<div class="layui-form-item">
+		    <label class="layui-form-label" >手机</label>
+		    <div class="layui-input-block">
+		    	<input  type="text" name="phone" lay-verify="required" class="layui-input username">
+		    </div>
+		</div>
+		<div class="layui-form-item" pane="">
+		    <label class="layui-form-label">类型</label>
+		    <div class="layui-input-block">
+		    	<input type="radio" name="gender" value="0" title="男" checked="checked">
+     			<input type="radio" name="gender" value="1" title="女">
+		</div>
+		<div class="layui-form-item">
+			<label class="layui-form-label">真实姓名</label>
+			<div class="layui-input-block">
+			<input type="text" name="realname" class="layui-input username" lay-verify="required" >
+			</div>
+		</div>
+		<div class="layui-form-item" pane="">
+		    <label class="layui-form-label">性别</label>
+		    <div class="layui-input-block">
+		    	<input type="radio" name="gender" value="男" title="男" checked="checked">
+     			<input type="radio" name="gender" value="女" title="女">
+     			<input type="radio" name="gender" value="保密" title="保密">
+		    </div>
+		</div>
+		<div class="layui-form-item">
+			<label class="layui-form-label">年龄</label>
+			<div class="layui-input-block">
+				<input type="text" name="age" class="layui-input phone ">
+			</div>
+		</div>
+		<div class="layui-form-item">
+			<label class="layui-form-label">身份证号</label>
+			<div class="layui-input-block">
+				<input type="text" lay-verify="required" name="idcard" class="layui-input phone ">
+			</div>
+		</div>
+		<div class="layui-form-item">
+			<label class="layui-form-label">邮箱</label>
+			<div class="layui-input-block">
+				<input type="email"  class="layui-input email " name="email">
+			</div>
+		</div>
+		<div class="layui-form-item">
+			<label class="layui-form-label">微信</label>
+			<div class="layui-input-block">
+				<input type="text" class="layui-input phone " name="openid">
+			</div>
+		</div>
+		<div class="layui-form-item">
+			<label class="layui-form-label">QQ</label>
+			<div class="layui-input-block">
+				<input type="text" class="layui-input phone " name="qq">
+			</div>
+		</div>
+		
+		<div class="layui-form-item">
+			    <label class="layui-form-label">家庭住址</label>
+			    <div class="layui-input-inline">
+	                <select name="province" >
+	                    <option value="">请选择省</option>
+	                </select>
+	            </div>
+	            <div class="layui-input-inline">
+	                <select name="city">
+	                    <option value="">请选择市</option>
+	                </select>
+	            </div>
+	            <div class="layui-input-inline">
+	                <select name="area">
+	                    <option value="">请选择县/区</option>
+	                </select>
+	            </div>
+			</div>
+		<div class="layui-form-item">
+			<label class="layui-form-label">街道</label>
+			<div class="layui-input-block">
+				<input type="text" class="layui-input phone " name="address">
+			</div>
+		</div>
+		<div class="layui-form-item">
+			    <label class="layui-form-label">所属机构</label>
+			    <div class="layui-input-inline">
+	                <select name="sid" >
+	                	
+	                    <option value=""></option>
+	                 
+	                </select>
+	            </div>
+	   </div>
+		<div class="layui-form-item">
+			<label class="layui-form-label">个人简介</label>
+			<div class="layui-input-block">
+				<textarea placeholder="请输入内容" class="layui-textarea" name="summery" form="test-form"></textarea>
+			</div>
+		</div>
+		<div class="layui-form-item">
+			<div class="layui-input-block">
+				<button class="layui-btn submit" type="button">添加</button>
+				<button type="reset" class="layui-btn layui-btn-primary">重置</button>
+		    </div>
+		</div>
+		<input type="hidden" name="formhash" value="{$this->formhash()}">
+	</form>
+<script src="{$this->dir}/vs/public/layui/layui.js"></script>
+<resource type="js" name="add" time="30">
+	  <file src="admin/school/addSchool" />
+	  <file src="admin/add" />
+</resource>
+</bdoy/>
+</html>
+        

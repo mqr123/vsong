@@ -1,0 +1,65 @@
+<include file="common/common" />
+<body class="childrenBody">
+<blockquote class="layui-elem-quote news_search">
+	<div class="layui-inline">
+		    <div class="layui-input-inline">
+		    	<input type="text" value="" disabled placeholder="暂时未开放"  class="layui-input search_input">
+		    </div>
+		    <a class="layui-btn search_btn">查询</a>
+		</div>
+		<div class="layui-inline">
+			<a class="layui-btn layui-btn-normal usersAdd_btn" >添加音乐</a>
+		</div>																		
+</blockquote>
+<div class="layui-form news_list">
+<table class="layui-table">
+<thead>
+	<tr>
+		<th>登陆者UID</th>
+		<th>名称</th>
+		<th>发布者</th>
+		<th>艺人</th>
+		<th>价格</th>
+		<th>发布时间</th>
+		<th>延迟</th>
+		<th>音乐风格</th>		
+		<th>等级</th>
+		<th>操作</th>
+	</tr> 
+</thead>
+<tbody class="users_content">
+ <!--{loop $data['list'] as $key}-->
+	<tr>
+		<td>{$_SESSION['username']}</td>
+		<td>{$key['title']}</td>
+		<td>{$key['author']}</td>
+		<td>{$key['singer']}</td>
+		<td>{$key['price']}</td>
+		<td>{date('Y-m-d H:i:s',$key['dateline'])}</td>
+		<td>{$key['delay']}</td>	
+		<td>{$key['style']}</td>	
+		<td>{$key['level']}</td>		
+		<td>
+		<a href="{:U('music/update/'.$key['id'])}" class="layui-btn layui-btn-mini">修改</a>
+		<a href="{:U('music/delete/'.$key['id'])}" class="layui-btn layui-btn-normal layui-btn-mini" onclick="Javascript:if(confirm('确定要删除吗？')){return true;}return false;" >删除</a>
+		</td>
+	</tr> 
+	   <!--{/loop}-->
+</tbody>
+</table>
+</div>
+<div id="page" style="text-align: center;">	
+	<!--{for $i=1;$i <= $data['total'];$i+=1}-->
+   {if $data['page'] == $i}
+    <a class="btn checked">第{$i}页</a>  
+  {else}
+	<a class="btn pjax" href="{:U('music/index/'.$i)}">第{$i}页</a>  
+  {/if}
+<!--{/for}-->
+</div>
+<resource type="js" name="show" time="30">
+  <file src="admin/show" />
+</resource>
+	
+</body>
+</html>

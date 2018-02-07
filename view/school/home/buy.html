@@ -1,0 +1,42 @@
+<include file="common/header" />
+	<div class="details">
+		<include file="common/stuInfoHeader" />
+		<form action="{:U('home/buy/del')}" id='buyForm'>
+			<input type="hidden" name="formhash" value="{$this->formhash()}" />
+			<div class="buy-wrap">
+				<table border="1" cellspacing="1" cellpadding="1">
+					<tr>
+						<th>购买类型</th>
+						<th>名称</th>
+						<th>价格</th>
+						<th>购买时间</th>
+						<th>操作</th>
+					</tr>
+					<!--{loop $data['list'] as $key}-->
+					<tr data-id ="{$key['id']}">
+						<td>{$key['type']}</td>
+						<td>{$key['name']}</td>
+						<td>{$key['price']}</td>
+						<td>{date('Y-m-d',$key['dateline'])}</td>
+						<td><a class="btn buyBtn">删除</a></td>
+					</tr>
+					<!--{/loop}-->
+				</table>
+				<div class="ma-pager">
+					<a href="{:U('home/buy/'.$uid)}" class="btn pjax">首页</a>
+					<a class="btn prev-page">上一页</a>
+					<!--{for $i=1;$i <= $data['total'];$i+=1}-->
+					{if $data['page'] == $i}
+					<a class="btn open">第{$i}页</a>
+					{else}
+					<a class="btn pjax" href="{:U('home/buy/'.$uid.'-'.$i)}">第{$i}页</a>
+					{/if}
+					<!--{/for}-->
+					
+					<a class="btn pjax next-page">下一页</a>
+					<a id="next-num" href="{:U('home/buy/'.$uid.'-'.$data['total'])}" class="btn pjax">尾页</a>
+				</div>
+			</div>
+		</form>
+	</div>
+<include file="common/footer" />

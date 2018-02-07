@@ -1,0 +1,66 @@
+<include file="common/common" />
+<body class="childrenBody">
+<blockquote class="layui-elem-quote news_search">
+	回收站数据
+	<div class="layui-inline" align="right">
+	&nbsp;
+	<a class="layui-btn layui-btn-normal " href="{:U('member/log/'.$uid)}">返回</a>
+	</div>
+</blockquote>
+<div class="layui-form news_list">
+<table class="layui-table">
+<thead>
+	<tr>
+		<th>ID</th>
+		<th>UID</th>
+		<th>教育模式</th>
+		<th>开始时间</th>
+		<th>得分</th>
+		<th>力度</th>
+		<th>速度</th>
+		<th>准确度</th>
+		<th>音准</th>
+		<th>节拍(乐感)</th>
+		<th>结束时间</th>
+	</tr> 
+</thead>
+<tbody class="users_content">
+	<!--{loop $data['list'] as $key}-->
+	<tr>
+		<td>{$key['id']}</td>
+		<td>{$key['uid']}</td>
+		{if $key['mode']==0}
+		<td>教学</td>
+		{else if $key['mode']==1}
+		<td>练习</td>
+		{else if $key['mode']==2}
+		<td>游戏</td>
+		{/if}
+		<td>{date('Y-m-d H:m:s',$key['starttime'])}</td>
+		<td>{$key['score']}</td>
+		<td>{$key['intensity']}</td>
+		<td>{$key['speed']}</td>
+		<td>{$key['accuracy']}</td>
+		<td>{$key['intonation']}</td>
+		<td>{$key['beat']}</td>
+		<td>{date('Y-m-d H:m:s',$key['overtime'])}</td>
+	</tr> 
+	<!-- {/loop} -->
+</tbody>
+</table>
+</div>
+<div id="page">
+	<!--{for $i=1;$i <= $data['total'];$i+=1}-->
+	{if $data['page'] == $i}
+	<a class="btn checked">第{$i}页</a>
+	{else}
+	<a class="btn pjax" href="{:U('member/deleted_log/'.$uid.'-'.$i)}">第{$i}页</a>
+	{/if}
+	<!--{/for}-->	
+</div>
+<resource type="js" name="show" time="30">
+  <file src="admin/show" />
+</resource>
+	
+</body>
+</html>

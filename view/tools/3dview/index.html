@@ -1,0 +1,84 @@
+{if $_G['user']['uid']}
+<!doctype html>
+<!--[if !IE]><!--><html class="w3c" {if in_array($_G['page'],array('index'))}_manifest="{:U('home/cache/'.$_G['page'])}"{/if}><!--<![endif]-->
+<head>
+<meta charset="utf-8">
+<title>3D动画预览 - VSong.TV</title>
+
+<meta name="renderer" content="webkit" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+<meta name="viewport" content="width=device-width,initial-scale=1, user-scalable=no" />
+<meta name="MSSmartTagsPreventParsing" content="True" />
+<meta http-equiv="MSThemeCompatible" content="Yes" />
+
+<!--针对移动端-->
+<meta itemprop="name" content="VSong.view - Demo">
+<meta itemprop="description" content="VSong.view - Demo">
+<meta itemprop="image" content="">
+
+<meta property="og:url" content="">
+<meta property="og:type" content="article">
+<meta property="og:title" content="VSong Execute - Demo">
+
+<meta property="og:image" content="">
+<meta property="og:description" content="VSong.view - Demo">
+<meta property="og:site_name" content="VSong.view - Demo">
+
+<meta name="theme-color" content="#00a09d">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#00a09d">
+<link rel="shortcut icon" href="{$_G['dir']}favicon.ico">
+<style>
+html,body{margin:0;padding:0;}
+body{font-family: 'Microsoft Yahei'; overflow:hidden; font-size:14px;color:#aaa; background: #444; -webkit-user-select: none; user-select: none;}
+header{ position: fixed;top: 0; left: 0; right:0; background: rgba(250,250,250,.1)}
+.btn{ display: inline-block; padding:0 12px; transition-duration: .5s; line-height: 30px; border: 1px solid rgba(150,150,150,.1); background:rgba(100,100,100,.1); border-right: 3px;}
+.btn:hover{ background:#00a09d;color:#fff; transition-duration: .1s;}
+header>.btn{ border: none; }
+input[type="file"]{ display: none; }
+#play,#next{ display: none; }
+body.mixer #play,body.mixer #next{ display: inline-block; }
+
+header>label:after{ content:attr(key); color:rgba(200,255,50,.3); font-size:12px;}
+.stats{ position:fixed; bottom:0; right:0;}
+</style>
+<body>
+
+<header>
+	<label style="float: right" id="reload" class="btn" onclick="location.reload()" key="(F5)">刷新</label>
+	<label class="btn fileBtn" key="(F)">
+		模型
+		<input type="file" id="geometry-file" />
+	</label>
+	<!--label class="btn mtlBtn">
+		材质
+		<input type="file" id="texture-mtl" accept="application/mtl" />
+	</label-->
+	<label class="btn mapBtn" key="(T)">
+		贴图
+		<input type="file" id="texture-file" accept="image/png,image/jpeg" />
+	</label>
+	<label class="btn" id="play" key="(White Space)">
+		播放
+	</label>
+	<label class="btn" id="next" key="(Enter)">
+		下一帧
+	</label>
+	<label class="btn" id="helps" key="(H)">
+		隐藏网格
+	</label>
+</header>
+<!--31536000-->
+<resource type="js" name="3dview" time="3">
+	<file src="three.js/three" />
+	<file src="three.js/OrbitControls.min" />
+	<file src="three.js/loaders/MTLloader" />
+	<file src="three.js/loaders/OBJloader" />
+	<file src="three.js/stats.min" />
+	<file src="tools/3dview" />
+</resource>
+</body>
+</html>
+{else}
+{_ header('location:'.$this->url('../main/common/login').'/url/'.base64_encode($this->url('3dview/index')))}
+{/if}

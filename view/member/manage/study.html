@@ -1,0 +1,51 @@
+<include file="common/header" />
+<div class="record">
+	<!--<div class="record_nav">
+		<a class="btn pjax open" mode='0'>学习</a>
+		<a class="btn pjax" mode='1'>练习</a>
+		<a class="btn pjax" mode='2'>游戏</a>
+	</div>-->
+	<div class="grade">
+		<div class="chars_head">
+			<div class="flt-l">
+				<span>得分日志</span>
+				<input page='study' state='pane'  type="date" value="{isset($_G['param'][0])?base64_decode($_G['param'][0]):date('Y-m-d',time())}" />
+			</div>
+			<div class="iconS flt-r">
+				 <i class="icon_m refresh btn" size="25"></i>
+			</div>
+		</div>
+		
+		<div id="chart_bar">
+		
+			<div class="vs-chart pane" type="pane" tip-x="分数/分" tip-y="时间/点" max="100" left="56" bottom="50" style="height:300px; min-width:520px; max-width:720px">
+				<!--{loop $data['list'] as $key}-->
+				<option value="{$key['score']}">{date('H:i',$key['overtime'])}</option>
+				<!--{/loop}-->
+			</div>
+		</div>
+		
+	</div>
+	<div class="params">
+		<div class="chars_head">
+			<div class="flt-l">
+				<span>演奏能力综合分析</span>
+			</div>
+			<div class="iconS flt-r">
+				 <i class="icon_m refresh btn" size="25"></i>
+			</div>
+		</div>
+		<div id="chart_pie" >
+			<div class="vs-chart" style="min-height: 400px;" type="attr" color="rgba(0,180,170,.8)"  font-size="13">
+				<!--{loop $total['list'] as $k}-->
+				<option color="#f60" max="100" value="{if $k['number']!=0}{$k['score']/$k['number']}{/if}">得分</option>
+				<option color="#00a09d" max="100" value="{if $k['number']!=0}{$k['accuracy']/$k['number']}{/if}">乐感</option>
+				<option color="#d6a" max="100" value="{if $k['number']!=0}{$k['intensity']/$k['number']}{/if}">力度</option>
+				<option color="#4CAF50" max="300" value="{$k['speed']}">速度</option>
+				<!--{/loop}-->
+			</div>
+		</div>
+		
+	</div>
+</div>
+<include file="common/footer" />

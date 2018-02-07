@@ -1,0 +1,77 @@
+<include file="common/common" />
+<body class="childrenBody">
+<blockquote class="layui-elem-quote news_search">
+	<div class="layui-inline">
+		<form action="{:U('buy/index/sum')}" method="post">
+		 	<div class="layui-input-inline">
+	    		<input type="text" name="uid" placeholder="请输入UID" class="layui-input search_input">
+	   	 	</div>
+			<button class="layui-btn layui-btn-danger ">查询</button>
+		</form>
+	</div>
+	<div class="layui-inline" align="right">
+		目前订单总数：
+		<a class="layui-btn layui-btn-normal ">{$buy[0]['buy']}条</a>
+	</div>
+	<div class="layui-inline">
+		 <div class="layui-input-inline">
+	    	&nbsp;产生的总金额为： 
+	    	<a class="layui-btn "> {$sum[0]['sum']} 元</a>
+	    </div>
+	</div>
+	<div class="layui-inline">
+	<a class="layui-btn layui-btn-warm" href="{:U('buy/deleted')}">已删除</a>
+	</div>
+	
+</blockquote>
+<div class="layui-form news_list">
+<table class="layui-table">
+<thead>
+	<tr>
+		<th>UID</th>
+		<th>购买类型</th>
+		<th>购买名称</th>
+		<th>购买价格</th>
+		<th>购买时间</th>
+		<th>操作</th>
+	</tr> 
+</thead>
+<tbody class="users_content">
+ <!--{loop $data['list'] as $key}-->
+	<tr>
+		<td>{$key['uid']}</td>
+		<!--{if $key['type']==0}-->
+		<td>教学</td>
+		<!--{else if $key['type']==1}-->
+		<td>练习</td>
+		<!--{else if $key['type']==2}-->
+		<td>游戏</td>
+		<!--{/if}-->
+		<td>{$key['name']}</td>
+		<td>{$key['price']}</td>
+		<td>{date('Y-m-d H:m:s',$key['dateline'])}</td>
+		<td>
+			<a class="layui-btn layui-btn-mini" href="{:U('buy/delete/'.$key['id'])}" onclick="return confirm('确认是否删除?');">删除</a>
+		</td>
+	</tr>
+	<!-- {/loop} -->
+</tbody>
+</table>
+</div>
+
+<div id="page" style="text-align: center;">	
+	<!--{for $i=1;$i <= $data['total'];$i+=1}-->
+	{if $data['page'] == $i}
+	<a class="btn checked">第{$i}页</a>
+	{else}
+	<a class="btn pjax" href="{:U('buy/index/'.$i)}">第{$i}页</a>
+	{/if}
+	
+	<!--{/for}-->
+</div >
+<resource type="js" name="show" time="30">
+  <file src="admin/show" />
+</resource>
+	
+</body>
+</html>

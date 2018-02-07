@@ -1,0 +1,42 @@
+<include file="common/common" />
+<body class="childrenBody">
+<fieldset class="layui-elem-field layui-field-title" style="margin-top: 5px;">
+  <legend >
+<label style="font-size: 15px; color: red;"> 准备充值 </label>&nbsp;
+<a class="layui-btn layui-btn-normal layui-btn-mini" href="{:U('recharge/index')}">返回列表</a>
+  </legend>
+</fieldset>
+	<form  id="recharge-form" class="layui-form" style="width:80%;" action="{:U('recharge/add/post')}">
+		<div class="layui-form-item">
+			<label class="layui-form-label">充值账号</label>
+			<div class="layui-input-block">
+			<input  name="uid"  type="text" class="layui-input"   placeholder="请输入要充值的账号">
+			</div>
+		</div>
+		<div class="layui-form-item">
+			<label class="layui-form-label">充值金额</label>
+			<div class="layui-input-block">
+			<input type="text"  name="amount" class="layui-input userEmail">
+			</div>
+		</div>
+
+		<div class="layui-form-item" >
+		    <label class="layui-form-label">充值类型</label>
+		    <div class="layui-input-block">
+		    	<input type="radio" name="way" value="0" title="微信" checked="checked">
+     			<input type="radio" name="way" value="1" title="支付宝">
+     			
+		    </div>
+		</div>
+		<div class="layui-form-item">
+			<div class="layui-input-block">
+				<button type="button"   class="submit layui-btn" lay-submit="">确定支付</button>
+				<button type="reset" class="layui-btn layui-btn-primary"><a href="{:U('recharge/index')}">返回</a></button>
+		    </div>
+		</div>
+	</form>
+	<resource type="js" name="add" time="3">
+	  <file src="admin/add" />
+	</resource>
+</body>
+</html>

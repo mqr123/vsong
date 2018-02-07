@@ -1,0 +1,54 @@
+<include file="common/header" />
+	<div class="backpack">
+		<!--{if empty($data['list'])}-->
+		<div class="build">
+			<span></span>
+			<p>暂无数据~</p>
+		</div>
+		<!--{else}-->
+		<div class="tab-all">
+			<div class="depot_list">
+				<form class="form_pay" action="{:U('manage/pay/del')}" method="post">
+					<input type="hidden" name="formhash" value="{$this->formhash()}" />
+					<ul>
+						<li class="li_head">
+							<span>充值方式</span>
+							<span>充值金额</span>
+							<span>充值时间</span>
+							<span>操作</span>
+						</li>
+						<!--{loop $data['list'] as $key}-->
+						<li class="li_cont" data-id="{$key['id']}">
+							<!--{if $key['way']==0}-->
+							<span>微信</span>
+							<!--{else if $key['way']==1}-->
+							<span>支付宝</span>
+							<!--{/if}-->
+							<span>{$key['amount']}</span>
+							<span>{date('Y-m-d',$key['time'])}</span>
+							<span class="delete_btn"><a class="btn">删除</a></span>
+						</li>
+						<!--{/loop}-->
+					</ul>
+				</form>
+				<div class="ma-pager">
+					<a href="{:U('manage/pay')}" class="btn pjax">首页</a>
+					<a class="btn prev-page">上一页</a>
+					<!--{for $i=1;$i <= $data['total'];$i+=1}-->
+					{if $data['page'] == $i}
+					<a class="btn open">第{$i}页</a>
+					{else}
+					<a class="btn pjax" href="{:U('manage/pay/-'.$i)}">第{$i}页</a>
+					{/if}
+					<!--{/for}-->
+					
+					<a class="btn pjax next-page">下一页</a>
+					<a id="next-num" href="{:U('manage/pay/-'.$data['total'])}" class="btn pjax">尾页</a>
+				</div>
+			</div>
+		</div>
+		<!--{/if}-->
+	</div>
+
+<include file="common/footer" />
+

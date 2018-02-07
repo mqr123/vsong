@@ -1,0 +1,153 @@
+<!doctype html>
+<!--[if !IE]><!--><html class="w3c cur" {if in_array($_G['page'],array('index'))}_manifest="{:U('game/cache/'.$_G['page'])}"{/if}><!--<![endif]-->
+<head>
+<meta charset="utf-8">
+<title>{isset($_G['title'])?$_G['title']:$this->lang('vs_title')} - {lang vs_name} {lang vs_version}</title>
+
+<meta name="renderer" content="webkit" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+<meta name="viewport" content="width=device-width,initial-scale=1, user-scalable=no" />
+<meta name="MSSmartTagsPreventParsing" content="True" />
+<meta http-equiv="MSThemeCompatible" content="Yes" />
+
+<!--针对移动端-->
+<meta itemprop="name" content="VSong.view - Demo">
+<meta itemprop="description" content="VSong.view - Demo">
+<meta itemprop="image" content="">
+
+<meta property="og:url" content="">
+<meta property="og:type" content="article">
+<meta property="og:title" content="VSong Execute - Demo">
+
+<meta property="og:image" content="">
+<meta property="og:description" content="VSong.view - Demo">
+<meta property="og:site_name" content="VSong.view - Demo">
+
+<meta name="theme-color" content="#00a09d">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#00a09d">
+
+<resource type="css" name="gameFrame" time="3">
+	<file src="reset" />
+	<file src="global" />
+	<file src="main/style" />
+	<file src="game/ui" />
+</resource>
+</head>
+
+<body>
+<div class="fxd full" id="loading">
+	<div class="dl-cont fxd">
+		<div class="tips" id="loading-tips">正在加载 ...</div>
+		<progress id="loading-progress" value="0" max="100"></progress>
+	</div>
+</div>
+<script>
+window.singleChannel = 10;
+var current = {
+	//程序版本号
+	version: __VERSION__,
+	//引擎版本号
+	engineVersion:'{lang vs_version}',
+	// 解包进度
+	executeProgress:function(f,p){
+		console.log('Loaded:', f, p);
+	},
+	// 解包完成
+	executeComplete:function(){
+		console.log('Unpack completed.', this);
+	},
+	workerMod:'common',//锁定worker模块
+	useWorker:false,//是否使用worker
+	setTitle:function(title){
+		top.document.title = title + ' - VSong.TV';
+	},
+	scene:{isset($_G['param'][0])?$_G['param'][0]:0},
+	id:{isset($_G['param'][1])?$_G['param'][1]:0},
+	filename:'app.pak'
+}
+
+function initParints(root,$){
+	root.resetFrames(document);
+	window.$ = $;
+	for(var k in root){
+		if(typeof current[k] === 'undefined'){
+			VSong[k] = root[k];
+		}else{
+			VSong[k] = current[k];
+		}
+	}
+	root.frameUrls = root.getUrlParams(document.URL);
+	window.top.backTo.href = root.backUrl;
+	window.top.history.replaceState(new Object(), 'VSong',root.backUrl+'/'+current.scene+'-'+current.id);
+	root.timeout(60,function(){
+		if(VSong && VSong.initGame){
+			this.stop();
+			VSong.initGame(root.url + 'data/scene/'+current.scene+'/'+current.filename+'?s={time()}',{
+				formhash:"{$this->formhash()}",
+				id:current.id,
+				scene:current.scene,
+				debug:document.domain == 'wwwroot' && root.user.uid > 0 && root.user.group == 255
+			});
+			return;
+		}
+	},function(){
+		root.alert('游戏初始化失败',2,function(){
+			root.load(root.backUrl || root.appUrl);
+		});
+	});
+}
+function initVSongWindows(root,$){
+	window.frame = this;
+	for(var i = 0,urls = [];i<4;i+=1)urls.push(root.urls[i]);
+	root.backUrl = root.dir+urls.join('/');
+	// Need to login
+	if(root.user.uid<=0){
+		// Remenber URL params
+		root.loginBackUrl = window.top.document.URL;
+		// Goto login page, come back here in login after success.
+		return root.load(root.backUrl);
+	}
+	// Determines whether the parent window has an "backTo".
+	if(!window.top.backTo){
+		root.timeout(60,function(){
+			if(window.top.backTo){
+				this.stop();
+				initParints(root,$);
+			}
+		},function(){
+			root.alert('请求超时，正在返回首页',2,function(){
+				root.load(root.backUrl || root.appUrl);
+			});
+		});
+		return;
+	}
+	initParints(root,$);
+	window.addEventListener('keydown',function(e){
+		if([8,112,113,114,115,116,117,118,119,120,121,122,123].indexOf(e.keyCode) !=-1){
+			if(e.keyCode == 8 && root.isEditorDom(e.target))return e.returnValue;
+			e.preventDefault();
+			if(e.keyCode == 122)root.fscn.toggle();
+			return false;
+		}
+	});
+}
+</script>
+<!--{if $_G['user']['uid']}-->
+<resource type="pack" name="game" time="3">
+	<file src="three.js/three" />
+	<file src="three.js/Detector" />
+	<file src="three.js/CanvasRenderer" />
+	<file src="three.js/CSS3DRenderer" />
+	<file src="three.js/OrbitControls.min" />
+	<file src="three.js/loaders/mtlloader" />
+	<file src="three.js/stats.min" />
+	<file src="nosleep.min" />
+	<file src="mplayer" />
+	<file src="game/resource" />
+	<file src="game/init" />
+	<file src="game" />
+</resource>
+<!--{/if}-->
+</body>
+</html>

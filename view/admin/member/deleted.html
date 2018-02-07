@@ -1,0 +1,81 @@
+<include file="common/common" />
+<body class="childrenBody">
+<blockquote class="layui-elem-quote news_search">
+	<!--<div class="layui-inline">
+		<a class="layui-btn layui-btn-warm " href="{:U('member/index')}">已删除</a>
+	</div>-->
+	
+	回收站数据
+	<div class="layui-inline" align="right">
+	&nbsp;
+	<a class="layui-btn layui-btn-normal " href="{:U('member/index')}">返回</a>
+	</div>
+</blockquote>
+<div class="layui-form news_list">
+<table class="layui-table">
+<thead>
+	<tr>
+		
+		<th>UID</th>
+		<th>用户名</th>
+		<th>电话</th>
+		<th>所属机构</th>
+		<th>类型</th>
+		<th>基本信息</th>
+		<th>充值记录</th>
+		<th>学习记录</th>
+		<th>购买列表</th>
+		<th>等级列表</th>
+		<th>操作</th>
+	</tr> 
+</thead>
+<tbody class="users_content">
+	  <!--{loop $data['list'] as $key}-->
+	<tr>
+		<td>{$key['uid']}</td>
+		<td>{$key['username']}</td>
+		<td>{$key['phone']}</td>
+		<!--{if $key['sid']==0}-->
+		<td>微熊科技</td>
+		<!-- {else} -->
+		<td>{$key['name']}</td>
+		<!-- {/if} -->
+		<td>学生</td>
+		<td>
+			<a class="layui-btn  layui-btn-mini" href="{:U('member/show/'.$key['uid'])}">详情</a>
+		</td>
+		<td>
+			<a class="layui-btn layui-btn-normal layui-btn-mini" href="{:U('member/recharge/'.$key['uid'])}">充值</a>
+		</td>
+		<td>
+			<a class="layui-btn  layui-btn-danger layui-btn-mini" href="{:U('member/log/'.$key['uid'])}">学习</a>
+		</td>
+		<td>
+			<a class="layui-btn   layui-btn-mini" href="{:U('member/buy/'.$key['uid'])}">购买</a>	
+		</td>
+		<td>
+			<a class="layui-btn  layui-btn-normal layui-btn-mini" href="{:U('member/level/'.$key['uid'])}">等级</a>
+		</td>
+		<td>
+			<a class="layui-btn layui-btn-danger layui-btn-mini" href="{:U('member/deleted/'.$key['uid'].'-add')}">恢复</a>
+		</td>
+	</tr> 
+	<!--{/loop}-->	
+</tbody>
+</table>
+</div>
+<div id="page" >
+	<!--{for $i=1;$i <= $data['total'];$i+=1}-->
+	{if $data['page'] == $i}
+	<a class="btn checked">第{$i}页</a>
+	{else}
+	<a class="btn pjax" href="{:U('member/listMember/'.$i)}">第{$i}页</a>
+	{/if}
+	<!--{/for}-->
+</div>
+<resource type="js" name="show" time="30">
+  <file src="admin/show" />
+</resource>
+	
+</body>
+</html>

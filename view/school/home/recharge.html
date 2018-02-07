@@ -1,0 +1,43 @@
+<include file="common/header" />
+	<div class="details">
+		<include file="common/stuInfoHeader" />
+		<form action="{:U('home/recharge/del')}" id='rechargeForm'>
+			<input type="hidden" name="formhash" value="{$this->formhash()}" />
+			<div class="recharge-wrap">
+				<table border="1" cellspacing="1" cellpadding="1">
+					<tr>
+						<th>充值方式</th>
+						<th>充值金额</th>
+						<th>充值时间</th>
+						<th>操作</th>
+					</tr>
+					<!--{loop $data['list'] as $key}-->
+					<tr data-id ="{$key['id']}">
+						<!--{if $key['way']==0}-->
+							<td>微信</td>
+							<!--{else if $key['way']==1}-->
+							<td>支付宝</td>
+							<!--{/if}-->
+							<td>{$key['amount']}</td>
+							<td>{date('Y-m-d',$key['time'])}</td>
+						<td><a class="btn rechargeBtn">删除</a></td>
+					</tr>
+					<!--{/loop}-->
+				</table>
+				<div class="ma-pager">
+					<a href="{:U('home/recharge/'.$uid)}" class="btn pjax">首页</a>
+					<a class="btn prev-page">上一页</a>
+					<!--{for $i=1;$i <= $data['total'];$i+=1}-->
+					{if $data['page'] == $i}
+					<a class="btn open">第{$i}页</a>
+					{else}
+					<a class="btn pjax" href="{:U('home/recharge/'.$uid.'-'.$i)}">第{$i}页</a>
+					{/if}
+					<!--{/for}-->	
+					<a class="btn pjax next-page">下一页</a>
+					<a id="next-num" href="{:U('home/recharge/'.$uid.'-'.$data['total'])}" class="btn pjax">尾页</a>
+				</div>
+			</div>
+		</form>
+	</div>
+<include file="common/footer" />

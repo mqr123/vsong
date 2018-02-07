@@ -1,0 +1,51 @@
+<include file="common/common" />
+<style>
+.panel_box{padding: 10px 15px;}
+.panel.col i.layui-icon{font-family: "lucida console","微软雅黑" !important;font-weight: 100;}
+.panel .panel_word.newMessage cite{font-size: 25px;font-weight: bold;line-height: 40px;color: #000;}
+.panel_icon{font-size: 10px;}
+.users{background: #54ad18;}
+.student{background: #ff5722;}
+.school{background: #009688;}
+.recharge{background: #F7B824;}
+.money{background: #ff5722;}
+.trade{background: #54ad18;}
+.study{background: #F7B824;}
+.music{background: #009688;}
+.scene{background: #5FB878;}
+</style>
+<div class="panel_box row">
+	<!--{_
+	$list = array(
+		'users'     => array('用户','member/index','user','count(uid)'),
+		'student'   => array('学员','member/listMember','member','count(uid)',"`type='0'`"),
+		'school'    => array('机构','member/listSchool','school','count(sid)'),
+		'recharge'  => array('充值','recharge/index','member_recharge','sum(amount)'),
+		'money'     => array('总额','buy/index','member_buy','sum(price)'),
+		'trade'     => array('订单','buy/index','member_buy','count(*)'),
+		'train'     => array('练习','train/index','train','count(id)'),
+		'study'     => array('教材','study/index','study','count(id)'),
+		'music'     => array('音乐','music/index','music','count(id)'),
+		'scene'     => array('场景','scene/index','scene','count(id)')
+	)}-->
+	<!--{loop $list as $key => $arr}
+	{_
+		$db = new DB($arr[2]);
+		$search = $db->field($arr[3].' as '.$key);
+		if(isset($arr[4]))$search->where($arr[4]);
+		$search = $search->search(0);
+		$list[$key][2] = $search[$key];
+		unset($db,$search);
+	}-->
+	<div class="panel col">
+		<a href="javascript:;" data-url="{$this->url($list[$key][1])}">
+			<div class="panel_icon  {$key}">
+				<i class="laydate-icon" data-icon = "{$list[$key][0]}">{$list[$key][0]}</i>
+			</div>
+			<div class="panel_word newMessage">
+				<cite>{$list[$key][2]}</cite>
+			</div>
+		</a>
+	</div>
+	<!--{/loop}-->
+</div>

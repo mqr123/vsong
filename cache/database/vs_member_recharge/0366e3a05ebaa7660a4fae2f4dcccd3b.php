@@ -1,0 +1,1 @@
+<?php exit;?>{"list":[{"id":"9","uid":"10000","way":"1","amount":"100.00","time":"1509606528","stats":"0"}],"length":1,"page":"1","total":1}

@@ -1,0 +1,51 @@
+<include file="common/common" />
+<body class="childrenBody">
+	<form id="music-form" class="layui-form" style="width:80%;" action="{:U('music/add/post')}">
+		<div class="layui-form-item">
+			<label class="layui-form-label">登陆者</label>
+			<div class="layui-input-block">
+			<input type="text" class="layui-input"  name="author" value="{$_SESSION['username']}" disabled>
+			</div>
+		</div>
+		<div class="layui-form-item">
+			<label class="layui-form-label">名称</label>
+			<div class="layui-input-block">
+			<input type="text" class="layui-input"name="name" lay-verify="required"  placeholder="请输入名称">
+			</div>
+		</div>
+		<div class="layui-form-item">
+			<label class="layui-form-label">作者</label>
+			<div class="layui-input-block">
+			<input type="text" class="layui-input"  name="author" placeholder="请输入作者">
+			</div>
+		</div>
+		<div class="layui-form-item">
+			<label class="layui-form-label">艺人</label>
+			<div class="layui-input-block">
+				<input type="text" class="layui-input "name="singer" placeholder="请输入艺人名称">
+			</div>
+		</div>
+		<div class="layui-form-item">
+			<label class="layui-form-label">价格</label>
+			<div class="layui-input-block">
+				<input type="text"  name="price"  class="layui-input" placeholder="请输入价格">
+			</div>
+		</div>
+		<div class="layui-form-item">
+			<label class="layui-form-label">音乐风格</label>
+			<div class="layui-input-block">
+				<input type="text"  name="style"  class="layui-input " placeholder="请输入音乐风格">
+			</div>
+		</div>
+		<div class="layui-form-item">
+			<div class="layui-input-block">
+				<button  type="button" class="submit layui-btn" lay-submit="">添加</button>
+				<button type="reset" class="layui-btn layui-btn-primary">重置</button>
+		    </div>
+		</div>
+	</form>
+	<resource type="js" name="add" time="3">
+	  <file src="admin/add" />
+	</resource>
+</body>
+</html>

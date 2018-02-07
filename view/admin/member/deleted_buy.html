@@ -1,0 +1,57 @@
+<include file="common/common" />
+<body class="childrenBody">
+<blockquote class="layui-elem-quote news_search">
+	回收站数据
+	<div class="layui-inline" align="right">
+	&nbsp;
+	<a class="layui-btn layui-btn-normal " href="{:U('member/buy/'.$uid)}">返回</a>
+	</div>
+</blockquote>
+<div class="layui-form news_list">
+<table class="layui-table">
+<thead>
+	<tr>
+		<th>ID</th>
+		<th>UID</th>
+		<th>购买类型</th>
+		<th>名称</th>
+		<th>价格</th>
+		<th>购买时间</th>
+	</tr> 
+</thead>
+<tbody class="users_content">
+	 <!--{loop $data['list'] as $key}-->
+	<tr>
+		<td>{$key['id']}</td>
+		<td>{$key['uid']}</td>
+		{if $key['type']==0}
+		<td>教学</td>
+		{else if $key['type']==1}
+		<td>练习</td>
+		{else if $key['type']==2}
+		<td>游戏</td>
+		{/if}
+		<td>{$key['name']}</td>
+		<td>{$key['price']}</td>
+		<td>{date('Y-m-d H:m:s',$key['dateline'])}</td>
+	</tr>
+	<!-- {/loop} 	 -->	
+</tbody>
+</table>
+</div>
+<div id="page">
+	<!--{for $i=1;$i <= $data['total'];$i+=1}-->
+	{if $data['page'] == $i}
+	<a class="btn checked">第{$i}页</a>
+	{else}
+	<a class="btn pjax" href="{:U('member/deleted_buy/'.$uid.'-'.$i)}">第{$i}页</a>
+	{/if}
+	<!--{/for}-->
+	
+</div>
+<resource type="js" name="show" time="30">
+  <file src="admin/show" />
+</resource>
+	
+</body>
+</html>

@@ -1,0 +1,60 @@
+<include file="common/common" />
+<body class="childrenBody">
+<blockquote class="layui-elem-quote news_search">
+	
+	<!--<div class="layui-inline">
+		 <div class="layui-input-inline">
+	    	<input type="text" value="" placeholder="教学/练习/游戏" class="layui-input search_input">
+	    </div>
+		<a class="layui-btn layui-btn-danger ">购买类型</a>
+	</div>-->
+	<div class="layui-inline">
+	&nbsp;&nbsp;
+	<a class="layui-btn " href="{:U('member/index')}">返回列表</a>
+	</div>
+</blockquote>
+<div class="layui-form news_list">
+<table class="layui-table">
+<thead>
+	<tr>
+		<th>UID</th>
+		<th>级别</th>
+		<th>经验值</th>
+		<th>总分数</th>
+		<th>完成次数</th>
+		<th>经验倍数</th>
+		<th>力度</th>
+		<th>速度</th>
+		<th>准确度</th>
+		<th>音准</th>
+		<th>节拍(乐感)</th>
+		<th>积分</th>
+		
+	</tr> 
+</thead>
+<tbody class="users_content">
+	 <!--{loop $data['list'] as $key}-->
+
+	<tr>
+		<td>{$key['uid']}</td>
+		<td>{$key['level']}</td>
+		<td>{$key['exp']}</td>
+		<td>{$key['score']}</td>
+		<td>{$key['number']}</td>
+		<td>{$key['intensity']}</td>
+		<td>{$key['speed']}</td>
+		<td>{$key['accuracy']}</td>
+		<td>{$key['intonation']}</td>
+		<td>{$key['beat']}</td>
+		<td>{$key['multiple']}</td>
+		<td>{$key['integral']}</td>
+	</tr> 
+	<!-- {/loop} -->
+</tbody>
+</table>
+</div>
+<resource type="js" name="show" time="30">
+  <file src="admin/show" />
+</resource>	
+</body>
+</html>

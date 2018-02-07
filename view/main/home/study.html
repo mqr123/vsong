@@ -1,0 +1,106 @@
+<include file="common/header" />
+<!--<?php
+$spage = !empty($_G['param'][2]) && is_numeric($_G['param'][2])?$_G['param'][2]:1;
+$page = !empty($_G['param'][3]) && is_numeric($_G['param'][3])?$_G['param'][3]:1;
+$db = new DB('study');
+$music = $db->cache(3600)->limit(20,$page)->order('dateline',true)->select();
+$url = $this->url('home/list/'.$_G['param'][0].'-'.$_G['param'][1].'-'.$spage);
+$prev = $music['page']-1;
+if($prev<1)$prev=1;
+$next = $music['page']+1;
+if($next>$music['total'])$next = $music['total'];
+$pdot = '...';
+$ndot = '...';
+$range = $next > $page && $prev > 1? 2 : 5;
+
+$mmWhere = "`uid`='".$_G['user']['uid']."' and `id` in (";
+foreach($music['list'] as $key){
+	if($key['price']>0)$mmWhere.= $key['id'].',';
+}
+$mmWhere = trim($mmWhere,',').')';
+$sdb = new DB('my_study');
+$myScene = $sdb->where($mmWhere)->field('id')->search();
+$music['my'] = array();
+foreach($myScene as $key)array_push($music['my'],$key['id']);
+?>-->
+<div class="fxd vs-list">
+
+<style type="text/css">
+body[mod="home"][page="list"] header{ display:none}
+</style>
+<nav style="margin:14px 55px auto auto;" class="nav fxd t r"><a class="btn pjax" href="{:U('/')}"><span>返回</span></a></nav>
+<div class="abs" id="scene-list" total="{$scene['total']}" data-page="{$scene['page']}" data-length="{$scene['length']}" data-total="{$scene['total']}">
+	<div class="vs-border"></div>
+	<div class="abs fx list-head"></div>
+	<div class="abs fx list-main">
+		<div style="padding:20px;">
+			《教学数据即将上线》
+		</div>
+	</div>
+	<div class="abs fx list-foot"></div>
+</div>
+
+
+	<div class="abs vs-list" id="music-list">
+		<div class="abs list-head"></div>
+		<div class="abs list-main">
+			<div class="abs mlist">
+				{if count($music['list'])>0}
+				{loop $music['list'] as $key}
+				{_ $key['isbuy'] = in_array($key['id'],$music['my'])}
+				<a class="btn" data-id="{$key['id']}" level="{$key['level']}" isbuy="{$key['price']==0 || $key['isbuy']?1:0}">
+					{_ 
+					//$key['price'] = $key['price']==0 || $key['isbuy']?'开始练习':('￥'.$key['price'].'元');
+					$key['price'] = '今日免费';
+					}
+					<span class="tools btn48 flt-r"><b x="{$key['price']}">{$key['price']}</b></span>
+					<span class="title" lv="1"><i class="icon icon-note"></i> {$key['title']}</span>
+					<span class="singer eps" x="艺人" title="{$key['singer']}">{$key['singer']?$key['singer']:'未知'}</span>
+					<span class="author eps"><b>上传/{$key['author']}</b><i class="dateline eps flt-r">{date('Y-m-d',$key['dateline'])}</i></span>
+					<span></span>
+				</a>
+				{/loop}
+				{else}
+				<a class="pjax" style="height:auto;" href="{$url.'-'.$next}">
+					<span></span>
+					<span>
+						<i class="icon flt-l smile-warn" size="72" style="margin-right:1em"></i>
+						<h3 style="font-size:26px; margin-top:10px;">No data</h3>
+						<p style="font-size:14px; text-align-last:center">没有更多数据，点此返回！</p>
+					</span>
+					<span></span>
+				</a>
+				{/if}
+			</div>
+		</div>
+		<div class="page abs fx">
+			<div class="list">
+			{if $prev>1}
+			<a class="btn pjax tls first" href="{$url.'-1'}">&laquo;</a>
+			<a class="btn pjax tls prev" href="{$url.'-'.$prev}">&larr;</a>	
+			{/if}
+			{for $i=1;$i <= $music['total'];$i += 1}
+			{if $i > $page - $range && $i < $page + $range}
+			{if $music['page'] == $i}
+				<a class="open ilb">{$i}</a>
+			{else}
+				<a class="btn pjax" href="{$url.'-'.$i}">{$i}</a>
+			{/if}
+			
+			{else if $page < $prev + 2 && $pdot}
+			{_ echo $pdot;$pdot = null}
+			
+			{else if $page > $next + 2 && $ndot}
+			{_ echo $ndot;$ndot = null}
+			{/if}
+			{/for}
+			{if $next > $page}
+			<a class="btn pjax tls next" href="{$url.'-'.$next}">&rarr;</a>
+			<a class="btn pjax tls last" href="{$url.'-'.$music['total']}">&raquo;</a>
+			{/if}
+			</div>
+		</div>
+		<div class="abs list-foot"></div>
+	</div>
+</div>
+<include file="common/footer" />

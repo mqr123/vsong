@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html {if in_array($_G['page'],array('index'))}_manifest="{:U('home/index/appcache-3')}"{/if}>
+<head>
+<meta charset="utf-8">
+<title>{isset($_G['title'])?$_G['title']:$this->lang('vs_title')} - {lang vs_name} {lang vs_version}</title>
+
+<meta name="renderer" content="webkit" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+<meta name="viewport" content="width=device-width,initial-scale=1, user-scalable=no" />
+<meta name="MSSmartTagsPreventParsing" content="True" />
+<meta http-equiv="MSThemeCompatible" content="Yes" />
+
+<!--针对移动端-->
+<meta itemprop="name" content="VSong.view - Demo">
+<meta itemprop="description" content="VSong.view - Demo">
+<meta itemprop="image" content="">
+
+<meta property="og:url" content="">
+<meta property="og:type" content="article">
+<meta property="og:title" content="VSong Execute - Demo">
+
+<meta property="og:image" content="">
+<meta property="og:description" content="VSong.view - Demo">
+<meta property="og:site_name" content="VSong.view - Demo">
+
+<meta name="theme-color" content="#00a09d">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#00a09d">
+
+<link rel="shortcut icon" href="{$_G['dir']}favicon.ico">
+<resource type="css" name="style" time="3">
+  <file src="reset" />
+  <file src="global" />
+  <file src="engine" />
+  <file src="test/style" />
+</resource>
+</head>
+
+<body>

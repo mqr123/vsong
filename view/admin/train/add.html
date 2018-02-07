@@ -1,0 +1,28 @@
+<include file="common/common" />
+<body class="childrenBody">
+<form  id="train-form" class="layui-form" style="width:80%;" action="{:U('train/add/post')}">
+	<div class="layui-form-item">
+		<label class="layui-form-label">添加练习</label>
+		<div class="layui-input-block">
+			<input  name="name" type="text" class="layui-input userName"  placeholder="请添加练习名称">
+		</div>
+	</div>
+	<div class="layui-form-item">
+		<label class="layui-form-label">等级</label>
+		<div class="layui-input-block">
+			<input    name="level" type="text" class="layui-input userEmail"  placeholder="请输入等级">
+		</div>
+	</div>
+	<div class="layui-form-item">
+		<div class="layui-input-block">
+			<button type="button"   class="submit layui-btn" lay-submit="">立即提交</button>
+			<button type="reset" class="layui-btn layui-btn-primary">重置</button>
+		</div>
+	</div>
+</form>
+
+<resource type="js" name="add" time="30">
+	<file src="admin/add" />
+</resource>
+</body>
+</html>

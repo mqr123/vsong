@@ -1,0 +1,25 @@
+<!--<?php 
+$nav2 = array(
+	'stuInfo'  => '个人资料',
+	'log'	   => '学习记录',
+	'can'	   => '仓库管理',
+	'buy'	   => '购买记录',
+	'recharge' => '充值记录',
+	//'level' => '等级',
+	//'total'	   => '统计信息'
+); 
+?>-->
+<nav>
+	<div class="det-headImage">
+		<div class="det-img">
+			<img src="{:U('../avatar/big/'.$uid.'/'.$gender)}"/>
+		</div>
+		<span class="stu-sex">
+			<i class="icon_s icon-gender" gender="{$gender}"></i>
+		</span>
+	</div>
+	{loop $nav2 as $key => $value}
+	<a class="btn pjax s" href="{:U('home/'.$key.'/'.$uid)}">{$value}</a>
+	{/loop}
+    <a href="{:U('home/student')}" class="btn pjax" style="float: right;">返回</a>
+</nav>

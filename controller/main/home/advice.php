@@ -1,0 +1,18 @@
+<?php
+if(!empty($this->param[0])&&$this->param[0]=='post'){
+	$uid=$_G['user']['uid'];
+	$form=$this->form('feedback');
+	$form->hash('formhash')
+		 ->verify('vcode',$this->cookie('vcode'))
+		 ->set('uid',$uid)
+		 ->set('dateline',time())
+		 ->pack('type,uid,phone,connect,dateline')
+		 ->submit('insert','添加成功','添加失败');
+	$result=$form->result();
+	if($result['type']=='success'){
+		$this->clear('feedback');
+	}
+	$this->json($result,1);
+}
+$this->display();
+?>

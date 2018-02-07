@@ -1,0 +1,14 @@
+<include file="common/header">
+<h1 class="color bg bd" style="padding:10px">
+  <a class="color" style="font-size:36px;">
+    <!--{if isset($_G['param'][0]) && $_G['param'][0] == 404}-->
+    404 not found.
+    <!--{else}-->
+    #Error
+    <!--{/if}-->
+  </a>
+</h1>
+<div>
+</div>
+<pre>{print_r($_G)}</pre>
+<include file="common/footer">

@@ -1,0 +1,85 @@
+{if !$this->pjax}<!doctype html>
+<!--[if !IE]><!--><html class="w3c cur" {if in_array($_G['page'],array('index'))}_manifest="{:U('home/cache/'.$_G['page'])}"{/if}><!--<![endif]-->
+<head>
+<meta charset="utf-8">
+<title>{isset($_G['title'])?$_G['title']:$this->lang('vs_title')} - {lang vs_name} {lang vs_version}</title>
+
+<meta name="renderer" content="webkit" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+<meta name="viewport" content="width=device-width,initial-scale=1, user-scalable=no" />
+<meta name="MSSmartTagsPreventParsing" content="True" />
+<meta http-equiv="MSThemeCompatible" content="Yes" />
+
+<!--针对移动端-->
+<meta itemprop="name" content="VSong.view - Demo">
+<meta itemprop="description" content="VSong.view - Demo">
+<meta itemprop="image" content="">
+
+<meta property="og:url" content="">
+<meta property="og:type" content="article">
+<meta property="og:title" content="VSong Execute - Demo">
+
+<meta property="og:image" content="">
+<meta property="og:description" content="VSong.view - Demo">
+<meta property="og:site_name" content="VSong.view - Demo">
+
+<meta name="theme-color" content="#00a09d">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#00a09d">
+
+<resource type="css" name="main" time="3">
+	<file src="reset" />
+	<file src="global" />
+    <file src="main/style" />
+    <file src="main/modules" />
+</resource> 
+<link rel="shortcut icon" href="{$_G['dir']}favicon.ico">
+</head>
+
+<!--/*
+{_
+$subjects_list = array('drum','guitar','piano','saxphone','violin');
+$subjects_enabled = array('drum');
+$nav = array(
+	'home'		=> array('首页','home/index'),
+	'summery'	=> '公司简介',
+	'down'		=> array('下载','home/download'),
+	'help'	=> array('帮助','home/help'),
+	'advice'	=> array('意见反馈','home/advice')
+);
+$cookiePname = $this->cookie('subjects_name',false);
+$home = !empty($_G['param'][0]) && in_array($_G['param'][0],$subjects_list)?$_G['param'][0]:($cookiePname?$cookiePname:'drum');
+
+}
+*/-->
+<body loading="500" mod="{$_G['mod']}" page="{$_G['page']}" app="{APP}" {if in_array($home,$subjects_enabled)}content="{$home}"{/if}>
+<div class="fxd full" id="loading"></div>
+<div class="fxd full" id="background">
+  <div class="bg fxd full" style="background-image:url({:U('../public/images/main/bg-'.$home.'.jpg')})"></div>
+</div>
+<a class="btn fullscreen min500"><i class="icon icon-screen" size="36"></i></a>
+<div class="fxd t r" id="member-menu"></div>
+<!--/* Interface Start */-->
+<div class="fxd full" id="interface">
+    <!--/* Header Start */-->
+    <header class="fxd fx t bgc-dark justify">
+    	<nav class="nav flt-r usermenu"></nav>
+    	<nav class="nav comm">
+        {loop $nav as $key => $val}
+			{if $key != 'summery'}
+            <a class="btn min600 {if $_G['mod'].'/'.$_G['page'] == $val[1]}open{/if} pjax" href="{:U($val[1].(!empty($val[2])?'/'.$val[2]:''))}"><span>{$val[0]}</span></a>
+			{else}
+			<a class="btn min600" target="_blank" onclick="$('a.btn.min600.open').removeClass('open');$(this).addClass('open')" href="{:U('../member/home/summary')}"><span>{$val}</span></a>
+			{/if}
+        {/loop}
+        </nav>
+    </header>
+    <!--/* Header End */-->
+    
+	<!--/* Navigation Start */-->
+	<nav id="nav"></nav>
+    <!--/* Navigation End */-->
+    
+    <!--/* Container Start */-->
+    <main id="container">
+{/if}

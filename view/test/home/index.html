@@ -1,0 +1,50 @@
+<include file="common/header">
+<div class="fxd full engine" id="loading">
+  <div class="main fxd">
+    <div class="logo">VS<span></span>ng</div>
+    <div class="summery">正在加载 ...</div>
+  </div>
+</div>
+<main class="fxd full engine" id="container"></main>
+<div class="fxd" id="tools"></div>
+<script>
+var VSong = {
+	//程序版本号
+	version: __VERSION__,
+	//引擎版本号
+	engineVersion:'{lang vs_version}',
+	// 解包进度
+	executeProgress:function(f,p){
+		console.log('Loaded:', f, p);
+	},
+	// 解包完成
+	executeComplete:function(){
+		console.log('Unpack completed.', this);
+	}
+}
+</script>
+<!--/* 打包资源并缓存 */-->
+<resource type="pack" name="test" time="3">
+	<!--three.js-->
+	<file src="three.js/three" />
+	<file src="three.js/Detector" />
+	<file src="three.js/CanvasRenderer" />
+	<file src="three.js/CSS3DRenderer" />
+	<file src="three.js/OrbitControls.min" />
+	<file src="three.js/stats.min" />
+    <!--模块-->
+	<file src="global" />
+	<file src="dom" />
+	<file src="box" />
+	<file src="cookie" />
+	<file src="md5" />
+	<file src="midi" />
+	<file src="websql" />
+    <!--程序-->
+	<file src="test/program" />
+    <!--引擎-->
+	<file src="engine.controls" />
+	<file src="engine" />
+</resource>
+</body>
+</html>

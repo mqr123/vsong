@@ -1,0 +1,37 @@
+<html>
+<head><title>File To Base64 Code - VSong.TV</title></head>
+<style>
+body{ font-family:"Lucida Console", "微软雅黑"; background:#f8f8f8;color:#555;}
+.button{border:1px solid #ddd; border-radius:3px;padding:0 15px; background:#e5e5e5;  line-height:40px; display:inline-block;}
+#content{ border:1px solid #ddd; background-color:#fff;}
+ol>li{ min-height:80px; max-height:360px; padding:10px; margin:10px; border-bottom:1px solid #aaa; font-size:12px;}
+ol>li:before{ content:attr(title)attr(x); background-color:#F8F5E4; color:#C33; padding:5px 10px; display:block;margin-bottom:5px; font-size:16px;}
+ol>li:last-child{ border:none;}
+</style>
+<body>
+<ol id="content"></ol>
+<label class="button">
+选择文件
+<input type="file" style="display:none" id="fileinput" multiple />
+</label>
+<script>
+function showFiles(file){
+	var reader = new FileReader();
+	reader.addEventListener('load',function(e){
+		var dom = document.createElement('li');
+		dom.title = file.name;
+		dom.setAttribute('contenteditable',true);
+		dom.setAttribute('x', ' (' + file.type + ')');
+		dom.textContent = e.target.result;
+		content.appendChild(dom);
+		file = reader = null;
+	});
+	reader.readAsDataURL(file);
+}
+fileinput.addEventListener('change',function(){
+	for(var i=0;i<this.files.length;i+=1)showFiles(this.files[i]);
+});
+</script>
+</body>
+</html>
+

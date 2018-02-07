@@ -1,0 +1,2356 @@
+if(typeof VSong !== 'object')var VSong = {};VSong.cookieConfig = {"pre":"vSong_","expire":3600,"path":"\/","domain":""};
+if(typeof VSong == 'undefined')var VSong = {};
+(function(root){
+	"use strict";
+	//Window
+	root.self = typeof global === 'object'?global:(typeof self === 'object'?self:(window || {}));
+	//Console
+	root.self.console = root.self.console || {log:function(){},warn:function(){},error:function(){},info:function(){}};
+	//Get function name
+	if(typeof Function.prototype.getName != 'function'){
+		Function.prototype.getName = function(){
+			return this.name || this.toString().match(/function\s*([^(]*)\(/)[1];
+		}
+	}
+
+	//对象合并
+	root.merge = function(){
+		for(var i = 1; i < arguments.length; i += 1){
+			if(typeof arguments[i] === 'object'){
+				for(var k in arguments[i])arguments[0][k] = arguments[i][k];
+			}
+		}
+		return arguments[0];
+	}
+	//判断浏览器
+	root.browser = (function(kie){
+		var ua = root.self.navigator.userAgent;
+		var obj = {pre:'',name:'unknow',version:0,platfrom:'unknow'};
+		if(ua.indexOf("Opera")>-1){
+			obj.pre = '-o-';
+			obj.name = 'Opera';
+			obj.version = ua.match(/Version\/([0-9\.]+)/)[1];
+		}else if(ua.indexOf("Chrome")>-1){
+			obj.pre = '-webkit-';
+			obj.name = 'Chrome';
+			obj.version = ua.match(/Chrome\/([0-9\.]+)/)[1];
+		}else if((ua.indexOf("compatible") > -1 && ua.indexOf("MSIE") > -1 && ua.indexOf("Opera")==-1) || ua.indexOf("Trident") > -1){
+			obj.pre = '-ms-';
+			obj.name = 'MSIE';
+			obj.version = ua.match(/MSIE ([0-9\.]+)/)[1];
+			if(!obj.version)obj.version = ua.match(/rv:([0-9\.]+)\)/)[1];
+		}else if(ua.indexOf("Firefox")>-1){
+			obj.pre = '-moz-';
+			obj.name = 'Firefox';
+			obj.version = ua.match(/Firefox\/([0-9\.]+)/)[1];
+		}else if(ua.indexOf("Safari")>-1){
+			obj.pre = '-webkit-';
+			obj.name = 'Safari';
+			obj.version = ua.match(/Version\/([0-9\.]+)/)[1];
+		}
+		obj.version = parseFloat(obj.version);
+		if(ua.indexOf("Android") > -1){
+			obj.platfrom = 'Android';
+		}else if(ua.indexOf("iPhone") > -1){
+			obj.platfrom = 'iPhone';
+		}else if(ua.indexOf('Windows Phone') > -1){
+			obj.platfrom = 'WinPhone';
+		}else if(ua.indexOf('Windows') > -1){
+			obj.platfrom = 'Windows';
+		}else if(ua.indexOf('Mac') > -1){
+			obj.platfrom = 'Mac';
+		}
+		return obj;
+	})();
+	
+	root.hasTouch = !!("ontouchstart" in root.self || root.self.DocumentTouch && document instanceof DocumentTouch);
+	root.isURL=function(url){return /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/.test(url)};
+	root.isNumeric=function(number){return /(0|^[1-9]\d*$)/.test(number)};
+	root.isMobile=function(number){return /^(1[3-9]{1}[0-9]{9})$/.test(number)};
+	root.isTel=function(tel){return /^(\(\d{3,4}\)|\d{3,4}-|\s)?\d{7,14}$/.test(tel)}
+	root.isUsername=function(str){return /^([\u0391-\uFFE5]|\w|\d|_)+$/.test(str)};
+	root.isRealname=function(str){return /^([\u0391-\uFFE5])+$/.test(str)};
+	root.isMail=function(mail){return /^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/.test(mail)};
+	root.trim=function(str){if(typeof str !== 'string')str.toString();return str.replace(/(\s+)$/g, '').replace(/^\s+/g, '');};
+	root.isIdCard=function(code){if (!code || !/^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}([0-9]|X)$/.test(code))return false;if (code.length == 18){code=code.split('');var b=[7, 9, 10, 5, 8, 4, 2, 1, 6, 3, 7, 9, 10, 5, 8, 4, 2],c=[1, 0, 'X', 9, 8, 7, 6, 5, 4, 3, 2],d=0,e=0,f=0;for (var i=0; i < 17; i++){e=code[i];f=b[i];d += e * f;}var g=c[d % 11];if (g != code[17])return false;}return true;}
+	root.replace=function(search, replace, str, regswitch){
+		var regswitch = !regswitch ? 'ig' : regswitch;
+		search.forEach(function(s,i){
+			var re = new RegExp(s, regswitch);
+			str=str.replace(re, typeof replace == 'string' ? replace : (replace[i] ? replace[i] : replace[0]));
+		});
+		search.splice(0,search.length);
+		replace.splice(0,replace.length);
+		search = replace = null;
+		return str;
+	};
+	
+	root.isDOM = function(obj){
+		return (typeof HTMLElement !== 'function')?function(obj){
+
+			return obj instanceof HTMLElement;
+		}:function(obj){
+			
+			return obj && typeof obj === 'object' && obj.nodeType === 1 && typeof obj.nodeName === 'string';
+		}
+	}
+	root.htmlSpecialChars=function(str){return root.replace(['&', '<', '>','"'], ['&amp;', '&lt;', '&gt;', '&quot;'], str)};
+	root.addSlashes=function(str){return root.replace(['\\\\', '\\\'', '\\\/', '\\\(', '\\\)', '\\\[', '\\\]', '\\\{', '\\\}', '\\\^', '\\\$', '\\\?', '\\\.', '\\\*', '\\\+', '\\\|'], ['\\\\', '\\\'', '\\/', '\\(', '\\)', '\\[', '\\]', '\\{', '\\}', '\\^', '\\$', '\\?', '\\.', '\\*', '\\+', '\\|'], str)};
+	root.isEditorDom = function(dom){return dom.localName == 'input' || dom.localName == 'textarea' || (dom.contentEditable && dom.contentEditable == 'true')}
+	root.pathinfo=function(path){
+		var obj = {};
+		obj.basename = path.replace( /.+[\/\\]/ig,"" ).replace(/\?+([^\?\\]+)$/ig,"");
+		obj.dirname = path.replace( /[^\/\\]+$/ig , "" ).replace(/\/+$/ig,"");
+		obj.filename = obj.basename.replace( /\.[^.]+$/i , "" );
+		obj.extension = obj.basename.replace( /.+[.]([^.\\\/]+)$/ig , "$1" );
+		obj.fullname = obj.dirname + '/' + encodeURIComponent(obj.basename);
+		return obj;
+	};
+	root.time=function(){return Math.floor(new Date().getTime() / 1000)};
+	root.date=function(str,time){var now=new Date();if(time){now.setTime(time * 1000);}var Y=now.getFullYear(),y=now.getYear() - 100,m=now.getMonth() + 1,d=now.getDate(),H=h=now.getHours(),i=now.getMinutes(),s=now.getSeconds(),l='AM';if(h>12){h -= 12;l='PM';}var h=H>12?H-12:H;m=m < 10 ? '0' + m : m;d=d < 10 ? '0' + d : d;H=H < 10 ? '0' + H : H;h=h < 10 ? '0' + h : h;i=i < 10 ? '0' + i : i;s=s < 10 ? '0' + s : s;var res=!str ? Y + "-" + m + "-" + d + " " + H + ":" + i + ":" + s: root.replace(['Y','y','m','d','H','h','i','s'],[Y,y,m,d,H,h,i,s],str);return str.indexOf('h')!=-1?res+' '+l:res;};
+	root.capslock = function(onlock,unlock){
+		var locked = false,first;
+		root.self.addEventListener('keydown',function(e){
+			if(e.code.indexOf('Key') == 0 && !locked && ((!e.shiftKey && e.key == e.key.toUpperCase()) || (e.shiftKey && e.key == e.key.toLowerCase()))){
+				locked = true;
+				first = true;
+				onlock && onlock.call(this,e);
+			}else if(e.code == 'CapsLock'){
+				if(locked){
+					locked = false;
+					unlock && unlock.call(this,e);
+				}else if(first){
+					locked = true;
+					onlock && onlock.call(this,e);
+				}
+			}
+		});
+	}
+	//全屏
+	root.fullScreen = function(dom){
+		var _this	= this, pre = root.browser.pre.replace(/-/g,'');
+		var events	= function(e){
+			dom.stats = dom.stats == 'full'?'normal':'full';
+			document.body.setAttribute('screen',dom.stats);
+		};
+		dom = dom || document.body;
+		dom.stats = 'normal';
+		document.addEventListener("fullscreenchange", events);
+		document.addEventListener(pre+"fullscreenchange", events);
+		_this.action = function(full){
+			if(full && dom.stats == 'normal'){
+				dom.fullScreen = dom.requestFullscreen || dom[pre+'RequestFullScreen'];
+				dom.fullScreen();
+			}else{
+				var key = (!document.cancelFullScreen?pre+'C':'c')+'ancelFullScreen';
+				if(document[key]){
+					document[key]();
+				}
+			}
+		}
+		_this.toggle = function(){
+			return _this.action(dom.stats == 'normal'?true:false);
+		}
+		return _this;
+	};
+
+	//本地储存
+	root.storage = function(pre){
+		if(!localStorage)return;
+		pre = pre || 'vs_';
+		if(root.cookieConfig)pre = root.cookieConfig.pre;
+		this.get = function(key){
+			if(!key)return;
+			var value = localStorage.getItem(pre + key);
+			return value;
+		}
+		this.set = function(key,value){
+			if(!key && !value)return;
+			localStorage.setItem(pre+key,value);
+			value = null;
+			return this;
+		};
+		this.remove = function(key){
+			if(!key)return;
+			localStorage.removeItem(pre+key);
+		};
+		return this;
+	}
+	//请求
+	root.request = function(options, checking){
+		var opts = root.merge({
+			data:null,
+			async:false,
+			dataType:'form',
+			start:null,
+			success:null,
+			error:null
+		},options);
+		if(!opts.url)return;
+		var xhr = new XMLHttpRequest();
+		xhr.onreadystatechange = function(){
+			if(xhr.readyState === 4){
+				if(xhr.status === 200){
+					if(opts.dataType == 'json'){
+						if(xhr.responseText === '' && opts.error){
+							opts.error && opts.error({type:'error',msg:'Not Data.'});
+							return;
+						}
+						if(!opts.success)return;
+						try{
+							var data = JSON.parse(xhr.responseText);
+							if(!checking)return opts.success(data);
+							if(data.type == 'success'){
+								return opts.success(data);
+							}
+							opts.error && opts.error(data);
+						}catch(e){
+							opts.error && opts.error({type:'error',msg:xhr.responseText||'内部错误',event:e});
+						}	
+					}else{
+						opts.success && opts.success(xhr.responseText);
+					}
+				}else if(xhr.status === 404){
+					opts.error && opts.error({type:'error',msg:'404 Not Found'});
+				}
+			}
+		}
+		opts.start && opts.start();
+		xhr.upload.onprogress = options.progress || null;
+		xhr.onerror = function(e){
+			opts.error && opts.error({type:'error',msg:'Unknow.',event:e});
+		}
+		xhr.open(opts.data?'POST':'GET', opts.url);
+		if(opts.dataType == 'pjax')xhr.setRequestHeader("X-PJAX", true);
+		xhr.send(opts.data);
+	}
+	root.animation = function(callback){
+		var _this = this;
+		var request = requestAnimationFrame || mozRequestAnimationFrame || webkitRequestAnimationFrame;
+		var cancel = cancelAnimationFrame || mozCancelAnimationFrame || webkitCancelAnimationFrame;
+		var requestID = null;
+		var startTime = Date.now();
+		var animate = function(){
+			callback.call(_this,{startTime:startTime,currentTime:Date.now()});
+			requestID = request && request(animate);
+		}
+		animate();
+		_this.cancel = function(){
+			cancel(requestID);
+			delete _this.cancel;
+			delete _this.stop;
+			_this = animate = request = cancel = requestID = callback = null;
+		}
+		_this.stop = function(callEnd){
+			callEnd && callEnd();
+			_this.cancel();
+			callEnd = null;
+		}
+		return this;
+	}
+	root.timeout = function(time, change, callback){
+		var total = time * 60, times = total;
+		var animate = new root.animation(function(){
+			times --;
+			change && change.call(animate, Math.ceil(times / 60), times / total, times);
+			if(times <= 0 && this.stop)this.stop(callback);
+		});
+	}
+	root.dataUrlToBlob = function(data){
+		var arr = data.split(','),mime = arr[0].match(/:(.*?);/)[1],base64 = root.self.atob(arr[1]), n = base64.length, u8arr = new Uint8Array(n);
+		while (n--)u8arr[n] = base64.charCodeAt(n);
+		return new Blob([u8arr], { type: mime });
+    }
+    root.blobToDataUrl = function(blob, callback){
+		var reader = new FileReader();
+		reader.onload = function (e){callback(e.target.result);}
+		reader.readAsDataURL(blob);
+    }
+	root.base64 = (function(){
+		var str = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
+		function buffer(input) {
+			var bytes = Math.ceil( (3*input.length) / 4.0);
+			var ab = new ArrayBuffer(bytes);
+			decode(input, ab);
+			return ab;
+		};
+		function decode(input, arrayBuffer) {
+			var lkey1 = str.indexOf(input.charAt(input.length-1));		 
+			var lkey2 = str.indexOf(input.charAt(input.length-1));		 
+			var bytes = Math.ceil( (3*input.length) / 4.0);
+			if (lkey1 == 64) bytes--; //padding chars, so skip
+			if (lkey2 == 64) bytes--; //padding chars, so skip
+			var uarray;
+			var chr1, chr2, chr3;
+			var enc1, enc2, enc3, enc4;
+			var i = 0;
+			var j = 0;
+			if (arrayBuffer)uarray = new Uint8Array(arrayBuffer);
+			else uarray = new Uint8Array(bytes);
+			input = input.replace(/[^A-Za-z0-9\+\/\=]/g, "");
+			for (i=0; i<bytes; i+=3) {	
+				enc1 = str.indexOf(input.charAt(j++));
+				enc2 = str.indexOf(input.charAt(j++));
+				enc3 = str.indexOf(input.charAt(j++));
+				enc4 = str.indexOf(input.charAt(j++));
+				chr1 = (enc1 << 2) | (enc2 >> 4);
+				chr2 = ((enc2 & 15) << 4) | (enc3 >> 2);
+				chr3 = ((enc3 & 3) << 6) | enc4;
+				uarray[i] = chr1;			
+				if (enc3 != 64) uarray[i+1] = chr2;
+				if (enc4 != 64) uarray[i+2] = chr3;
+			}
+			return uarray;	
+		}
+		return {
+			decode:decode,
+			buffer:buffer
+		};
+	})();
+})(VSong);
+/*
+ * @ dom
+ * @ update: 2017-09-05
+ */
+if (typeof VSong == "undefined") var VSong = {};
+(function(root) {
+	"use strict";
+	if(typeof root.hasTouch === 'undefined'){
+		root.hasTouch = !!("ontouchstart" in self || self.DocumentTouch && document instanceof DocumentTouch);
+	}
+	var click = root.hasTouch?'touchstart':'click';
+	function DOM(str,parentObj){
+		var dom,arr = [];
+		if(typeof str === 'object'){
+			if(str instanceof Array)arr = str;
+			else if(root.isDOM(str))arr.push(str);
+			return arr;
+		}
+		dom = (parentObj||document).querySelectorAll(str);
+		for(var i=0;i<dom.length;i+=1)arr[i] = dom[i];
+		return arr;
+	}
+	function selector(str, parentObj){
+		var _this = this;
+		_this.DOM = DOM(str,parentObj);
+		['html,innerHTML','text,textContent','val,value'].forEach(function(arr){
+			arr = arr.split(',');
+			_this[arr[0]] = function(v){
+				if(typeof v === 'undefined' && _this.DOM[0])return _this.DOM[0][arr[1]];
+				_this.DOM.forEach(function(dom){dom[arr[1]] = v});
+				return _this;
+			}
+		});
+		['add','remove','toggle'].forEach(function(k){
+			_this[k+'Class'] = function(name){
+				_this.DOM.forEach(function(dom){
+					name.split(' ').forEach(function(n){
+						dom.classList[k](n)
+					});
+				});
+				return _this;
+			}
+		});
+		return _this;
+	}
+	selector.prototype.each = function(callback){
+		callback && this.DOM.forEach(callback);
+		return this;
+	}
+	selector.prototype.hasClass = function(className){
+		if(this.DOM[0])return this.DOM[0].classList.contains(className);
+		return false;
+	}
+	selector.prototype.prepend = function(data){
+		if(typeof data === 'string')data = document.createTextNode(data);
+		this.DOM.forEach(function(dom){
+			if(dom.hasChildNodes()){
+				dom.insertBefore(data, dom.firstChild); 
+			}else{ 
+				dom.appendChild(data);
+			} 
+		});
+		return this;
+	}
+	selector.prototype.append = function(data){
+		this.DOM.forEach(function(dom){
+			if(typeof data === 'string'){
+				dom.innerHTML += data;
+			}else if(root.isDOM(data)){
+				dom.appendChild(data);
+			}
+		});
+		return this;
+	}
+	selector.prototype.duration = function(time){
+		this.DOM.forEach(function(dom){
+			dom.style.transitionDuration= time + 's';
+			if(root.browser.pre != ''){
+				dom.style[root.browser.pre.replace(/-/g,'')+'TransitionDuration'] = time + 's';
+			}
+		});
+		return this;
+	}
+	function stylePx(key,value){
+		if(typeof value === 'number' && [
+			'width','height','lineHeight','top','right','button','left',
+			'marginTop','marginRight','marginBottom','marginLeft',
+			'paddingTop','paddingRight','paddingBottom','paddingLeft'
+		].indexOf(key)!=-1){
+			value += 'px';
+		}
+		return value;
+	}
+	selector.prototype.css = function(key, value, attr){
+		if((typeof value === 'undefined' || value === null) && typeof key === 'string'){
+			if(window.getComputedStyle){
+				return window.getComputedStyle(this.DOM[0],attr || null).getPropertyValue(key);
+			}
+			return this.DOM[0].style.getPropertyValue(key);
+		}
+		this.DOM.forEach(function(dom){
+			if(typeof key === 'object'){
+				for(var k in key)dom.style[k] = stylePx(k,key[k]);
+			}else{
+				dom.style[key] = stylePx(key,value);
+			}
+		});
+		return this;
+	}
+	selector.prototype.on = function(type, target, callback){
+		if(typeof target === 'function'){
+			callback = target;
+			target = null;
+		}
+		if(!callback)return this;
+		this.DOM.forEach(function(dom){
+			dom.addEventListener(type, function(e){
+				if(target){
+					var targets = DOM(target,dom);
+					if(targets.length>0){
+						e.path.forEach(function(elm,index){
+							for(var i=0;i<targets.length;i+=1){
+								if(targets[i] === elm)callback.call(elm,e);
+							}
+						});
+					}
+				}else{
+					callback.call(this,e);
+				}
+			});
+		});
+		return this;
+	};
+	selector.prototype.off = function(type, callback){
+		this.DOM.forEach(function(dom){
+			dom.removeEventListener(type, callback)
+		});
+		return this;
+	};
+	selector.prototype.remove = function(){
+		this.DOM.forEach(function(dom){
+			var parents = dom.parentNode || document.body;
+			parents.removeChild(dom);
+		});
+		return this;
+	};
+	selector.prototype.transform = function(value,attr){
+		if(!value)return this.css('transform',null,attr);
+		return this.each(function(dom){
+			if(root.browser.pre != ''){
+				dom.style[root.browser.pre.replace(/-/g,'')+'Transform'] = value;
+			}
+			dom.style['transform'] = value;
+		});
+	}
+	selector.prototype.click = function(target, callback){
+		if(!target && !callback){
+			this.DOM.forEach(function(dom){dom.click()});
+			return this;
+		}
+		if(typeof target === 'function'){
+			callback = target;
+			target = null;
+		}
+		var handle = function(e){
+			if(e.type == 'touchstart'){
+				var touchend = function(ev){
+					if(ev.cancelable && callback){
+						ev.preventDefault();
+						callback.call(this,ev);
+					}
+					this.removeEventListener(ev.type,touchend);
+				}
+				this.addEventListener('touchend', touchend);
+			}else{
+				callback.call(this, e);
+			}
+		}
+		if(!target)return this.on(click, handle);
+		return this.on(click, target, handle);
+	};
+
+	selector.prototype.select = function(){
+		if(this.DOM.length==0)return this;
+		this.DOM[0].select && this.DOM[0].select();
+		return this;
+	}
+	selector.prototype.focus = function(){
+		if(this.DOM.length==0)return this;
+		this.DOM[0].focus && this.DOM[0].focus();
+		return this;
+	}
+	selector.prototype.find = function(str){return $(str, this.DOM[0])}
+	selector.prototype.attr = function(name, value){
+		if(!name)return;
+		if(typeof name === 'object'){
+			this.DOM.forEach(function(dom){for(var k in name)dom.setAttribute(k,name[k])});
+		}else if(typeof value === 'undefined' && this.DOM[0])return this.DOM[0].getAttribute(name);
+		else this.DOM.forEach(function(dom){dom.setAttribute(name,value)});
+		return this;
+	}
+	selector.prototype.removeAttr = function(name){
+		if(!name)return;
+		this.DOM.forEach(function(dom){name.split(' ').forEach(function(n){dom.removeAttribute(n)})});
+		return this;
+	}
+	selector.prototype.data = function(name, value){
+		if(!this.DOM[0])return this;
+		if (typeof value === "undefined"){
+			if (this.DOM[0].customData && name in this.DOM[0].customData)return this.DOM[0].customData[name];
+			var key = this.DOM[0].getAttribute("data-" + name);
+			if(key)return key;
+			return undefined;
+		}else{
+			this.DOM.forEach(function(dom){
+				if (!dom.customData)dom.customData = {};
+				dom.customData[name] = value;
+			});
+			return this;
+		}
+	}
+	selector.prototype.form = function(obj){
+		var form = this.DOM[0];
+		var check = null;
+		if(obj.check){check = obj.check;delete obj.check;}
+		if(form && form.length > 0 && form.tagName === 'FORM'){
+			var o= {data:{}};
+			if(root.merge)root.merge(o,obj);
+			else for(var k in obj)o[k]=obj[k];
+			if(form.action)o.url = form.action;
+			for(var i=0;i<form.length;i+=1){
+				if(form[i].name){
+					o.data[form[i].name] = form[i].value;
+				}
+			}
+			if(check && typeof check === 'function' && check.call(form,o.data)){
+				if(o.data)o.data = JSON.stringify(o.data);
+				return o.data && obj.auto === true && root.request?root.request(o,true):o;
+			}
+			return o;
+		}
+		return null;
+	}
+	
+	selector.prototype.sms = function(code,phone,url){
+		var dom = this.DOM[0],arr = code.split(',');
+		if(dom.disabled || !arr[1] || arr[1] != root.ecode || !root.alert)return;
+
+		if(!phone || !root.isMobile(phone.value)){
+			root.alert('手机号码不正确.',3,phone && function(){$(phone).focus()});
+			return;	
+		}
+		dom.disabled = true;
+		var ntime = root.time();
+		var ltime = parseInt(root.storage.get('sms_timer'));
+		var times = 60;
+		var isTime = false;
+		if(ntime - ltime>0 && ltime){
+			times = ntime - ltime;
+			isTime = true;
+		}
+		if(times>60){
+			root.storage.remove('sms_timer');
+			times = 60;
+			isTime = false;
+		}
+		var stoper = false;
+		root.timeout(times, function(time){
+			if(stoper){
+				dom.disabled = false;
+				dom.textContent = '重发';
+				root.storage.remove('sms_timer');
+				this.stop();
+			}else{
+				root.storage.set('sms_timer',root.time()-time);
+				dom.innerHTML = '<font class="color">'+time + '<i>s</i></font>';
+			}
+		},function(){
+			dom.disabled = false;
+			root.storage.remove('sms_timer');
+			dom.textContent = '重发';
+		});
+
+		if(isTime)return;
+
+		root.request({
+			url:url,dataType:'json',
+			data:JSON.stringify({formhash:arr[0],ip:arr[2],phone:phone.value}),
+			success:function(json){
+				if(typeof root.storage === 'function')root.storage = root.storage();
+				root.storage.set('sms_timer',root.time()-60);
+				root.alert(this.dataType == 'form'?json:(json.msg || '短信发送成功.'),30,function(){dom.disabled = null;});
+			},
+			error:function(e){
+				console.log(e,'color:red');
+				root.storage.remove('sms_timer');
+				root.alert(e.msg || '短信发送失败.',3,function(){dom.disabled = null;});
+				stoper = true;
+			}
+		});
+		return this;
+	}
+	
+	root.dom = root.self.$ = function(str, p){return new selector(str, p)};
+	if(root.request)root.self.$.ajax = root.request;
+	
+	root.windows = function(url,title,params){
+		if(!url || (url.indexOf('//')>4 && url.split('//')[1].indexOf(document.domain)==-1))return;
+		var windows = document.createElement('div');
+		var frame = document.createElement('iframe');
+		var container = root.dom(root.windowsContainerSelector || '#container').DOM[0] || window.top.document.body;
+		frame.src = url;
+		frame.frameborder = 0;
+		frame.scrolling = 'none';
+		windows.className = 'fxd full windows';
+		windows.appendChild(frame);
+		document.body.removeAttribute('stats');
+		container.innerHTML = '';
+		container.appendChild(windows);
+		frame.onload = function(){
+			windows.classList.add('ready');
+			if(frame.contentWindow.initVSongWindows){
+				if(params)root.merge(frame.contentWindow,params);
+				frame.contentWindow.initVSongWindows.call(windows,root,function(str){return root.dom(str,frame.contentWindow.document.body)});
+				frame.contentWindow.oncontextmenu = function(){return false;}
+			}else{
+				root.ready && root.ready();
+			}
+		}
+	}
+})(VSong);
+if(typeof VSong == 'undefined')var VSong = {};
+(function(root){
+	"use strict";
+	var INDEX = 100000;
+	var LENTH = 0;
+	var MASK = document.createElement('div');
+	MASK.className = 'fxd full vBox-mask bgc-dark';
+
+	function createWindows(options, parents){
+		var type = options.type === 'confirm'?'confirm':'alert';
+		var box = document.createElement('div');
+		box.className = 'vBox fxd';
+		box.setAttribute('type',type);
+		box.innerHTML = 
+			'<div class="vBox-head"><span class="vBox-title vs-font">'+options.title+'</span><a tabindex="2" class="vBox-close btn"></a></div>'+
+			'<div class="vBox-main"><div class="vBox-cont">'+
+			(!options.smile?'<h3 class="vBox-cont-title hello" align="center"><i class="icon icon-hello"></i></h3>':'<i class="icon smile-'+options.smile+'" size="72"></i>')+
+			options.content+'</div></div>'+
+			'<div class="vBox-foot"><a class="vBox-confirm btn vs-font" tabindex="1"><span>'+options.buttonText+'</span></a></div>'
+		if(LENTH <= 0){
+			LENTH = 0;
+			parents.appendChild(MASK);
+			document.body.setAttribute('box',1);
+		}
+		LENTH += 1;
+		parents.appendChild(box);
+		var dom = {
+			root:box,
+			head:box.childNodes[0],
+			main:box.childNodes[1],
+			foot:box.childNodes[2]
+		}
+		box.style.zIndex = INDEX + LENTH;
+		MASK.style.zIndex = box.style.zIndex;
+		dom.title = dom.head.childNodes[0];
+		dom.close = dom.head.childNodes[1];
+		dom.cont = dom.main.childNodes[0];
+		dom.confirm = dom.foot.childNodes[0];
+		return dom;
+	}
+	function amount(n){
+		if(root.isNumeric(n))return n + 'px';
+		if(n.substr(n.length-1,1) == '%')return n;
+		return 'auto';
+	}
+	root.box = function(options, parents){
+		var _this = this;
+		_this.options = root.merge({
+			type:'alert',
+			auto:true,
+			title:'系统提示',
+			content:'',
+			buttonText:'好的',
+			timeout:null,
+			smile:null,
+			close:null,
+			width:null,
+			height:null,
+			confirm:null
+		},options);
+		_this.parents = parents || document.body;
+		if(_this.options.confirm)_this.options.type = 'confirm';
+		var dom = createWindows(_this.options, _this.parents);	
+		dom.root.style.zIndex = INDEX + LENTH;
+		if(_this.options.auto === true && !_this.options.width  && !_this.options.height){
+			dom.root.classList.add('auto');
+		}else{
+			var rect = dom.root.getBoundingClientRect();
+			if(_this.options.width)dom.main.style.width = amount(_this.options.width);
+			if(_this.options.height)dom.main.style.height = amount(_this.options.height);
+			if(root.browser){
+				var pre = root.browser.pre.replace(/-/g,'');
+				dom.root.style[(pre!=''?pre+'T':'t')+'ransform'] = 'scale(1)'+
+					'translateX(-'+(rect.width/2 + _this.options.width / 4)+'px) '+
+					'translateY(-'+(rect.height/2 + _this.options.height / 3)+'px)';
+			}else{
+				dom.root.style.margin = '-'+(rect.height/2 + _this.options.height / 3)+'px auto auto -'+(rect.width/2 + _this.options.width / 4)+'px';
+			}
+			dom.root.classList.add('noanim');
+		}
+		dom.close.addEventListener('click',function(){
+			if(dom.close.closed)return;
+			dom.close.closed = true;
+			_this.close && _this.close.call(_this);
+		});
+		if(_this.options.type === 'confirm'){
+			dom.confirm.addEventListener('click',function(){
+				if(typeof _this.options.confirm === 'function'){
+					_this.options.confirm.call(_this);
+				}else{
+					_this.close && _this.close.call(_this);
+				}
+			});
+		}
+		dom.root.classList.add('show');
+		_this.DOM = dom;
+		if(_this.options.timeout){
+			_this.anim = new root.timeout(_this.options.timeout,null,function(){
+				if(!_this.anim)return;	
+				_this.close && _this.close.call(_this);
+			});
+		}
+		return _this;
+	}
+	root.box.prototype.close = function(callback){
+		var _this = this;
+		if(_this.anim)_this.anim = null;
+		var anim = root.timeout(0.3,null,function(){
+			if(typeof _this.options.close === 'function')_this.options.close();
+			for(var k in _this.options)delete _this.options[k];
+			try{_this.parents.removeChild(_this.DOM.root)}catch(e){};
+			LENTH -=1;
+			MASK.style.zIndex = INDEX + LENTH - 1;
+			if($('.vBox').DOM.length <= 0){
+				LENTH = 0;
+				document.body.removeAttribute('box');
+				try{_this.parents.removeChild(MASK);}catch(e){};
+			}
+			delete _this.DOM;
+			callback && callback();
+			callback = _this = anim = null;
+		});
+		_this.DOM.root.classList.add('closed');
+	}
+	root.boxClear = function(){
+		INDEX = 100000;
+		LENTH = 0;
+		var boxs = document.querySelectorAll('.vBox,.vBox-mask');
+		for(var i=0;i<boxs.length;i+=1){
+			var parents = boxs[i].parentNode || document.body;
+			parents.removeChild(boxs[i]);
+		}
+		document.body.removeAttribute('box');
+		boxs = null;
+	}
+})(VSong);
+/*
+ * @ pjax
+ * @ update: 2017-09-05
+ */
+ if (typeof VSong == "undefined") var VSong = {};
+;(function(root) {
+	"use strict";
+	if(!root.dom)return;
+	var $body = root.body || $(document.body);
+	var state = {
+		title: document.title,
+		url:document.URL
+	}
+	var options = {
+		selector:'.pjax',
+		container:'body',
+		titleSuffix: ' - VSong.TV',
+		start:null,
+		complete:null,
+		error:null
+	};
+	var request = function(opts, isPop){
+		options.start && options.start();
+		root.request({
+			url:opts.url,
+			dataType:'pjax',
+			success:function(data){
+				$(opts.container || options.container).html(data);
+				if(!isPop){
+					state = root.merge(state,{title:opts.title,url:opts.url});
+					root.self.history.pushState(state, opts.title, opts.url);
+				}else{
+					root.self.history.replaceState({}, opts.title, opts.url);
+				}
+				options.complete && options.complete();
+			},
+			error:options.error || function(data){console.log(data)}
+		});
+	}
+	root.resetFrames = function(doc){
+		$('link[resource="css"]').each(function(dom) {
+			var link = document.createElement('link');
+			link.rel = 'stylesheet';
+			link.href = dom.href;
+			doc.getElementsByTagName('head')[0].appendChild(link);
+		});
+		doc.body.style.background = 'none';
+	}
+	root.pjax = function(option){
+		var _this = this;
+		options = root.merge(options,option);
+		state.container = options.container;
+		$body.click(options.selector+(options.alwaysToSelf?',a[target="_blank"]':''),function(e){
+			e.preventDefault();
+			var url = this.href || this.getAttribute('url');
+			var title = this.textContent || this.title;
+			//if(url === location.href)return false;
+			var slt = options.selection && options.selection.call(this,e);
+			if(!url || slt)return true;
+			if(this.target == '_blank' && root.windows)return root.windows(url,title);//
+			root.self.history.replaceState(state, title, url);
+			_this.reload(url, title);
+			return false;	
+		});
+		return this;
+	}
+
+	root.pjax.prototype.reload = function(url, opts){
+		var _this = this, o = {url:url || document.URL,title:document.title,container:state.container};
+		if(typeof opts === 'string'){
+			o.title = opts;
+		}else{
+			o = root.merge(o,opts);
+		}
+		if(o.title.indexOf(o.titleSuffix)==-1)o.title +=  options.titleSuffix;
+		document.title = o.title;
+		request(o);
+	}
+
+	var isPop = ('state' in window.history), orgUrl = location.href;
+	window.addEventListener('popstate', function(e) {
+		var isInit = !isPop && location.href == orgUrl;
+		isPop = true;
+		if (isInit)return;
+		if(e.state && e.state.container){
+			document.title = e.state.title;
+			request(e.state,1);
+		}
+	});
+})(VSong);
+if(typeof VSong != 'object')var VSong = {};
+;(function(root){
+	"use strict";
+	if(typeof root != 'object')return;
+	var exists = function(str, list){
+		for(var i=0;i<list.length;i+=1){
+			if(str && str.toLowerCase().indexOf(list[i].toLowerCase())!=-1)return true;
+		}
+	}
+	var filter = function(event, arr, callback){
+		var m = event || event.port;
+		if(arr.length > 0 ){
+			if(!exists(m.name, arr)){callback(event);}
+		}else{
+			callback(event);
+		}
+	}
+	root.MIDI = function(options){
+		var _this		= this;
+		var opts		= typeof options == 'object' ? options : {};
+		_this.filter	= options.filter || [];
+		_this.error		= opts.error	|| function(){};
+		_this.before	= opts.before	|| function(){};
+		_this.success	= opts.success	|| function(){};
+		_this.change	= opts.change	|| function(){};
+		_this.on		= opts.on		|| function(){};
+		_this.off		= opts.off		|| function(){};
+		_this.size		= 0;
+		_this.access	= null;
+		return this;	
+	};
+	root.MIDI.prototype.init = function(){
+		var _this = this;_this.size = 0;
+		_this.before();
+		if(!navigator.requestMIDIAccess){
+			_this.error(0);
+			return this;
+		}
+		if(_this.access){
+			_this.access.onstatechange = null;
+			_this.access.inputs.forEach(function(e){
+				e.onmidimessage = null;
+				e.onstatechange = null;
+			});
+			delete _this.access;
+			_this.access = null;
+		}
+		navigator.requestMIDIAccess({sysex:false}).then(function(access){
+			//console.log(access);
+			access.onstatechange = function(event){
+				filter(event, _this.filter, _this.change);
+			}
+			access.inputs.forEach(function(port){
+				filter(port, _this.filter, function(p){
+					_this.size += 1;
+					p.onmidimessage = function(e){
+						if(e.data[2] > 0 && (e.data[0] == 153 || e.data[0] == 157)){
+							if(port.convert){e.data[1] = port.convert(e.data[1]);}
+							e.keyCode = e.data[1];
+							e.intensity = e.data[2];
+							switch (e.data[0]){
+								case 153:_this.on(e);break;
+								case 157:_this.off(e);break;
+							}
+						}
+					};
+				});
+			});
+			_this.success(access);
+			_this.access = access;
+		},_this.error);
+		return this;
+	}
+})(VSong);
+if(typeof VSong =='undefined')var VSong = {};
+(function (root) {
+	"use strict";
+	var pluses = /\+/g;
+	var conf = root.cookieConfig || {
+		pre:'pre_',path:'/',expire:604800,domain:document.domain
+	}
+
+	function encode(s) {return config.raw ? s : encodeURIComponent(s);}
+	function decode(s) {return config.raw ? s : decodeURIComponent(s);}
+	function stringifyCookieValue(value) {return encode(config.json ? JSON.stringify(value) : String(value));}
+	function parseCookieValue(s) {
+		if (s.indexOf('"') === 0) {s = s.slice(1, -1).replace(/\\"/g, '"').replace(/\\\\/g, '\\');}
+		try {s = decodeURIComponent(s.replace(pluses, ' '));return config.json ? JSON.parse(s) : s;} catch(e) {}
+	}
+	function read(s, converter) {
+		var value = config.raw ? s : parseCookieValue(s);
+		return typeof converter == 'function'? converter(value) : value;
+	}
+	var config = root.cookie = function (key, value, options) {
+		options = root.merge(conf, options);
+		key = conf.pre + key;
+		if (value !== undefined && typeof value != 'function') {	
+			if (typeof options.expire === 'number') {
+				var time = options.expire, t = options.expire = new Date();
+				t.setTime(+ t + time * 1e3 + 36e5*8);
+			}
+			return (document.cookie = [
+				encode(key), '=', stringifyCookieValue(value),
+				options.expire ? '; expires=' + options.expire.toUTCString() : '',
+				options.path    ? '; path=' + options.path : '',
+				options.domain  ? '; domain=' + options.domain : '',
+				location.protocol == 'https:'  ? '; secure' : ''
+			].join(''));
+		}
+		var result = key ? undefined : {};
+		var cookies = document.cookie ? document.cookie.split('; ') : [];
+
+		for (var i = 0, l = cookies.length; i < l; i++) {
+			var parts = cookies[i].split('=');
+			var name = decode(parts.shift());
+			var cookie = parts.join('=');
+			if (key && key === name) {
+				result = read(cookie, value);
+				break;
+			}
+			if (!key && (cookie = read(cookie)) !== undefined) {
+				result[name] = cookie;
+			}
+		}
+
+		return result;
+	};
+	root.removeCookie = function (key, options) {
+		key = conf.pre + key;
+		if (root.cookie(key) === undefined) {
+			return false;
+		}
+		root.cookie(key, '', root.merge(options,{expire: -1}));
+		return !root.cookie(key);
+	};
+	
+})(VSong);
+
+/*+------------------------+
+ + @ WebSQL                + 
+ + @ Version 0.2           +
+ + @ Author: 叶怀泼        +
+ + @ Create: 2016-11-07    +
+ + @ Update: 2017-08-27    +
+ +-------------------------+*/
+ if(typeof VSong == 'undefined')var VSong = {};
+ (function(root){
+	 "use strict";
+	 var errMsg = {code:1,msg:'Your browser does not support openDatabase.'};
+	 root.WebSQL = function(options){
+		options = root.merge({
+			database	: 'VSong',
+			version		: '',
+			desction	: 'VSong Database',
+			size		: 100,
+			pre			: 'VSong_',
+			init		: function(){},
+			error		: function(obj){
+				root.self.location = root.dir + 'main/common/support';
+			}
+		},options);
+		options.size = options.size * 1048576;
+		if(typeof openDatabase == 'undefined'){
+			root.isWebSQL = false;
+			options.error(errMsg);
+			return;
+		}
+		var db = window.openDatabase && window.openDatabase(options.database, options.version, options.desction, options.size * 1048576, options.init);
+		if(!db)return options.error(errMsg);
+		/*
+		 * @ 格式化数据表属性
+		 * @ attr 	Object|String	属性
+		 */
+		function setAttribute(attr){
+			if(typeof attr == 'object'){
+				var sql = "";
+				for(var k in attr){
+					sql += k + " " + root.trim(attr[k]) + ", ";
+					delete attr[k];
+				}
+				sql = " (" + sql.substr(0,sql.length - 2) + ")";
+				attr = k = null;
+				return sql;
+			}else if(typeof attr == 'string'){
+				return " (" + attr + ")";
+			}
+			return "";
+		}
+		
+		/*
+		 * @ 格式化数据
+		 * @ object		Object	数据
+		 */
+		function setValues(object){
+			var key = '', value = '';
+			for(var k in object){
+				key += k + ",";
+				value += "'"+object[k]+"',";
+				delete object[k];
+			}
+			var sql =  "(" + key.substr(0, key.length - 1) + ") values(" + value.substr(0, value.length - 1) + ")";
+			object = key = value = null;
+			return sql;
+		}
+		
+		/*
+		 * @ 格式化查询条件
+		 * @ where		Object|String	查询条件
+		 */
+		function setWhere(where){
+			if(typeof where == 'string')return " WHERE " + where;
+			if(typeof where == 'object'){
+				var str = "", i = 0;
+				for(var field in where){
+					str += field + "='" + where[field] + "' AND "; i += 1;
+				}
+				where = i == 0?"":" WHERE " + str.substr(0, str.length - 5);
+				str = i = field = null;
+				return where;
+			}
+			return "";
+		}
+		
+		//数据表
+		this.table = function(tableName, pre){return (pre || options.pre) + tableName;}
+	
+		/*
+		 * @ 执行SQLite语句
+		 * @ sql		String			SQL语句
+		 * @ list		Array			用于替换SQL语句 values(?, ?, ...) 中的问号
+		 * @ callback	Function		回调
+		 * @ error		Function		错误回调
+		 */
+		this.query = function(sql, list, callback, error){
+			if(typeof list === 'function'){
+				callback = list;
+				error = callback;
+				list = null;
+			}	
+			db.transaction(function(tx){
+				tx.executeSql(sql,typeof list == 'object'?list:[], callback, error);
+				sql = list = null;
+			},error);
+		}
+		
+		/*
+		 * @ 查询数据表是否已存在
+		 * @ table		String			数据表名
+		 * @ callback	Function		回调
+		 * @ error		Function		错误回调
+		 */
+		this.exists = function(table, callback, error){
+			this.query("SELECT count(*) FROM sqlite_master WHERE type='table' AND name='" + this.table(table) + "'", [], function(tx, results){
+				var data = results.rows[0]["count(*)"];
+				if(data > 0){
+					callback && callback(data);
+				}else if(error){
+					error(tx);
+				}
+			}, error);
+			table = null;
+		}
+		
+		/*
+		 * @ 删除数据表
+		 * @ table		String			数据表名
+		 * @ callback	Function		回调
+		 * @ error		Function		错误回调
+		 */
+		this.drop = function(table, callback, error){
+			this.query("DROP TABLE IF EXISTS " + this.table(table),[], callback, error);
+			table = null;
+		}
+		
+		/*
+		 * @ 获取数据
+		 * @ table		String			数据表名
+		 * @ where		Object|String	查询条件
+		 * @ callback	Function		回调
+		 * @ error		Function		错误回调
+		 */
+		this.fetch = function(table, where, callback, error){
+			var sql = "SELECT * FROM " + this.table(table) + setWhere(where);
+			this.query(sql, [], callback, error);
+			sql = table = where = null;
+		}
+		
+		/*
+		 * @ 添加数据
+		 * @ table		String			数据表名
+		 * @ data		Object|String	数据
+		 * @ where		Object|String	查询是否已存在
+		 * @ callback	Function		回调
+		 * @ exists		Function		
+		 * @ error		Function		错误回调
+		 */
+		this.insert = function(table, data, callback, error, where, exists){
+			var _this = this, sql = "INSERT INTO " + _this.table(table) + setValues(data);
+			if(where){
+				this.fetch(table, where, function(tx, results){
+					if(results.rows.length == 0){
+						_this.query(sql, [], callback, error);
+					}else if(exists){
+						exists();
+					}else if(error){
+						error(tx, {code:2, msg:'exists'});
+					}
+					sql = null;
+				},error);
+			}else{
+				this.query(sql, [], callback, error);
+				sql = null;
+			}
+			table = where = data = null;
+			return;
+		}
+		
+		/*
+		 * @ 删除数据
+		 * @ table		String			数据表名
+		 * @ where		Object			查询删除条件
+		 * @ callback	Function		回调
+		 * @ error		Function		错误回调
+		 */
+		this.delete = function(table, where, callback, error){
+			if(typeof where != 'object'){
+				error && error(db,{code:3,msg:'[where] is not object'});return;
+			}
+			var sql = "",list = [], i = 0;
+			for(var k in where){
+				list.push(where[k]);
+				sql += k + "=? AND ";i += 1;
+				delete where[k];
+			}
+			if(i == 0){
+				error && error(db,{code:4,msg:'[where] is empty'});return;
+			}
+			sql = "DELETE FROM " + this.table(table) + " WHERE " + sql.substr(0, sql.length - 5);
+			this.query(sql, list, callback, error);
+			table = where = sql = i = k = null;
+		}
+		
+		/*
+		 * @ 更新数据
+		 * @ table		String			数据表名
+		 * @ set		Object			查询删除条件
+		 * @ where		Object|String	查询删除条件
+		 * @ callback	Function		回调
+		 * @ error		Function		错误回调
+		 */
+		this.update = function(table, set, where, callback, error){
+			if(typeof set != 'object'){
+				error && error(db,{code:5,msg:'[set] is not object'});
+				return;
+			}
+			var sql = "";
+			for(var k in set){ sql += "`"+k+"`='"+set[k]+"',";delete set[k];}
+			sql = "UPDATE "+this.table(table)+" SET " + sql.substr(0, sql.length - 1) + setWhere(where);
+			this.query(sql,[],function(tx,result){
+				if(result.rowsAffected == 1){
+					callback && callback(tx, result);
+				}else if(typeof error == 'function'){
+					error && error(tx,{code:6,msg:'fail'});
+				}
+			},error);
+			sql = k = set = where = table = null;
+		}
+		
+		/*
+		 * @ 创建数据表
+		 * @ table		String			数据表
+		 * @ attribute	Object|String	属性
+		 * @ callback	Function		回调
+		 * @ error		Function		错误回调
+		 */
+		this.create = function(table, attribute, callback, error, dontDrop){
+			//delete table
+			if(!dontDrop)this.drop(table);
+			//create table
+			this.query("CREATE TABLE IF NOT EXISTS " + this.table(table) + setAttribute(attribute),[], callback, error);
+			table = attribute = null;
+		}
+			
+		/*
+		 * @ 删除
+		 * @ list		Array		数据表名组
+		 * @ callback	Function	回调
+		 * @ error		Function	错误回调
+		 */
+		this.dropBatch = function(list, callback, error){
+			if(typeof list != 'object')return;
+			var _this = this;
+			list.forEach(function(table){
+				_this.drop(table, callback, error);
+				sql = null;
+			});
+			list.splice(0,list.length);
+		}
+		
+		/*
+		 * @ 批量创建表
+		 * @ data		String		数据表集
+		 * @ retain		All			是否保留已存在
+		 * @ callback	Function	回调
+		 */
+		this.createBach = function(data, retain, callback, error){
+			for(var k in data){
+				this.create(k, data[k], callback, error, retain);
+				delete data[k];
+			}
+			data = k = null;
+		}
+	};
+})(VSong);
+VSong.district = function(root,selector,url){
+	"use strict";
+	var dbExists,db,main = document.querySelectorAll(selector);
+	if(main.length < 1)return;
+	var table = 'district', maxLevel = 4;
+	db = root.db || new root.WebSQL({
+		pre:root.cookieConfig?root.cookieConfig.pre:'vSong_',
+		database:'VSong',
+		size:100,
+		error:function(){
+			root.self.location = root.dir + 'main/common/support';
+	}});
+
+	
+	function next(obj){return obj.nextElementSibling||obj.nextSibling;}
+	function ulClear(ul){
+		var li = ul.querySelectorAll('li');for(var i=0;i<li.length;i+=1)this.removeChild(li[i]);
+	}
+	function clearSpan(level){
+		var span = this.querySelectorAll('span');for(var i=0;i<span.length;i+=1)if(i>=level)this.removeChild(span[i]);
+	};
+	function numberChange(){
+		var li = this.ul.querySelectorAll('li');
+		if(li.length == 0)this.span.parentNode.removeChild(this.span);
+		else{
+			this.a.textContent = this.a.title || '请选择';
+		}
+	}
+	function load(options){
+		if(typeof options !== 'object')return;
+		var worker = new Worker(url + (options.upid||'')+(options.params?options.params:''));
+		worker.addEventListener('message',function(e){
+			if(e.data && e.data.list)options.success(e.data.list);
+			else options.error(e);
+			worker.terminate();// 结束执行
+		});
+	}
+
+	function fetch(where,callback,error,create){
+		if(dbExists){
+			db.fetch(table,where,function(e,result){
+				if(result.rows.length > 0){
+					callback(result.rows);
+				}else{
+					create && create();
+				}
+			},error);
+		}else{
+			db.create(table,{
+				id		: "mediumint(8) NOT NULL DEFAULT '0'",
+				name	: "varchar(40) NOT NULL DEFAULT ''",
+				upid	: "mediumint(8) NOT NULL DEFAULT '0'",
+				level	: "tinyint(4) NOT NULL DEFAULT '0'"
+			},function(){
+				dbExists = true;
+				create();
+			},error);
+		}
+	}
+	function loadData(upid,callback,error,isId){load({upid:upid,params:isId?'/id':'',success:callback,error:error})}
+	function setData(data,_this){
+		var li = document.createElement('li');
+		li.textContent = data.name;
+		li.value = data.id;
+		li.upid	= data.upid;
+		li.level = data.level;
+		li.onclick = function(){
+			this.level = parseInt(this.level);
+			this.upid = parseInt(this.upid);
+			if(this.level == 1){
+				if(this.value >= 32 && this.value <= 36)maxLevel = 2;
+				else if([1,2,9,22].indexOf(this.value)!=-1)maxLevel = 3;
+				else maxLevel = 4;
+			}
+			_this.span.data = {id:this.value,name:this.textContent,level:this.level,upid:this.upid};
+			_this.a.title = _this.a.textContent = this.textContent;
+			clearSpan.call(_this.span.parentNode,this.level);
+			if(this.level<maxLevel)create(this.value,next(_this.span));
+			_this.span.classList.remove('focus');
+		}
+		_this.ul.appendChild(li);
+	}
+	function read(upid){
+		var _this = this;
+		var success = function(){
+			loadData(upid,function(list){
+				ulClear(_this.ul);
+				list.forEach(function(data){
+					setData(data,_this);db.insert(table,data);
+				});numberChange.call(_this);
+			},function(){
+				if(upid)_this.span.parentNode.removeChild(_this.span);
+			});
+		}
+		fetch("`upid`='"+(upid||0)+"'",function(result){
+			for(var i=0;i<result.length;i+=1)setData(result[i],_this);
+			numberChange.call(_this);
+		},success,success);
+	}
+
+	function init(){
+		if(this.completed)return;
+		this.completed = true;
+		var _this = this;
+		var value = _this.getAttribute('value');
+		if(value){
+			var arr = value.split(',');
+			if(arr.length>0)_this.innerHTML = '';
+			arr.forEach(function(id,i){
+				id = parseInt(id);
+				var success = function(result,insert){
+					var res = result[0];
+					if(!res)return;
+					var span = document.createElement('span');
+					var a = document.createElement('a');
+					var ul = document.createElement('ul');
+					span.appendChild(a);
+					span.appendChild(ul);
+					events.call(span,a,ul,res.upid);
+					a.textContent = a.title = res.name;
+					span.data = res;
+					_this.appendChild(span);
+				}
+				if(!dbExists && i === 0){
+					loadData(0,function(result){
+						success(result,1);
+					},null,true);
+				}
+				fetch({id:id},success,function(){
+					loadData(id,function(result){
+						success(result,1);
+					},null,true);
+				},function(){
+					loadData(id,function(result){
+						success(result,1);
+					},null,true);
+				});
+		
+			});
+		}
+	}
+	function events(a,ul,upid){
+		this.addEventListener('click',function(e){
+			if(e.target === a){
+				this.classList.add('focus');
+				if(ul.childNodes.length===0){
+					a.textContent = 'Loading...';
+					read.call({span:this,a:a,ul:ul},upid);
+				}
+			}else if(e.target.tagName == 'SPAN'){
+				this.classList.remove('focus');
+			}
+		});
+	}
+	function create(upid,parents){
+		var span = parents || document.createElement('span');
+		var a = document.createElement('a');
+		var ul = document.createElement('ul');
+		a.classList.add('cur');
+		a.textContent = '请选择';
+		events.call(span,a,ul,upid);
+		if(!parents){
+			for(var i=0;i<main.length;i+=1){
+				main[i].appendChild(span);
+				init.call(main[i]);
+				main[i].result = function(){
+					var arr = [''],s = this.querySelectorAll('span');
+					for(var i=0;i<s.length;i+=1){
+						if(s[i].data){ arr[0] += s[i].data.name;arr[s[i].data.level] = s[i].data;}
+					};return arr;
+				}
+			}
+		}else span.innerHTML = '';
+		span.appendChild(a);
+		span.appendChild(ul);
+	}
+	db.exists(table,function(){
+		dbExists = true;
+		create();
+	},function(){
+		dbExists = false;
+		create();
+	});
+	
+}
+VSong.loginOptions = function(root){
+	return {
+		auto:true,
+		dataType:'json',
+		//验证表单
+		check:function(data){
+			var form = this,err = null;
+			if(data.account.length<3){
+				err = '帐号不能小于 3 个字符';
+			}else if(root.isNumeric(data.account)){
+				if(data.account.length < 5){
+					err = 'UID必须大于 5 位数';
+				}else if(data.account.length == 11 && !root.isMobile(data.account)){
+					err = '手机号码有误';
+				}
+			}else if(!root.isUsername(data.account)){
+				err = '帐号可以是UID、用户名或手机号';
+			}
+			if(err){
+				root.alert(err,2,function(){$('input[name="account"]',form).focus()});
+				return;
+			}
+			if(data.password.length<6){
+				root.alert('密码不能小于 6 个字符',2,function(){$('input[name="password"]',form).focus()});
+				return;
+			}
+			return data;
+		},
+		success:function(obj){
+			var goto = function(){
+				root.resetUserData(obj.data);
+				if(root.loginBackUrl)return root.load(root.loginBackUrl);
+				root.load();
+				goto = null;
+			}
+			root.alert(obj.msg || '登陆成功','happy',1,function(){
+				if(obj.url)root.self.location = obj.url;
+				else if(typeof box === 'object')box.close(goto);
+				else goto();
+			});
+		},
+		error:function(e){
+			console.log(e);
+			root.alert(e.msg || '未知错误','sad',2,e.field?function(){
+				var dom  =$('input[name="'+e.field+'"]').DOM[0];
+				$('input[name="'+e.field+'"]').select().focus();
+			}:null);
+		}
+	}
+}
+VSong.loginBox = function(root){
+	var box;
+	var loginBox = function(){
+		var loginForm = function(){
+			$('#vBox-login').form(root.loginOptions(root));
+		}
+		box = new root.box({
+			type:'confirm',title:'用户登录',buttonText:'立即登录',
+			//close:function(){},
+			confirm:loginForm,
+			content:'<form id="vBox-login" action="'+root.appUrl+'/common/login/'+root.ecode+'"><div class="box-login">'+
+			'<div class="items">'+
+			'	<label>'+
+			'	  <span class="justify">帐号</span>'+
+			'	  <input type="text" name="account" maxlength="20" autocomplete="off" placeholder="手机、用户名、UID" />'+
+			'	</label>'+
+			'</div>'+
+			'<div class="items pwd">'+
+			'	<span class="flt-r min500">'+
+			'	  <a class="btn openyoureye"><i class="icon eye" size="22"></i></a>'+
+			'	</span>'+
+			'	<label>'+
+			'	  <span class="justify">密码</span>'+
+			'	  <input type="password" name="password" oninput="document.getElementById(\'box-login-lookpwd\').value=this.value" maxlength="32" placeholder="请输入密码" />'+
+			'	  <input type="text" id="box-login-lookpwd" maxlength="32" placeholder="请输入密码" />'+
+			'	</label>'+
+			'</div>'+
+			'<div class="items clr">'+
+			'	<label>'+
+			'	  <span class="justify">　</span>'+
+			'	  <div class="justify">'+
+			'		<a class="btn pjax" href="'+root.appUrl+'/common/register">没有账号&raquo;</a>'+
+			'		<a class="btn pjax" href="'+root.appUrl+'/common/forget">找回密码&raquo;</a>'+
+			'	  </div>'+
+			'	</label>'+
+			'</div>'+
+			'</div></form>'
+		});
+		$('#vBox-login').on('keyup',function(e){
+			if(e.keyCode == 13){
+				for(var i=0;i<this.length;i+=1){
+					if(this[i].type!='hidden' && this[i].name){
+						if(this[i].value == ''){
+							this[i].focus();
+							return;
+						}
+					}
+				}
+				loginForm();
+			}
+		});
+	}
+	/*登录框*/
+	root.body.on('click','a.login',function(e){
+		if(root.user.uid>0)return;
+		loginBox();
+	});
+	//显示或隐藏密码域
+	root.body.on('mousedown','.items.pwd .openyoureye',function(){
+		root.body.addClass('eye-look');
+	});	
+}
+
+VSong.modules = {
+	__construct:function(root,pjax){
+		var func = this[root.mod+'_'+root.page];
+		//四级地区联查
+		root.district(root,'.vs-district',root.dir+root.name+'/common/district/');
+		//cookie自动续期
+		if(root.user.uid>0){
+			var author = root.cookie('author');
+			root.cookie('author',author,{expire:root.cookieConfig.expire});
+		}
+		root.backUrl = document.URL;
+		//初始化模块函数
+		if(typeof func === 'function')func(root,pjax);
+		else if(func == 404)root.alert('页面正在建设中，请稍候访问！',3,function(){root.load(root.appUrl)});
+	},
+	home_index:function(root){
+		var subjects = root.subjects || ['drum','guitar'];
+		var proIndex = subjects.indexOf(root.body.attr('content'));
+		var disabled = false;
+		var backgrounds = $('#background').DOM[0];
+		var backgroundArray = [];
+		$('#tab-tools>a.btn').click(function(){
+			if(disabled)return;
+			disabled = true;
+			var action = $(this).data('action');
+			if(action == 'left'){
+				proIndex -= 1;
+				if(proIndex <0)proIndex = subjects.length-1;
+			}
+			if(action == 'right'){
+				proIndex += 1;
+				if(proIndex >= subjects.length)proIndex = 0;
+			}
+
+			root.body.addClass('bg-loading');
+			var img = new Image();
+			img.src = root.dir + 'public/images/'+root.name+'/bg-'+subjects[proIndex]+'.jpg';
+			if(!backgroundArray[proIndex]){
+				var bg = document.createElement('div');
+				bg.style.backgroundImage = 'url('+img.src+')';
+				bg.className = 'bg fxd full';
+				backgrounds.appendChild(bg);
+				bg = null;
+			}else{
+				backgrounds.appendChild(backgroundArray[proIndex]);
+			}
+			img.onload = function(){
+				root.body.removeClass('bg-loading');
+				document.title = root.lang[subjects[proIndex]] + ' - VSong.TV';
+				history.replaceState({}, root.lang[subjects[proIndex]], root.appUrl + '/home/index/' + subjects[proIndex]);
+				if(root.enabled && root.enabled.indexOf(subjects[proIndex])==-1){
+					//root.alert((root.lang[subjects[proIndex]] || '该学科')+'未开启！','sad',2);
+					$('#subjects-name').text(root.lang[subjects[proIndex]]);
+					root.body.removeAttr('content');
+				}else{
+					root.cookie('subjects_name',subjects[proIndex],{expire:316e5});
+					root.body.attr('content',subjects[proIndex]);
+				}
+				root.timeout(0.6, null, function(){
+					disabled = false;
+					var list = backgrounds.querySelectorAll('.bg');
+					if(list.length>1){
+						backgrounds.removeChild(list[0]);
+					}
+				});
+				
+				img = null;
+			};
+			img.onerror = function(){
+				root.body.removeClass('bg-loading');
+				disabled = false;
+				img = null;
+			}
+		});
+		
+		/*模式列表*/
+		$('#play-mode>a.btn').on('click',function(e){
+			e.preventDefault();
+			var action = $(this).data('action');
+			var url = root.dir+root.name+'/home/list/'+subjects[proIndex]+'-'+action;
+			root.backUrl = url;
+			root.load(url, this.textContent + ' - ' + root.lang[subjects[proIndex]]);
+			return false;
+		});
+	},
+	home_list:function(){
+		
+	},
+	home_download:function(root){
+		$('#download-page>.bottom a[data-type]').click(function(e) {
+            root.alert('客户端暂未上线，详情请关注我们微信公众号！','warn',5);
+        });
+	},
+	common_register:function(root){
+		var formDom = $('#form-regsiter');
+		var handle = {
+			username:{min:3,max:15,match:/^([\u0391-\uFFE5]{1}|[a-zA-Z]{1})+([a-zA-Z0-9_\u0391-\uFFE5])+$/},
+			password:{min:6,max:32},
+			phone:{min:11,max:11,match:/^(1[3-9]{1}[0-9]{9})$/},
+			smscode:{match:/([1-9]{1})+(\d*$)/}
+		}
+		var check = function(key,value){
+			var dom = $('input[name="'+key+'"]',formDom.DOM[0]);
+			if(handle[key]){
+				var min = handle[key].min;
+				if(min && value.length<min){
+					root.alert(dom.data('lang')+'不能小于 '+min+' 个字符',2,function(){dom.focus();formDom.disabled = false;});
+					return;
+				}
+				var max = handle[key].max;
+				if(max && value.length>max){
+					root.alert(dom.data('lang')+'不能大于 '+max+' 个字符',2,function(){dom.focus();formDom.disabled = false;});
+					return;
+				}
+				var match = handle[key].match;
+				if(match && !match.test(value)){
+					root.alert(dom.data('lang')+'格式不正确',2,function(){dom.select().focus();formDom.disabled = false;});
+					return;
+				}
+			}
+			return true;
+		}
+		var register_submit = function(){
+			if(formDom.disabled)return;
+			formDom.disabled = true;
+			var form = formDom.form({
+				auto:true,
+				dataType:'json',
+				check:function(data){
+					for(var k in data){
+						if(!check(k,data[k]))return;
+					}
+					return data;
+				},
+				success:function(json){
+					root.alert(json.msg || '注册成功',1,function(){
+						if(root.goto)root.self.location = json.goto;
+						root.resetUserData(json.data);
+						root.load(root.appUrl);
+					})
+				},
+				error:function(json){
+					var msg = typeof json === 'string'?json:(json.msg || '内部错误');
+					root.log(json,'Error','color:red');
+					root.alert(msg,2,function(){
+						formDom.disabled = false;
+					});
+				}
+			});
+		}
+		$('a.btn.submit',formDom.DOM[0]).click(register_submit);
+		$('input',formDom.DOM[0]).on('focus',function(){
+			var pnode = this.parentNode.parentNode.parentNode;
+			pnode.classList.add('focus');
+		}).on('blur',function(){
+			var pnode = this.parentNode.parentNode.parentNode;
+			pnode.classList.remove('focus');
+		});
+		formDom.on('keyup',function(e){
+			if(e.keyCode == 13){
+				for(var i=0;i<this.length;i+=1){
+					if(this[i].type!='hidden' && this[i].type!='radio' && this[i].name){
+						if(this[i].value == ''){
+							this[i].focus();
+							return;
+						}
+					}
+				}
+				register_submit();
+			}
+		});
+	},
+	home_list:function(root,pjax){
+		if(root.user.uid==0)return;
+		var defultSceneListIndex = function(c){return window.sceneListIndex>=0?window.sceneListIndex:1}
+		if(root.urls[4]){
+			root.windows(root.dir + 'game/frame/index/'+root.urls[4]+'/'+root.urls[3],{sceneListIndex:defultSceneListIndex()});
+			return;
+		}
+		var sceneDom = document.getElementById('scene-list');
+		var musicDom = document.getElementById('music-list');
+		if(!sceneDom)return;
+		var param = root.urls[3].split('-');
+		var spage = param[2]?parseInt(param[2]):1;
+		var mpage = param[3]?parseInt(param[3]):1;
+		var selected = function(arr,i){
+			if(arr.length == 0)return;
+			$(sceneDom).removeClass('isFirst isLast');
+			$('.list>a',sceneDom).removeClass('selected start');
+			if(arr.length>=2){
+				if(arr[i-1]){
+					arr[i-1].classList.add('start');
+				}else{
+					sceneDom.classList.add('isFirst');
+					arr[i].classList.add('start');
+				}
+			}
+			if(arr.length == 1){
+				arr[0].classList.add('start');
+				$(sceneDom).addClass('isFirst isLast');
+			}else if(i == arr.length-1){
+				sceneDom.classList.add('isLast');
+			}
+			arr[i].classList.add('selected');
+			sceneDom.value = $(arr[i]).data('id') || 0;
+			window.sceneListIndex = i;
+		}
+		var sceneInit = function(){
+			var scene = $('.list-main>.list>a',sceneDom);
+			var slen = scene.DOM.length;
+			var index = defultSceneListIndex(1);
+			var total = parseInt(sceneDom.getAttribute('total') || 1);
+			$('#scene-list>a.tls').on('click',function(){
+				var _this = this;
+				var isNext = this.classList.contains('next');
+				if(total > 1){
+					if(sceneDom.classList.contains('isFirst') && !isNext){
+						root.load(root.appUrl + '/home/list/'+param[0]+'-'+param[1]+'-'+(spage<total?spage+1:1)+'-'+mpage);
+						return;
+					}
+					if(sceneDom.classList.contains('isLast') && isNext){
+						root.load(root.appUrl + '/home/list/'+param[0]+'-'+param[1]+'-'+(spage>1?spage-1:total)+'-'+mpage);
+						return;
+					}
+				}
+				scene.each(function(dom,i){
+					if(dom.classList.contains('selected')){
+						index = i;
+						$(dom).removeClass('selected');
+					}
+				});
+				index += isNext?1:-1;
+				index = Math.max(index,0);
+				index = Math.min(index,slen-1);
+				var parents = scene.DOM[index].parentNode.parentNode.parentNode;
+				//var isbuy = parseInt(scene.DOM[index].getAttribute('isbuy')||0);
+				
+				selected(scene.DOM,index);
+			});
+			selected(scene.DOM,index);
+		}
+		sceneInit();
+		
+		var selectDom = $('.mlist>a',musicDom);
+		var selectPage = $('.page>.list>a');
+		var selection = 0;
+		var selectType = 'music';
+		selectDom.each(function(dom,index){
+			dom.setAttribute('tabindex',index);
+			dom.setAttribute('music',index);
+			dom.music = index;
+		}).on('click',function(){
+			var url = root.dir + 'game/frame/index/'+sceneDom.value + '-' + (this.getAttribute('data-id') || 0)+'/'+root.urls[3];
+			var title = $('span.title',this).text() + ' - VSong.TV';
+			if(document.body.stats != 'full')root.fscn.action('full');
+			root.windows(url,title,{sceneListIndex:defultSceneListIndex()});
+			root.noteOn = null;
+		});
+		selectPage.each(function(dom,index){
+			index = selectDom.DOM.length + index;
+			dom.setAttribute('tabindex',index);
+			dom.index = index;
+		});
+		$('.mlist>a[music="'+(window.musicListIndex || 0)+'"]',musicDom).focus();
+		root.controls({self:window}).on = function(e){
+			if(document.body.classList.contains('game'))return root.noteOn = null;
+			if(e.intensity<30)return;
+			if(e.keyCode == 46)return $('a.tls.prev').click();
+			if(e.keyCode == 42 || e.keyCode ==44)return $('a.tls.next').click();
+			if([38,40,35,36].indexOf(e.keyCode)!=-1){
+				if(selectDom.DOM.length==0)return;
+				selectType = 'music';
+				selection = $('[music="'+(window.musicListIndex||0)+'"]').DOM[0].music || 0;
+				if(e.keyCode == 38 || e.keyCode == 40)selection -= 1;
+				else selection += 1;
+				if(selection<0)selection = selectDom.DOM.length-1;
+				if(selection >= selectDom.DOM.length)selection = 0;
+				window.musicListIndex = selection;
+				return $('.mlist>a[music="'+selection+'"]').focus();
+			}
+			if(e.keyCode == 48 || e.keyCode ==47){
+				if(selectPage.DOM.length==0)return;
+				var opened = $('.page>.list>a.open');
+				selectType = 'page';
+				selection = opened.DOM,length>0?opened.DOM[0].index:0;
+				if(e.keyCode == 47)selection += 1;
+				else selection -= 1;
+				if(selection < selectDom.DOM.length)selection = selectPage.DOM.length + selectDom.DOM.length - 1;
+				if(selection >= selectPage.DOM.length + selectDom.DOM.length)selection = selectDom.DOM.length;
+				var dom = $('.page>.list>a[tabindex="'+selection+'"]');
+				if(dom.DOM.length==0)return;
+				if(!dom.DOM[0].href)return dom.click();
+				else return root.load(dom.DOM[0].href);
+			}else if([49,52,55,57].indexOf(e.keyCode)!=-1){
+				$('[music="'+(window.musicListIndex||selection)+'"]').click();
+			}
+		}
+	},
+	home_advice:function(root){
+		$('#vcode').click(function(){
+			var url = this.getAttribute('url') + '?s=' + Date.now();
+			this.innerHTML = '<i class="btn verify" style="background-image:url('+url+')"></i>';
+		});
+		if(root.user.uid==0){
+			root.load(root.dir+'main/common/login');
+			return;
+		}
+		$('textarea').on('keyup',function(){
+			var num = $('textarea').val().length;
+			$('span.words').text(num+"/500字");
+			if(num===500){
+				$('span.words').css('color','red');
+			}else{
+				$('span.words').css('color','#9fb1b1');
+			}
+		})
+		var adviceBox = $('#adviceBox');
+		$('#adviceBtn').click(function(){
+			adviceBox.form({
+				auto:true,
+				dataType:'json',
+				check:function(data){
+					if(data.type){
+						data.type = $('input[type=radio]:checked').val();
+					}
+					if(!data.connect){
+						root.alert('请输入内容', 'warn');
+						return;
+					}
+					if(!data.phone){
+						root.alert('请填写联系方式','warn');
+						return;
+					}
+					if(!data.vcode){
+						root.alert('请填写验证码','warn');
+						return;
+					}
+					return data;
+				},
+				success:function(json){
+					if(json.type == "success"){
+						root.alert(json.msg || '数据提交成功',2,function(){
+							window.location.href='';
+						});
+					}
+				},
+				error:function(json){
+					if(json.type == "error"){
+						root.alert(json.msg||'操作失败','sad',2);
+					}
+				}
+			})
+		})
+	},
+	home_help:function(root){
+		$('.title_help span').click(function(){
+			var index = $(this).attr('state');
+			$('.title_help span.open').removeClass('open');
+			$('.btn_cont.open').removeClass('open');
+			$('.title_help span').DOM[index].classList.add('open');
+			$('.btn_cont').DOM[index].classList.add('open');
+		})
+		$('.quest_type>a').click(function(){
+			$('.quest_type>a.btn.open').removeClass('open');
+			$(this).addClass('open');
+		})
+	}
+}
+
+//
+window.dir = VSong.dir;
+VSong.getUrlParams = function(url){
+	url = url || document.URL;
+	return url.split('//'+document.domain+window.dir)[1].split('/');
+}
+
+VSong.tools = {
+	getUserGroup:function(id){
+		if(id < 0)return '违规用户';
+		if(id >=0 && id <100)return '普通用户';
+		if(id >=100 && id < 150)return '版主';
+		if(id >=150 && id < 200)return '超级版主';
+		if(id >=200 && id < 250)return '管理员';
+		if(id >=250 && id <= 255)return '创始人';
+		
+	},
+	getUserType:function(id){
+		switch(id){
+			case 1:id = '机构';break;
+			case 2:id = '内部';break;
+			case 3:id = '教师';break;
+			case 4:id = '家长';break;
+			default:id = '学员';break;
+		}
+		return id;
+	},
+	getUserGender:function(id, size){
+		if(size)return '<i class="icon icon-gender" gender="'+id+'" size="'+icon+'"></i>';
+		switch(id){
+			case 1:id = '男';break;
+			case 2:id = '女';break;
+			default:id = '保密';break;
+		}
+		return id;
+	}
+}
+
+VSong.init = function(){
+	var root = this,
+	showUsermenu = function(root){
+		var isEnter = false;
+		$('header>.usermenu').on('mouseenter',function(e){
+			if(isEnter || root.user.uid <= 0)return;
+			isEnter = 1;
+			root.body.addClass('usermenu-open');
+			this.onmouseleave = function(){
+				this.onmouseleave = null;
+				if(!isEnter)return;
+				root.timeout(.5,function(){
+					if(!isEnter)this.stop();
+				},function(){
+					if(!isEnter)return;
+					root.body.removeClass('usermenu-open');
+					isEnter = null;
+				});
+			}
+		});
+		root.body.click('.logout',function(){
+			var box =new root.box({
+				type:'confirm',auto:1,smile:'warn',buttonText:'立即退出',content:'确定要退出当前帐号吗？',
+				confirm:function(){
+					box.close(function(){
+						root.resetUserData(null);
+						root.self.location = root.appUrl;
+					});
+				}
+			});
+		});
+		
+		$('#member-menu').on('mouseenter',function(){
+			isEnter = null;
+			this.onmouseleave = function(){
+				root.body.removeClass('usermenu-open');
+				this.onmouseleave = null;
+			}
+		});
+	};
+	root.browser._pre = root.browser.pre.replace(/-/g,'');
+	root.body = $(document.body);
+	//视所有IE版本为非W3C标准浏览器
+	if(root.self.navigator.userAgent.indexOf('Trident')!=-1)$('html').removeClass('w3c');
+	root.urls = root.getUrlParams();
+	/*全屏*/
+	root.fscn = new root.fullScreen(document.body);
+	$('.fullscreen').click(root.fscn.toggle);
+	root.alwaysFullscreen = function(){
+		var screen = document.body.getAttribute('screen');
+		if(screen != 'full' || root.self.screen.height != root.self.innerHeight)root.fscn.toggle();
+	}
+	//警告框
+	root.alert = function(msg,smile,timeout,callback){
+		if(typeof smile === 'number'){
+			if(timeout)callback = timeout;
+			timeout = smile;
+			smile = 'warn';
+		}
+		var box = new root.box({type:'alert',smile:smile||'warn',content:'<div type="tips">'+msg+'</div>',auto:1,timeout:timeout || null,close:function(){
+			callback && callback();
+			box =  null;
+		}});
+	};
+	//Pjax
+	var pjax = new root.pjax({
+		selector:'.pjax',
+		alwaysToSelf:true,
+		container:'#container',
+		titleSuffix: ' - VSong.TV',
+		start:function(){
+			root.body.removeClass('ready game');
+			root.boxClear && root.boxClear();
+		},
+		complete:function(){
+			var urls = root.getUrlParams();
+			var crrentUrl = document.URL.split('://'+document.domain)[1];
+			var target = $('header>.nav>a.btn[href^="'+crrentUrl+'"]');
+			$('header>.nav>a.btn.open').removeClass('open');
+			if(target && urls[2]){
+				target.addClass('open');
+			}else{
+				$('header>.nav.comm>a.btn:first-child').addClass('open');
+			}
+			root.mod = urls[1] || 'home';
+			root.page = urls[2] || 'index';
+			root.urls = urls;
+			root.ready();
+			root.body.addClass('ready').attr({mod:root.mod,page:root.page});
+			root.modules.__construct(root,pjax);
+		},
+		selection:function(e){
+			if(this.classList.contains('login-submit')){
+				var formid = this.getAttribute('formid');
+				if(!formid)return;
+				$('#'+formid).form(root.loginOptions(root));
+				return true;
+			}
+		}
+	});
+	root.resetUserData = function(user){
+		var html = ['',''];
+		if(typeof user === 'object')root.merge(root.user,user);
+		if(root.user.uid <= 0 || user === null){
+			if(!user){
+				root.cookie('author','',{expire:-1e5});
+				root.user = {uid:0,username:'',gender:0,type:0,group:0,level:0,exp:0,score:0,number:0};
+			}
+			html[1] = '<a class="btn login"><span>登录</span></a> <a class="btn pjax" href="'+root.appUrl+'/common/register"><span>注册</span></a>';
+		}else{
+			var score = root.user.score>0 && root.user.number>0?root.user.score / root.user.number:0;
+			html[0] += '<div class="userinfo"><p class="ts">'+root.user.username+'</p><p><span title="UID"></span>'+root.user.uid+'</p></div>';
+			html[0] += '<div class="userdata">'+
+				'<p>'+
+					'<span class="ilb" title="等级">'+root.user.level+'</span> '+
+					'<span class="ilb" title="类型"><a class="ilb">'+root.tools.getUserType(root.user.type)+'</a></span>'+
+				'</p>'+
+				'<p>'+
+					'<span class="ilb" title="得分">'+score.toFixed(2)+'</span> '+
+					'<span class="ilb" title="权限"><a class="ilb">'+root.tools.getUserGroup(root.user.group)+'</a></span>'+
+				'</p>'+
+				'<p>'+
+					'<span class="ilb" title="经验">'+root.user.exp+'</span> '+
+					'<span class="ilb" title="倍数">'+root.user.multiple+'</span>'+
+				'</p>'+
+				'<p><span class="ilb" title="注册时间"></span> <span class="il">'+root.date('Y/m/d',root.user.dateline)+'</span></p>'+
+			'</div>';
+			html[0] += '<div class="usermenu justify">'+
+				'<a class="btn ts memberurl" onclick="window.open(\''+root.url+'member/manage/study\')"><i class="icon"></i>个人中心</a> '+
+				'<a id="backTo" class="btn ts pjax homepage"><i class="icon"></i>返回列表</a> '+
+				'<a class="btn ts logout"><i class="icon"></i>退出</a>'+
+			'</div>';
+			html[1] = '<a class="avatar"><img src="'+root.dir + 'avatar/small/'+root.user.uid+'" /></a>';
+		}
+		$('#member-menu').html(html[0]);
+		$('header>.usermenu').html(html[1]);
+		html.splice(0,2);html = null;
+	}
+	root.load = function(url,options){pjax.reload(url,options)}
+	//在线
+	root.online = function(data){
+		root.isOnline = true;
+		root.resetUserData(data.user);
+	}
+	//离线
+	root.offline = function(data){
+		root.isOnline = false;
+		root.merge(root.user,{
+			level:0,
+			socre:0,
+			number:0,
+			exp:0
+		});
+		root.resetUserData();
+	}
+	
+	showUsermenu(root);
+	//登录框
+	root.loginBox(root);
+	
+	//初始化模块
+	root.modules.__construct(root,pjax);
+	
+	$(root.self).on('dragstart',function(e){
+		e.preventDefault();
+		return false;
+	}).on('mouseup',function(){
+		//root.alwaysFullscreen();
+		document.body.classList.remove('eye-look');
+	}).on('keydown',function(e){
+		if([8,112,113,114,115,116,117,118,119,120,121,122,123].indexOf(e.keyCode) !=-1){
+			if(e.keyCode == 8 && root.isEditorDom(e.target))return e.returnValue;
+			e.preventDefault();
+			if(e.keyCode == 122)root.fscn.toggle();
+			return false;
+		}
+	});
+	root.ready();
+	document.body.classList.add('ready');
+
+	window.oncontextmenu = function(){return false}
+};
+
+;(function(root){
+
+	root.getMidiFilter = function(){
+		if(typeof root.storage === 'function')root.storage = root.storage();
+		var value = root.storage.get('midi_filter');
+		return value?value.split(','):[];
+	}
+	var midi;
+	var convertKey = function(k){
+		var key = 0;
+		switch(k){
+			case 65:
+			case 32:key = 36;break;//底鼓
+			case 83:
+			case 68:key = 38;break;//军鼓
+			case 72:
+			case 74:
+			case 66:key = 42;break;//踩镲
+			case 75:
+			case 85:key = 46; break;//开嚓
+			case 89:key = 49; break;//强音镲
+			case 87:key = 48; break;//高音桶鼓
+			case 69:key = 47; break;//中音通鼓
+			case 70:key = 43; break;//低音桶鼓
+			case 82:
+			case 73:key = 51;break;//叮叮镲
+		};
+		return key;
+	}
+	// 初始化控制器
+	root.controls = function(options){
+		options = root.merge({
+			self:window,
+			before:null,
+			success:null,
+			change:null,
+			on:null,
+			off:null,
+			error:null
+		},options);
+		var noteOn = function(e){
+			if(midi.disabled)return;
+			var on = midi.on || options.on;
+			on && on(e);
+		};
+		var noteOff = function(e){
+			if(midi.disabled)return;
+			options.off && options.off(e);
+		};
+		(options.self || root.self).addEventListener('keydown',function(e){
+			var key = convertKey(e.keyCode);
+			key > 0 && noteOn({keyCode:key,intensity:120,timeStamp:e.timeStamp});
+		});
+		(options.self || root.self).addEventListener('keyup',function(e){
+			var key = convertKey(e.keyCode);
+			key > 0 && noteOff({keyCode:key,timeStamp:e.timeStamp});
+		});
+		if(midi){
+			midi.on = root.noteOn || noteOn;
+			return midi;
+		}
+		midi = new root.MIDI({
+			filter: root.getMidiFilter(),
+			before: options.before,
+			success: options.success,
+			change: function(e){
+				if(e.port.type == 'input'){
+					options.change && options.change(e.port);
+					if(e.port.connection != 'open' && !e.port.checked){
+						e.port.checked = true;
+						var timer = setTimeout(function(){midi.init();clearTimeout(timer);},200);
+					}
+				}
+			},
+			on: noteOn,
+			off:noteOff,
+			error:options.error
+		}).init();
+		root.midi = midi;
+		return midi;
+	}
+})(VSong);
+;(function(root){
+	"use strict";
+	var version = (function(v){
+		var str = v;
+		for(var i = 0; i < 6 - v.toString().length; i+=1) str += ' ';
+		return str;
+	})(root.engineVersion?root.engineVersion:'Beta');
+	root.log = function(data, title, style){
+		if(typeof data === 'string' && !style){
+			style = title || 'color;#00a09d';title = data;console.log('%c'+title, style);
+		}else if(style && title && data)console.log('%c'+title, style, data);
+		else if(typeof data === 'string' && !title && !style)console.log('%c'+data,'color:#00a09d');
+		else console.log(data);
+	}
+	root.url = window.top.location.protocol + '//'+document.domain+root.dir;
+	root.appUrl = root.url + root.name;
+	if(typeof root.storage === 'function')root.storage = root.storage();
+	root.log([
+		'\t','\t',
+		'____     __  ________',
+		'\\   |   / / /   ___  \\',
+		' |  |  / /  |  |   |_|   ______   _______    ______',
+		' |  | / /   |  |____    /  __  \\  |  __  \\  /  __  \\',
+		' |  |/ /    \\______  \\  |  | | |  |  | | |  |  | | |',
+		' |    /      __    | |  |  | | |  |  | | |  |  | | |',
+		' |   /      |  |___| |  |  |_| |  |  | | |  |  |_| |',
+		' |__/       \\________/  \\______/  |__| |_|  \\____  |',
+		'                                             _   | |',
+		'       VSong.TV  Engine Version ' + version + '      | |__| |',
+		'  *--------------------------------------*  \\______/',
+		'\t\t\t  西安微熊科技有限公司','\t','\t'
+	].join('\n'),'color:#00a09d;');
+
+	root.ready = function(callback){
+		var body = document.body;
+		var timer = parseInt(body.getAttribute('loading'));
+		if(window.self != window.top){
+			body.style.background = 'none';
+			var slt = '#background,footer,.fullscreen';
+			if(root.page != 'summary')slt+=',header';
+			else slt+=',header .warp.justify';
+			$(slt).css('display','none');
+			$('#interface').css('top','0');
+		}
+
+		body.setAttribute('stats','loading');
+		root.timeout(0.6, null, function(){
+			document.body.setAttribute('stats','ready');
+			if(callback){
+				callback.call(document.body);
+				callback = null;
+			}
+		});
+	}
+	
+	if(!root.self.THREE)root.self.THREE = {};
+	if(typeof Detector === 'object' && !Detector.webgl){
+		var obj = {};
+		if(root.self.WebGLRenderingContext){
+			obj.code = 1;
+			obj.msg = '您的浏览器不支持.';
+		}else{
+			obj.code = 2;
+			obj.msg = '您的显卡不支持.';
+		}
+		root.error && root.error(obj, root.self.THREE);
+		delete root.self.THREE;
+		return;
+	}
+	
+	//初始化
+	root.init && root.init.call(root,root.self.THREE);
+	delete root.self.THREE;
+	if(root.useWorker){
+		//尝试连接服务器
+		try{
+			// 发起 Worker 请求，可用他来处理
+			var worker = new Worker(root.dir + root.name + '/'+(root.workerMod || root.mod)+'/worker/'+root.ecode+'-'+root.version);
+			// 监听成功事件
+			worker.addEventListener('message', function(e){
+				// 传值给 root 对象
+				root.user = e.data.user;
+				root.online && root.online.call(root, e.data);
+				worker.terminate();// 结束执行
+			});
+			// 监听失败事件
+			worker.addEventListener('error', function(e){
+				// 离线操作
+				root.offline && root.offline.call(root, e);
+			});
+		}catch(e){
+			// 离线操作
+			root.offline && root.offline.call(root, e);
+		}
+	}else{
+		root.online && root.online.call(root, root.user);
+	}
+	root.self.addEventListener('contextmenu',function(e){
+		e.preventDefault();
+		if(root.contextmenu)root.contextmenu(e);
+		return false;
+	});
+})(VSong);
+VSong = undefined;
+

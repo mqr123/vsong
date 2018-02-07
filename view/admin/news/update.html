@@ -1,0 +1,149 @@
+<include file="common/common" />
+<style type="text/css">
+	span.addBtn {display: inline-block;width: 60px;height: 60px;background: #ddd;text-align: center;}
+	span.addBtn::after,span.addBtn::before {content: '';position: absolute;width: 30px;height: 3px;border-radius: 2px;background: #fff;margin: 30px -15px;}
+	span.addBtn::before {transform: rotate(90deg);}
+	.files {display: none;}
+	ul {display: block;list-style: none;}
+	li {width: 90px;margin-right: 5px;display: inline-block;text-align: center;position:relative;}
+	img {width: 90px;height: 90px;background: #fff;}
+	li>p {font-size: 12px;color: #777;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;}
+	.deleteBtn{display:none;width: 20px;height: 20px;border-radius: 50%;background: #ddd;position: absolute;top: 0;right: 0;transform: rotate(45deg);}
+	.deleteBtn::after,.deleteBtn::before {content: '';position: absolute;width: 12px;height: 2px;border-radius: 2px;background: #777;margin: 9px -6px;}
+	.deleteBtn::before {transform: rotate(90deg);}
+	li:hover .deleteBtn{display: block;}
+</style>
+<body class="childrenBody">
+<fieldset class="layui-elem-field layui-field-title" style="margin-top: 5px;">
+  <legend>
+  <label style="font-size: 15px; color: red;">发布详情信息</label>&nbsp;
+	<a class="layui-btn layui-btn-normal layui-btn-mini" href="{:U('news/index')}">返回列表</a>
+  </legend>
+</fieldset>
+	<!--{loop $data['list'] as $key}-->
+	<!--{if ($key['uid']==0)}-->
+	<form id="conts-form" class="layui-form" style="width:80%;" action="{:U('news/update/'.$key['nid'].'-post')}" method="post" enctype="multipart/form-data">
+		<div class="layui-form-item">
+			<label class="layui-form-label">发布者</label>
+			<div class="layui-input-block">
+			<input type="text" class="layui-input" disabled name="uid" lay-verify="required" value="{$_SESSION['username']}">
+			</div>
+		</div>
+		<div class="layui-form-item">
+		  <label class="layui-form-label">新闻类型</label>
+		  <div class="layui-input-block">
+		    <!-- {if $key['type']==0} -->
+			<input type="text" class="layui-input layui-disabled" disabled value="文章">
+			<!-- {else if $key['type']==1} -->
+			<input type="text" class="layui-input layui-disabled" disabled value="招生">
+			<!-- {else if $key['type']==2} -->
+			<input type="text" class="layui-input layui-disabled" disabled value="产品">
+			<!-- {else if $key['type']==3} -->
+			<input type="text" class="layui-input layui-disabled" disabled value="招商">
+			<!-- {else if $key['type']==4} -->
+			<input type="text" class="layui-input layui-disabled" disabled value="公告">
+			<!-- {else if $key['type']==5} -->
+			<input type="text" class="layui-input layui-disabled" disabled value="活动">
+			<!-- {/if} -->
+			</div>
+		</div>
+		<div class="layui-form-item">
+			<label class="layui-form-label">标题</label>
+			<div class="layui-input-block">
+			<input type="text" class="layui-input" name="title" value="{$key['title']}">
+			</div>
+		</div>
+		<div class="layui-form-item">
+			<label class="layui-form-label">简介</label>
+			<div class="layui-input-block">
+			<input type="text" class="layui-input" name="summery" value="{$key['summery']}">
+			</div>
+		</div>
+		<div class="layui-form-item">
+			<label class="layui-form-label">内容</label>
+			<div class="layui-input-block">
+				<textarea class="layui-textarea" name="content" form="conts-form" >{$key['content']}</textarea>
+				
+			</div>
+		</div>
+		<div class="layui-form-item">
+			<label class="layui-form-label">图片/视频</label>
+			 <input  type="file" name="files"  multiple="multiple" class="layui-btn layui-btn-primary"/>
+			 <ul class="layui-form-item" style="margin-left: 110px;">
+			 		{if !empty($key['files'])}
+			 		{_ $files=json_decode($key['files']);}
+			 		{for $i=0;$i<count($files);$i++}
+			 			<li><img src="/{$files[$i]}" style="width: 60px;height: 50px;"/></li>
+			 		{/for}
+			 	{/if}
+			 
+			 </ul>
+		</div>
+		<input type="hidden" name="formhash" value="{$this->formhash()}">
+		<div class="layui-form-item">
+			<div class="layui-input-block">
+				<button  class="layui-btn" lay-submit="">立即提交</button>
+				<button type="reset" class="layui-btn layui-btn-primary">重置</button>
+		    </div>
+		</div>
+	</form>
+	<!--{else}-->
+		<div class="layui-form-item">
+			<label class="layui-form-label">发布者</label>
+			<div class="layui-input-block">
+				<input type="text" class="layui-input" disabled name="uid" lay-verify="required" value="{$key['uid']}">
+			</div>
+		</div>
+		<div class="layui-form-item">
+		  <label class="layui-form-label">新闻类型</label>
+		  <div class="layui-input-block">
+		    <!-- {if $key['type']==0} -->
+			<input type="text" class="layui-input" disabled value="文章">
+			<!-- {else if $key['type']==1} -->
+			<input type="text" class="layui-input" disabled value="招生">
+			<!-- {else if $key['type']==2} -->
+			<input type="text" class="layui-input" disabled value="产品">
+			<!-- {else if $key['type']==3} -->
+			<input type="text" class="layui-input" disabled value="招商">
+			<!-- {else if $key['type']==4} -->
+			<input type="text" class="layui-input" disabled value="公告">
+			<!-- {else if $key['type']==5} -->
+			<input type="text" class="layui-input" disabled value="活动">
+			<!-- {/if} -->
+			</div>
+		</div>
+		<div class="layui-form-item">
+			<label class="layui-form-label">标题</label>
+			<div class="layui-input-block">
+			<input type="text" class="layui-input" disabled value="{$key['title']}">
+			</div>
+		</div>
+		<div class="layui-form-item">
+			<label class="layui-form-label">简介</label>
+			<div class="layui-input-block">
+			<input type="text" class="layui-input" disabled value="{$key['summery']}">
+			</div>
+		</div>
+		<div class="layui-form-item">
+			<label class="layui-form-label">内容</label>
+			<div class="layui-input-block">
+				<textarea class="layui-textarea" disabled>{$key['content']}</textarea>
+			</div>
+		</div>
+		<div class="layui-form-item">
+			<label class="layui-form-label">图片/视频</label>
+			<ul class="layui-form-item" style="margin-left: 110px;">
+				{if !empty($key['files'])}
+				<li><img src="/{$key['files']}" style="width: 60px;height: 50px;"/></li>
+				{/if}
+			</ul>
+	
+		</div>
+	<!--{/if}-->
+	<!--{/loop}-->
+
+	<resource type="js" name="add" time="3">
+	  <file src="admin/add">
+	</resource>
+</body>
+</html>

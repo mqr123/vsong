@@ -1,0 +1,45 @@
+<include file="common/header" />
+	<div class="home-student">
+		<!--<?php 	
+		$db=new DB('school');
+		$uid=$_G['param'][0];
+		$name=$db->field('name')->where("uid=$uid")->search(0,'name');
+		$name=!empty($name)?$name:'维颂';
+		unset($db);
+?>-->
+		<div class="banner"><span>{$name}，赢在音乐的起跑线</span></div>
+
+		<div class="warp">
+			<div class="index_title">
+				<h2>优秀学员展示</h2>
+				<i></i>
+				<span>STUDENT SHOW</span>
+			</div>
+			<div class="stu_window">
+				<!-- {loop $data['list'] as $key}  -->
+				<div class="stu_show">
+					<div><span></span></div>
+					<p>{$key['username']}/{$key['age']}</p>
+					<p>架子鼓</p>
+				</div>
+				<!-- {/loop} -->
+			</div>
+			<div class="index_title">
+				<h2>学员展示</h2>
+				<i></i>
+				<span>STUDENT SHOW</span>
+			</div>
+			<div class="stu_window">
+				<!-- {loop $data['list'] as $key}  -->
+				<div class="stu_show">
+					<div><span></span></div>
+					<p>{$key['username']}/{$key['age']}</p>
+					<p>架子鼓</p>
+				</div>
+				<!-- {/loop} -->
+			</div>
+			<div class="join"><a class="btn">加入我们</a></div>
+		</div>
+	</div>	
+<include file="common/footer" />
+

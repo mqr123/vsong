@@ -1,0 +1,54 @@
+<include file="common/common" />
+<body class="childrenBody">
+	<blockquote class="layui-elem-quote news_search">
+		<div class="layui-inline">
+		    <div class="layui-input-inline">
+		    	<input type="text" value="" disabled placeholder="暂时未开放"  name="kw" class="layui-input search_input">
+		    </div>
+		    <a class="layui-btn search_btn">查询</a>
+		</div>
+		<div class="layui-inline">
+			<a class="layui-btn layui-btn-normal" href="{:U('help/add')}">添加帮助</a>
+		</div>
+		<!--<div class="layui-inline">
+			<a class="layui-btn layui-btn-danger batchDel">批量删除</a>
+		</div>-->
+		
+	</blockquote>
+	<div class="layui-form news_list">
+	  	<table class="layui-table">
+		    <thead>
+				<tr>
+					<th>问题</th>
+					<th>答案</th>			
+					<th>操作</th>
+				</tr> 
+		    </thead>
+		    <tbody class="users_content">
+		   <!--{loop $data['list'] as $key}-->
+		    	<tr>
+					<td>{$key['question']}</td>
+					<td>{$key['answer']}</td>			
+					<td>
+					<a href="{:U('help/update/'.$key['id'])}" class="layui-btn layui-btn-mini">修改</a>
+					<a href="{:U('help/delete/'.$key['id'])}" class="layui-btn layui-btn-normal layui-btn-mini" onclick="Javascript:if(confirm('确定要删除吗？')){return true;}return false;" >删除</a>
+					</td>
+				</tr> 
+			  <!--{/loop}-->	
+		    </tbody>
+		</table>
+	</div>
+	<div id="page">
+<!--{for $i=1;$i <= $data['total'];$i+=1}-->
+   {if $data['page'] == $i}
+    <a class="btn checked">第{$i}页</a>  
+  {else}
+	<a class="btn pjax" href="{:U('help/index/'.$i)}">第{$i}页</a>  
+  {/if}
+<!--{/for}-->
+	</div>
+	<resource type="js" name="show" time="30">
+	  <file src="admin/show" />
+	</resource>	
+</body>
+</html>

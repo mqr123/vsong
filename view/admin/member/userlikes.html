@@ -1,0 +1,119 @@
+<include file="common/common" />
+<body class="childrenBody">
+<blockquote class="layui-elem-quote news_search">
+	<div class="layui-inline">
+		<a class="layui-btn layui-btn-warm " href="{:U('member/deleted')}">已删除</a>
+	</div>
+	<div class="layui-inline">
+		<form method="post" action="{:U('member/userlikes/post')}">
+		 <div class="layui-input-inline">
+	    	<input type="text" name="school" placeholder="请输入机构全名" class="layui-input search_input" value="{$search!='ye'?$search:null}">
+	    </div>
+	     <button class="layui-btn " type="submit" lay-filter="addUser">查询</button>
+		</form>
+	</div>
+	<div class="layui-inline" align="right">
+		学员数量：
+		<a class="layui-btn layui-btn-normal" value="{$user_num?$user_num:0}" id="user_num">{$user_num?$user_num:0}个</a>
+	</div>
+	<div class="layui-inline">
+		 <div class="layui-input-inline">
+	    	充值总额：
+	    	<a class="layui-btn layui-btn-danger" value="{$recharge?$recharge:0}" id="recharge">  {$recharge?$recharge:0} 元</a>
+	    </div>
+	</div>
+	<div class="layui-inline">
+		 <div class="layui-input-inline">
+	    	消费总额：
+	    	<a class="layui-btn " value="{$buy?$buy:0}" id="buy">  {$buy?$buy:0} 元</a>
+	     </div>
+	</div>
+	
+	<div class="layui-inline" align="right">
+		<a class="layui-btn layui-btn-normal" >短信发</a>
+	</div>
+	<div class="layui-inline">
+	<a class="layui-btn layui-btn-danger" id="send">充值发送</a>
+	</div>
+	<div class="layui-inline">
+	<a class="layui-btn" id="buy">购买发送</a>
+	</div>
+	<div class="layui-inline">
+	<form action="{:U('message/add/add')}" id="message_add"></form>
+	<form action="{:U('message/add/buy')}" id="message_buy"></form>
+	<a class="layui-btn layui-btn-normal" href="{:U('member/index')}">返回</a>
+	</div>
+</blockquote>
+<div class="layui-form news_list">
+<table class="layui-table">
+<thead>
+	<tr>
+		<th>加盟</th>
+		<th>UID</th>
+		<th>用户名</th>
+		<th>电话</th>
+		<th>所属机构</th>
+		<th>类型</th>
+		<th>基本信息</th>
+		<th>充值记录</th>
+		<th>学习记录</th>
+		<th>购买列表</th>
+		<th>等级列表</th>
+		<th>操作</th>
+	</tr> 
+</thead>
+<tbody class="users_content">
+	  <!--{loop $data['list'] as $key}-->
+	<tr>
+		<td>
+			<a class="layui-btn layui-btn-danger layui-btn-mini" href="{:U('member/addSchool/'.$key['uid'])}">加盟</a>
+		</td>
+		<td>{$key['uid']}</td>
+		<td>{$key['username']}</td>
+		<td>{$key['phone']}</td>
+		<!--{if $key['sid']==0}-->
+		<td>微熊科技</td>
+		<!-- {else} -->
+		<td>{$key['name']}</td>
+		<!-- {/if} -->
+		<td>学生</td>
+		<td>
+			<a class="layui-btn  layui-btn-mini" href="{:U('member/show/'.$key['uid'])}">详情</a>
+		</td>
+		<td>
+			<a class="layui-btn layui-btn-normal layui-btn-mini" href="{:U('member/recharge/'.$key['uid'])}">充值</a>
+		</td>
+		<td>
+			<a class="layui-btn  layui-btn-danger layui-btn-mini" href="{:U('member/log/'.$key['uid'])}">学习</a>
+		</td>
+		<td>
+			<a class="layui-btn   layui-btn-mini" href="{:U('member/buy/'.$key['uid'])}">购买</a>	
+		</td>
+		<td>
+			<a class="layui-btn  layui-btn-normal layui-btn-mini" href="{:U('member/level/'.$key['uid'])}">等级</a>
+		</td>
+		<td>
+			<a class="layui-btn layui-btn-danger layui-btn-mini" href="{:U('member/delete/'.$key['uid'])}" onclick="return confirm('确认是否删除?');">删除</a>
+		</td>
+	</tr> 
+	<!--{/loop}-->	
+</tbody>
+</table>
+</div>
+<div id="page" >
+	<!--{for $i=1;$i <= $data['total'];$i+=1}-->
+	{if $data['page'] == $i}
+	<a class="btn checked">第{$i}页</a>
+	{else}
+	<a class="btn pjax" href="{:U('member/userlikes/'.$search.'-'.$i)}">第{$i}页</a>
+	{/if}
+	<!--{/for}-->
+</div>
+	<script type="text/javascript" src="{$this->dir}/public/js/admin/msg.js"></script>	
+<resource type="js" name="show" time="0">
+  <file src="admin/show" />
+
+</resource>
+	
+</body>
+</html>

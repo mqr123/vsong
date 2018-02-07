@@ -1,0 +1,56 @@
+<include file="common/header" />
+
+<div class="fxd logo frame-head"></div>
+<div class="fxd fy r frame-cont">
+	<div class="list-box fx">
+    	<div class="list-box-head">
+        	<i></i>
+            <div></div>
+        </div>
+    	<div class="list-box-cont form">
+        <form id="form-login" onKeyUp="if(event.keyCode == 13){ for(var i=0;i<this.length;i+=1){
+					if(this[i].type!='hidden' && this[i].name){
+						if(this[i].value == ''){
+							this[i].focus();
+							return;
+						}
+					}
+				};$('a.vBox-confirm',this).click()}" action="{:U('common/login/'.$_G['ecode'])}">
+        	<div class="items clr">
+            	<h3>用户登录</h3>
+            </div>
+        	<div class="items">
+            	<label>
+                	<span><i class="icon icon-user"></i> 帐　号</span>
+                	<div><input class="i1 i2" maxlength="15" name="account" autocomplete="off" autofocus type="text" placeholder="手机、用户名、UID"></div>
+                </label>
+            </div>
+        	<div class="items pwd">
+            	<a class="btn tls openyoureye"><i class="icon eye" size="22"></i></a>
+            	<label>
+                	<span><i class="icon icon-pass"></i> 密　码</span>
+                	<div>
+                    	<input class="i1 i2" maxlength="32" name="password" type="password" placeholder="请输入密码" oninput="$('#look-password').val(this.value)">
+                        <input id="look-password" style="margin-top:11px;" class="i1 i2" type="text" placeholder="请输入密码">
+                    </div>
+                </label>
+            </div>
+
+        	<div class="items clr" align="center">
+            	<label>
+                	<span></span>
+                	<div>
+                      <a class="btn login-submit vBox-confirm pjax" formid="form-login"><span>立即登录</span></a>
+                      <a class="btn pjax" href="{:U('common/register')}"><i class="icon icon-btn"></i> 没有帐号，点此注册</a>
+                    </div>
+                </label>
+            </div>
+            <div class="items clr" style="height:60px;">
+				{if !empty($_G['backUrl'])}<input type="hidden" name="url" value="{$_G['backUrl']}" />{/if}
+            	<input type="hidden" name="formhash" value="{$this->formhash()}" />
+            </div>
+        </form>
+        </div>
+    </div>
+</div>
+<include file="common/footer" />

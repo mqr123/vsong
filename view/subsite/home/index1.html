@@ -1,0 +1,74 @@
+<include file="common/header" />
+	<div class="scroll scroll_show" id="home-cover">
+		<!--scroll_img-->
+		<div class="scroll_img">
+			{for $i=0;$i<5;$i++} 
+			<div class="imgs img{$i}" data-index={$i}><a class="btn"><p class="slogan">维颂，赢在音乐的起跑线上</p></a></div>
+			{/for}
+		</div>
+		
+		<!--scroll_page-->
+		<div class="scroll_page">
+			{for $i=0;$i<5;$i++} 
+			<span data-index={$i}></span>
+			{/for}
+		</div>
+		
+		<!--scroll_title-->
+		<div class="warp scroll_ctrl">
+			<div class="warp">
+				<a class="btn fbtn flt-l" data-action='left'><i class="icon_o o-left"></i></a>
+				<a class="btn fbtn flt-r" data-action='right'><i class="icon_o o-right"></i></a>
+			</div>
+		</div>
+	</div>
+
+	<div class="bg_top">
+		<div class="warp">
+			<div class="index_title">
+				<h2>让更多的孩子学习一门乐器</h2>
+				<i></i>
+				<span>LET MORE CHILDREN LEARN A MUSICAL INSTRUMENT</span>
+			</div>	
+		</div>
+	</div>
+	
+	<div class="bg_mid">
+		<div class="about warp">
+			<div class="index_title">
+				<h2>关于我们</h2>
+				<i></i>
+				<span>ABOUT US</span>
+			</div>
+			<div class="about_content">
+				<div class="img_about"><img src="{$_G['dir']}public/images/subsite/about.png"/></div>
+				<div class="text_about">
+					<p>
+					{$summery}
+					</p>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<div class="bg_btm">
+		<div class="student warp">
+			<div class="index_title">
+				<h2>学员展示</h2>
+				<i></i>
+				<span>STUDENT SHOW</span>
+			</div>
+			<div class="stu_window">
+				<!-- {loop $data['list'] as $key}  -->
+				<div class="stu_show">
+					<div><span></span></div>
+					<p>{$key['username']}/{$key['age']}</p>
+					<p>架子鼓</p>
+				</div>
+				<!-- {/loop} -->
+			</div>
+			<div class="join"><a class="btn">加入我们</a></div>
+		</div>
+	</div>
+<include file="common/footer" />
+

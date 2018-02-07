@@ -1,0 +1,96 @@
+<include file="common/common" />
+<body class="childrenBody">
+<fieldset class="layui-elem-field layui-field-title" style="margin-top: 5px;">
+  <legend >
+	<label style="font-size: 15px; color: red;">消息详情</label>&nbsp;&nbsp;
+	<a class="layui-btn layui-btn-normal layui-btn-mini" href="{:U('message/index')}">返回列表</a>
+  </legend>
+</fieldset>
+ 
+	<form class="layui-form" style="width:60%;">
+		<!-- {loop $data['list'] as $key} -->
+		<div class="layui-form-item">
+			<label class="layui-form-label">发送者</label>
+			<div class="layui-input-block">
+			<input type="text" class="layui-input" disabled value="{$_SESSION['username']}">
+			</div>
+		</div>
+		<fieldset class="layui-elem-field layui-field-title" style="margin-top: 5px;">
+  <legend align="center">接收群体</legend>
+		<div class="layui-tab"  style="margin-top: 2px;">
+		  <ul class="layui-tab-title">
+		    <li  class="layui-this">固定账号</li>
+		    <li>群组</li>
+		
+		  </ul> 
+		  <div class="layui-tab-content" style="height: 60px;" >
+		  	 <div class="layui-tab-item layui-show" style="top: 180px;">
+		  	 	<br /><br />
+		  	 	<div class="layui-form-item">
+						<label class="layui-form-label">指定账号</label>
+						<div class="layui-input-block">
+							<input type="text" class="layui-input " name="to" value="{$key['to']}">
+						</div>
+					</div>
+		  	 </div>
+		  	 <div class="layui-tab-item" style="top: 180px;">
+		  	 		<br />
+						<div class="layui-form-item">
+						<label class="layui-form-label">群组</label>
+						<div class="layui-input-block">
+							<input type="radio"  value="all" title="全部" name="user" checked>
+							<input type="radio"  value="男" title="男" name="user">
+							<input type="radio"  value="女" title="女" name="user">
+							<input type="radio"  value="0" title="学员" name="user">
+							<input type="radio"  value="1" title="机构" name="user">
+							<input type="radio"  value="2" title="家长" name="user">		
+						</div>
+						</div>
+						<!-- <div class="layui-form-item">
+							<label class="layui-form-label">普通群组</label>
+							<div class="layui-input-block">
+								
+							</div>
+						</div> -->
+						
+		  	 </div>
+		  </div>
+		</div>
+	</fieldset>
+		<br />
+		<div class="layui-form-item">
+			<label class="layui-form-label">标题</label>
+			<div class="layui-input-block">
+			<input type="text" class="layui-input"  value="{$key['title']}">
+			</div>
+		</div>
+		<div class="layui-form-item">
+			<label class="layui-form-label">内容</label>
+			<div class="layui-input-block">
+			<textarea class="layui-textarea" name="content">{$key['content']}</textarea>
+			</div>
+		</div>
+		<div class="layui-form-item">
+			<label class="layui-form-label">状态</label>
+			<div class="layui-input-block">
+				<!-- {if $key['stats']==0} -->
+				<input type="text" class="layui-input" disabled value="未读">
+				<!-- {else if $key['stats']==1} -->
+				<input type="text" class="layui-input" disabled value="已读">
+				<!--{/if}-->
+			</div>
+		</div>
+		<div class="layui-form-item">
+			    <label class="layui-form-label">消息时间</label>
+			<div class="layui-input-block">
+				<input type="text" class="layui-input" disabled value="{date('Y-m-d H:i:s',$key['dateline'])}" >
+			</div>	 
+		</div>
+		<!--{/for}-->
+	</form>
+	<resource type="js" name="add" time="3">
+	  <file src="admin/add" />
+	</resource>
+	
+</body>
+</html>

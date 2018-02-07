@@ -1,0 +1,188 @@
+/*
+ * common
+ * update:2017/9/26
+ * author:maqianru
+ */
+html{background: #fff;}
+body{font-size: .16rem;}
+.warp{ max-width: 12rem; min-width: 3rem; width: 94%; margin: 0 auto;}
+header{height: auto;}
+header nav{margin-left: 2.5rem;height: .6rem;}
+header .logo{width: 2rem;height: .6rem;}
+header nav>a.btn.pjax{color: #b7c2c1;font-size: .2rem;padding: .1rem 0;margin: 0 .1rem;border-bottom: 2px solid transparent;}
+header nav>a.btn.pjax.open,header nav>a.btn.pjax:hover{color: #00A09D;border-color: #00A09D;background: none;}
+footer{background:#cbcbcb;color:#838383;font-size:.14rem;padding: .8rem 0 .5rem;}
+footer .warp{width: auto;}
+footer ul,footer p{width: 100%;text-align: center;line-height: .3rem;}
+footer ul{width: 100%;margin: 0 auto;}
+footer ul li{display: inline-block}
+footer ul li:after{content: '|';padding-left: .05rem;}
+footer ul li:last-child:after{ display: none;}
+footer a{color:#838383;}
+footer ul li:hover,footer a:hover{color: #00a09d;}
+
+
+
+
+/*
+ * icons
+ * update:2017/9/26
+ */
+body[page='icons'] #container{height: 500px;background: white;}
+.icon_o{ background:url(subsite/icons.png) no-repeat; display:inline-block; vertical-align:middle;min-width:22px; min-height:22px;}
+.scroll_ctrl i.icon_o{width:46px; height: 87px; -vs-transition-duration:.3s;}
+.scroll_ctrl i.o-left{ background-position-x:0;}
+.scroll_ctrl a.btn:hover>i.o-left{ background-position-x:-46px;}
+.scroll_ctrl i.o-right{ background-position-x:-138px;}
+.scroll_ctrl a.btn:hover>i.o-right{ background-position-x: -92px;}
+/*
+ * index
+ * update:2017/9/26
+ */
+.scroll_show{display: none;}
+.scroll_show.open{display:block;}
+
+.bg_top,.bg_mid,.bg_btm{color: #000;text-align: center;background: ;}
+.bg_top{background: #f3f7f8;}
+.bg_top>div.warp{background: #f7fafa;}
+.bg_mid,.bg_btm{background: #f1f1f1;}
+.bg_mid>div.warp{background: #fff;}
+.about_content{margin: 0 .4rem;padding-bottom: 1rem;}
+.about_content>div{width: 45%;display: inline-block;vertical-align: middle;}
+.img_about>img{width: 100%;height: auto;}
+.text_about{margin-left:5%;text-align: left;text-indent: .36rem;color: #828b8b;line-height: .3rem;}
+.stu_window{display: flex;justify-content: space-around;flex-wrap: wrap;}
+.stu_window>.stu_show{width: 25%;box-sizing: border-box;line-height: .3rem;}
+.stu_window>.stu_show>p:nth-of-type(1){color: #00A09D;margin-top: .2rem;}
+.stu_window>.stu_show>div{width:1.5rem;height:1.5rem;background: url(avatar-big.png) center center no-repeat;background-size:cover;border-radius: 50%;margin: 0 auto;position: relative;}
+.stu_window>.stu_show>div>span{display:inline-block;position: absolute;top: 0;left: 0;border-radius: 50%;width: .8rem;height: .8rem;border: .35rem solid rgba(0,0,0,.5);}
+.stu_window>.stu_show>div>span:hover{border-color: rgba(0,0,0,0);transition: all .3s;}
+.join>a.btn{color: #00A09D;padding: .1rem .3rem;border: 1px solid #00A09D;border-radius: 5px;}
+.join>a.btn:hover{color: #fff;background: #00A09D;}
+.join{padding: .5rem 0;}
+/*title*/
+ .index_title{padding: .3rem 0;line-height: .5rem;}
+ .index_title>h2{font-size: .18rem;color: #001c1e;}
+ .index_title>i{display:block;width: 50px;height: 2px;background: #00A09D;margin: 0 auto;}
+ .index_title>span{display:inline-block;font-size: .24rem;color: #d3e1e1;font-weight: bold;}
+/*轮播图*/
+.scroll{position: relative;}
+.scroll p.slogan{font-size: .3rem;color: #fff;font-weight: bold;position: absolute;top: 50%;right: 10%;max-width: 33%;}
+.scroll_ctrl>div.warp{position: absolute;top: 45%;z-index: 100;height: 0;}
+.scroll_page{position: absolute;bottom: 0;background: rgba(0,0,0,.3);width: 100%;text-align: center;z-index: 100;}
+.scroll_page>span{display: inline-block;width: .5rem;height: 2px;background: white;vertical-align: middle;margin: .1rem 0;}
+.scroll_page>span.open{background: rgba(0,0,0,.5);}
+.scroll_img{width: 100%;height: 100%;}
+.scroll_img>div>a{display:block;width: 100%;height: 100%;}
+.scroll_img>div{width: 100%;height: 100%;position: absolute;opacity: 0;transition: all 1s;}
+.scroll_img>div>a>img{width: 100%;height: 100%;}
+.scroll_img>div.imgs.open{opacity: 1;}
+
+
+/*
+ * about
+ * update:2017/9/26
+ */
+.home-about>.banner{width: 100%;background: url(subsite/scroll_1.png) 0 -100px no-repeat;background-size: cover;}
+.home-about>.banner>span{display:block;font-size: .25rem;font-weight:bold;color: #ffd42a;text-align: right;padding: 5%;}
+.about_inner{background: #f1f1f1;padding: .2rem;}
+.about_inner>div.warp{background: #fff;padding: .2rem;min-height: 3rem;}
+.about_inner nav{width: 20%;text-align: center;}
+.about_inner nav>a.btn{color:#484a4a;display: block;padding: .1rem;background: #dedede;margin: .1rem 0;}
+.about_inner nav>a.btn:hover,.about_inner nav>a.btn.open{color:#fff;background: #00A09D;}
+.about_inner>div.warp::after{content: '';display: block;clear: both;}
+.about_inner .inner{width: 75%;}
+.about_inner .inner>p{text-indent: .32rem;color: #484a4a;line-height: .28rem;}
+.about_inner .inner.summary>img{width: 100%;margin-bottom: .2rem;}
+#map{height:3rem;width: 90%;margin: 0 auto;margin-top: .2rem;}
+
+
+/*
+ * student
+ * update:2017/9/26
+ */
+.home-student{background: #f1f1f1;min-height: 4rem;text-align: center;}
+.home-student>.banner{width: 100%;background: url(subsite/scroll_1.png) 0 -100px no-repeat;background-size: cover;}
+.home-student>.banner>span{display:block;font-size: .3rem;font-weight:bold;color: #ffd42a;padding: 5%;text-align: right;}
+.home-student>.warp{background: #fff;color: #000;}
+
+
+
+
+/*适配布局4s*/
+@media only screen and (max-width:321px) {
+    html{
+        font-size: 50px;
+    }
+}
+/*适配布局note3*/
+@media only screen and (min-width:321px) and (max-width:361px) {
+    html{
+        font-size: 56.25px;
+    }
+}
+/*适配布局6*/
+@media only screen and (min-width:361px) and (max-width:376px) {
+    html{
+        font-size: 58.59px;
+    }
+}
+/*适配布局6P*/
+@media only screen and (min-width:413px) and (max-width:415px) {
+    html{
+        font-size: 64.6875px;
+    }
+}
+/*- Nexus 5X -*/
+@media only screen and (min-width:394px) and (max-width:412px) {
+    html{
+        font-size: 64.375px;
+    }
+}
+/*小米note2*/
+@media only screen and (min-width:377px) and (max-width:394px) {
+    html{
+        font-size: 61.40625px;
+    }
+}
+/*适配布局ipad*/
+@media only screen and (min-width:415px) and (max-width:769px){
+    html{
+        font-size: 90px;
+    }
+}
+/*适配PC*/
+@media only screen and (min-width:770px){
+    html{
+    	font-size: 100px;
+    }
+}
+@media only screen and (min-width:1400px){
+	.scroll p.slogan{right:18%;}
+}
+@media only screen and (max-width:750px) {
+    .scroll p.slogan{font-size: .22rem;}
+    .icon_o{transform: scale(.8);}
+    .stu_window>.stu_show>div{width: 1.2rem;height: 1.2rem;}
+    .stu_window>.stu_show>div>span{width: .6rem;height: .6rem;border-width:.3rem;}
+}
+@media only screen and (max-width:650px) {
+	.index_title>span{line-height: .3rem;}
+	.about_content>div{display: block;width:100%;}
+	.text_about{margin: .2rem 0;}
+	.scroll p.slogan{font-size: .16rem;}
+	.icon_o{transform: scale(.5);}
+	.scroll_ctrl>div.warp{top: 25%;}
+	.scroll_page>span{width: .3rem;height: 1px;}
+	.home-about>.banner,.home-student>.banner{background-position: 0 0;}
+	.home-about>.banner>span,.home-student>.banner>span{font-size: .2rem;}	
+	.stu_window>.stu_show>div{width: 1rem;height: 1rem;}
+    .stu_window>.stu_show>div>span{width: .55rem;height: .55rem;border-width:.22rem;}
+    .home-about>.banner>span{padding: 10%;}
+    .about_inner nav{width: 25%;}
+    .about_inner .inner{width: 70%;}
+    .about_inner .inner>p{line-height: .35rem;}
+}
+@media only screen and (max-width:490px){
+	.scroll_ctrl>div.warp{display: none;}
+}

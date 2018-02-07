@@ -1,0 +1,43 @@
+<include file="common/common" />
+<body class="childrenBody">
+<blockquote class="layui-elem-quote news_search">
+	
+	<div class="layui-inline">定位信息
+	&nbsp;&nbsp;
+	<a class="layui-btn " href="{:U('member/index')}">返回列表</a>
+	</div>
+</blockquote>
+<div class="layui-form news_list">
+<table class="layui-table">
+<thead>
+	<tr>
+		<th>uid</th>
+		<th>ip</th>
+		<th>地址</th>
+		<th>经度</th>
+		<th>纬度</th>
+		<th>gps</th>
+		
+	</tr> 
+</thead>
+<tbody class="users_content">
+	<!--{loop $data['list'] as $key}-->
+	<tr>
+		<td>{$key['uid']}</td>
+		<td>{$key['ip']}</td>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td></td>
+	</tr> 
+	<!--{/loop}-->
+</tbody>
+</table>
+</div>
+<div id="page"></div>
+<resource type="js" name="show" time="30">
+  <file src="admin/show" />
+</resource>
+	
+</body>
+</html>

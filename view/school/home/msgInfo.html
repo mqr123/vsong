@@ -1,0 +1,21 @@
+<include file="common/header" />
+	<div class="readmsg-box">
+		<div class="readmsg-header">
+			
+			<a href="{:U('home/message/read')}" class="btn pjax back">返回</a>
+		</div>
+		<!-- {loop $data['list'] as $key} -->
+		<div class="readmsg-cont">
+			<div class="unRead-headimage">
+				<span class="icon_s icon-unRead icon_reads"systems="0"></span>
+			</div>
+			<div class="read_cont">
+				<span class="triangle"></span>
+				{$key['content']}
+				
+			</div>
+			<div class="read_date">{date('Y-m-d H:i:s',$key['dateline'])}</div>
+		</div>
+		<!-- {/loop} -->
+	</div>
+<include file="common/footer" />

@@ -1,0 +1,48 @@
+<include file="common/common" />
+<fieldset class="layui-elem-field layui-field-title" style="margin-top: 5px;">
+  <legend >
+  <label style="font-size: 15px; color: red;">消息发送</label>&nbsp;
+	<a class="layui-btn layui-btn-normal layui-btn-mini" href="{:U('member/index')}">返回列表</a>
+  </legend>
+</fieldset>	
+<body class="childrenBody">
+	<form id="news-form" class="layui-form" style="width:80%;" action="{:U('message/add/post-'.$uid)}"  method="post">
+		<div class="layui-form-item">
+			<label class="layui-form-label">发送者</label>
+			<div class="layui-input-block">
+			<input type="text" class="layui-input" name="from" disabled value="{$_SESSION['username']}" >
+			</div>
+		</div>
+		<div class="layui-form-item">
+			<label class="layui-form-label">接收账号</label>
+			<div class="layui-input-block">
+			<input type="text" class="layui-input" name="to" disabled value="{$uid}" >
+			</div>
+		</div>
+		
+		<div class="layui-form-item">
+			<label class="layui-form-label">标题</label>
+			<div class="layui-input-block">
+			<input type="text" class="layui-input " name="title"  placeholder="请输入标题">
+			</div>
+		</div>
+		<input type="hidden" name="formhash"  value="{$this->formhash()}" >
+		
+		<div class="layui-form-item"> 
+			<label class="layui-form-label">内容</label>
+			<div class="layui-input-block">
+				<textarea class="layui-textarea" name="content" form="news-form"></textarea>
+			</div>
+		</div>
+		<div class="layui-form-item">
+			<div class="layui-input-block">
+				<button class="layui-btn ">确定发送</button>
+				<button type="reset" class="layui-btn layui-btn-primary">重置</button>
+		    </div>
+		</div>
+	</form>
+	<resource type="js" name="add" time="0">
+	  <file src="admin/add">
+</resource>
+</body>
+</html>
